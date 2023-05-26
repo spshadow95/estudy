@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overalay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p> Write C++ program to draw the following pattern. Use DDA line and Bresenham's
+                    circle algorithm. Apply the concept of encapsulation.
+ 
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include &lt;math.h&gt;
+
+static QImage img(500, 500, QImage::Format_RGB888);
+static QRgb bgColor(qRgb(0, 0, 0));
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui-&gt;setupUi(this);
+    ui-&gt;display-&gt;setPixmap(QPixmap::fromImage(img));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::dda_algo(int x1, int y1, int x2, int y2)
+{
+    QRgb value;
+    value = qRgb(0, 230, 230);
+    int length = 0;
+    if (abs(x2 - x1) &gt;= abs(y2 - y1)){
+        length = abs(x2 - x1);
+    }
+    else {
+        length = abs(y2 - y1);
+    }
+    float dx = float(x2 - x1)/float(length);
+    float dy = float(y2 - y1)/float(length);
+    float x = x1;
+    float y = y1;
+    int i = 1;
+    while (i &lt;= length){
+        img.setPixel(x, y, value);
+        x = x + dx;
+        y = y + dy;
+        i++;
+    }
+}
+
+void MainWindow::bresenham_circle(int xc, int yc, int r)
+{
+    QRgb value;     //set colour of pixel
+    value = qRgb(255,255,0);
+    int x=0;    //start at point (0,r)
+    int y=r;
+    int D = 3 - (2*r);  //initial decision parameter
+    while(x&lt;=y){
+        //set pixels in all 8 octants
+        img.setPixel(y+xc, x+yc, value);
+        img.setPixel(x+xc, y+yc, value);
+        img.setPixel(-x+xc, y+yc, value);
+        img.setPixel(-y+xc, x+yc, value);
+        img.setPixel(-y+xc, -x+yc, value);
+        img.setPixel(-x+xc, -y+yc, value);
+        img.setPixel(x+xc, -y+yc, value);
+        img.setPixel(y+xc, -x+yc, value);
+
+        if (D&lt;0){
+            D = D + 4*x + 6;    //next decision parameter
+        }
+        else{
+            D = D + 4*(x-y) + 10;   //next decision parameter
+            y = y-1;
+        }
+        x = x+1;
+    }
+}
+
+void MainWindow::midpoint_circle(int xc, int yc, int r)
+{
+    QRgb value;
+    value = qRgb(255,0,255);
+    int x=0;
+    int y=r;
+    float D = 1.25 - r;
+    while(x&lt;=y){
+        //set pixels in all 8 octants
+        img.setPixel(y+xc, x+yc, value);
+        img.setPixel(x+xc, y+yc, value);
+        img.setPixel(-x+xc, y+yc, value);
+        img.setPixel(-y+xc, x+yc, value);
+        img.setPixel(-y+xc, -x+yc, value);
+        img.setPixel(-x+xc, -y+yc, value);
+        img.setPixel(x+xc, -y+yc, value);
+        img.setPixel(y+xc, -x+yc, value);
+
+        if(D&lt;0){
+            D = D + 2*x + 3;
+        }
+        else{
+            D = D + 2*(x-y) + 5;
+            y = y-1;
+        }
+        x = x+1;
+    }
+}
+
+
+void MainWindow::on_DDA_line_clicked()
+{
+    int x1 = ui-&gt;plainTextEdit-&gt;toPlainText().toInt();
+    int y1 = ui-&gt;plainTextEdit_2-&gt;toPlainText().toInt();
+    int x2 = ui-&gt;plainTextEdit_3-&gt;toPlainText().toInt();
+    int y2 = ui-&gt;plainTextEdit_4-&gt;toPlainText().toInt();
+
+    dda_algo(x1, y1, x2, y2);
+    ui-&gt;display-&gt;setPixmap(QPixmap::fromImage(img));
+    ui-&gt;display-&gt;show();
+}
+
+void MainWindow::on_B_Circle_clicked()
+{
+    int xc = ui-&gt;plainTextEdit_7-&gt;toPlainText().toInt();
+    int yc = ui-&gt;plainTextEdit_6-&gt;toPlainText().toInt();
+    int r  = ui-&gt;plainTextEdit_5-&gt;toPlainText().toInt();
+
+    bresenham_circle(xc, yc, r);
+    ui-&gt;display-&gt;setPixmap(QPixmap::fromImage(img));
+    ui-&gt;display-&gt;show();
+}
+
+void MainWindow::on_M_Circle_clicked()
+{
+    int xc = ui-&gt;plainTextEdit_7-&gt;toPlainText().toInt();
+    int yc = ui-&gt;plainTextEdit_6-&gt;toPlainText().toInt();
+    int r  = ui-&gt;plainTextEdit_5-&gt;toPlainText().toInt();
+
+    midpoint_circle(xc, yc, r);
+    ui-&gt;display-&gt;setPixmap(QPixmap::fromImage(img));
+    ui-&gt;display-&gt;show();
+}
+
+void MainWindow::on_create_1_clicked()
+{
+    //centre coordinates
+    int xc = ui-&gt;plainTextEdit_7-&gt;toPlainText().toInt();
+    int yc = ui-&gt;plainTextEdit_6-&gt;toPlainText().toInt();
+    //outer circle radius
+    int R  = ui-&gt;plainTextEdit_5-&gt;toPlainText().toInt();
+
+    int s = (0.866)*R;  //half the side length of eq triangle
+    int r = (0.5)*R;    //inner circle radius
+
+    //draw triangle
+    dda_algo(xc, yc - R, xc + s, yc + r);
+    dda_algo(xc, yc - R, xc - s, yc + r);
+    dda_algo(xc - s, yc + r, xc + s, yc + r);
+
+    //draw circles
+    bresenham_circle(xc, yc, R);
+    midpoint_circle(xc, yc, r);
+
+    ui-&gt;display-&gt;setPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::on_create_2_clicked()
+{
+    //get diagonal coordinates of outer rectangle
+    int x1 = ui-&gt;plainTextEdit-&gt;toPlainText().toInt();
+    int y1 = ui-&gt;plainTextEdit_2-&gt;toPlainText().toInt();
+    int x2 = ui-&gt;plainTextEdit_3-&gt;toPlainText().toInt();
+    int y2 = ui-&gt;plainTextEdit_4-&gt;toPlainText().toInt();
+
+    //half length and half breadth
+    float s1 = abs((x1 - x2)/2.0);
+    float s2 = abs((y1 - y2)/2.0);
+
+    //centre coordinates
+    float xc = x1 + s1;
+    float yc = y1 + s2;
+
+    //radius
+    float r = s1 * (sin(atan2(s2, s1)));
+
+    //draw outer rectangle
+    dda_algo(x1, y1, x2, y1);
+    dda_algo(x1, y1, x1, y2);
+    dda_algo(x2, y2, x1, y2);
+    dda_algo(x2, y2, x2, y1);
+
+    //draw inner parallelogram
+    dda_algo(x1 + s1, y1, x2, y1 + s2);
+    dda_algo(x2, y1 + s2, x1 + s1, y2);
+    dda_algo(x1 + s1, y2, x1, y1 + s2);
+    dda_algo(x1, y1 + s2, x1 + s1, y1);
+
+    //draw circle
+    bresenham_circle(xc, yc, r);
+
+    ui-&gt;display->setPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::on_clear_clicked()
+{
+    img.fill(bgColor);
+    ui->display->setPixmap(QPixmap::fromImage(img));
+}
+                        
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/KrEBG4PZKew" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <math.h>
+
+static QImage img(500, 500, QImage::Format_RGB888);
+static QRgb bgColor(qRgb(0, 0, 0));
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    ui->display->setPixmap(QPixmap::fromImage(img));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::dda_algo(int x1, int y1, int x2, int y2)
+{
+    QRgb value;
+    value = qRgb(0, 230, 230);
+    int length = 0;
+    if (abs(x2 - x1) >= abs(y2 - y1)){
+        length = abs(x2 - x1);
+    }
+    else {
+        length = abs(y2 - y1);
+    }
+    float dx = float(x2 - x1)/float(length);
+    float dy = float(y2 - y1)/float(length);
+    float x = x1;
+    float y = y1;
+    int i = 1;
+    while (i <= length){
+        img.setPixel(x, y, value);
+        x = x + dx;
+        y = y + dy;
+        i++;
+    }
+}
+
+void MainWindow::bresenham_circle(int xc, int yc, int r)
+{
+    QRgb value;     //set colour of pixel
+    value = qRgb(255,255,0);
+    int x=0;    //start at point (0,r)
+    int y=r;
+    int D = 3 - (2*r);  //initial decision parameter
+    while(x<=y){
+        //set pixels in all 8 octants
+        img.setPixel(y+xc, x+yc, value);
+        img.setPixel(x+xc, y+yc, value);
+        img.setPixel(-x+xc, y+yc, value);
+        img.setPixel(-y+xc, x+yc, value);
+        img.setPixel(-y+xc, -x+yc, value);
+        img.setPixel(-x+xc, -y+yc, value);
+        img.setPixel(x+xc, -y+yc, value);
+        img.setPixel(y+xc, -x+yc, value);
+
+        if (D<0){
+            D = D + 4*x + 6;    //next decision parameter
+        }
+        else{
+            D = D + 4*(x-y) + 10;   //next decision parameter
+            y = y-1;
+        }
+        x = x+1;
+    }
+}
+
+void MainWindow::midpoint_circle(int xc, int yc, int r)
+{
+    QRgb value;
+    value = qRgb(255,0,255);
+    int x=0;
+    int y=r;
+    float D = 1.25 - r;
+    while(x<=y){
+        //set pixels in all 8 octants
+        img.setPixel(y+xc, x+yc, value);
+        img.setPixel(x+xc, y+yc, value);
+        img.setPixel(-x+xc, y+yc, value);
+        img.setPixel(-y+xc, x+yc, value);
+        img.setPixel(-y+xc, -x+yc, value);
+        img.setPixel(-x+xc, -y+yc, value);
+        img.setPixel(x+xc, -y+yc, value);
+        img.setPixel(y+xc, -x+yc, value);
+
+        if(D<0){
+            D = D + 2*x + 3;
+        }
+        else{
+            D = D + 2*(x-y) + 5;
+            y = y-1;
+        }
+        x = x+1;
+    }
+}
+
+
+void MainWindow::on_DDA_line_clicked()
+{
+    int x1 = ui->plainTextEdit->toPlainText().toInt();
+    int y1 = ui->plainTextEdit_2->toPlainText().toInt();
+    int x2 = ui->plainTextEdit_3->toPlainText().toInt();
+    int y2 = ui->plainTextEdit_4->toPlainText().toInt();
+
+    dda_algo(x1, y1, x2, y2);
+    ui->display->setPixmap(QPixmap::fromImage(img));
+    ui->display->show();
+}
+
+void MainWindow::on_B_Circle_clicked()
+{
+    int xc = ui->plainTextEdit_7->toPlainText().toInt();
+    int yc = ui->plainTextEdit_6->toPlainText().toInt();
+    int r  = ui->plainTextEdit_5->toPlainText().toInt();
+
+    bresenham_circle(xc, yc, r);
+    ui->display->setPixmap(QPixmap::fromImage(img));
+    ui->display->show();
+}
+
+void MainWindow::on_M_Circle_clicked()
+{
+    int xc = ui->plainTextEdit_7->toPlainText().toInt();
+    int yc = ui->plainTextEdit_6->toPlainText().toInt();
+    int r  = ui->plainTextEdit_5->toPlainText().toInt();
+
+    midpoint_circle(xc, yc, r);
+    ui->display->setPixmap(QPixmap::fromImage(img));
+    ui->display->show();
+}
+
+void MainWindow::on_create_1_clicked()
+{
+    //centre coordinates
+    int xc = ui->plainTextEdit_7->toPlainText().toInt();
+    int yc = ui->plainTextEdit_6->toPlainText().toInt();
+    //outer circle radius
+    int R  = ui->plainTextEdit_5->toPlainText().toInt();
+
+    int s = (0.866)*R;  //half the side length of eq triangle
+    int r = (0.5)*R;    //inner circle radius
+
+    //draw triangle
+    dda_algo(xc, yc - R, xc + s, yc + r);
+    dda_algo(xc, yc - R, xc - s, yc + r);
+    dda_algo(xc - s, yc + r, xc + s, yc + r);
+
+    //draw circles
+    bresenham_circle(xc, yc, R);
+    midpoint_circle(xc, yc, r);
+
+    ui->display->setPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::on_create_2_clicked()
+{
+    //get diagonal coordinates of outer rectangle
+    int x1 = ui->plainTextEdit->toPlainText().toInt();
+    int y1 = ui->plainTextEdit_2->toPlainText().toInt();
+    int x2 = ui->plainTextEdit_3->toPlainText().toInt();
+    int y2 = ui->plainTextEdit_4->toPlainText().toInt();
+
+    //half length and half breadth
+    float s1 = abs((x1 - x2)/2.0);
+    float s2 = abs((y1 - y2)/2.0);
+
+    //centre coordinates
+    float xc = x1 + s1;
+    float yc = y1 + s2;
+
+    //radius
+    float r = s1 * (sin(atan2(s2, s1)));
+
+    //draw outer rectangle
+    dda_algo(x1, y1, x2, y1);
+    dda_algo(x1, y1, x1, y2);
+    dda_algo(x2, y2, x1, y2);
+    dda_algo(x2, y2, x2, y1);
+
+    //draw inner parallelogram
+    dda_algo(x1 + s1, y1, x2, y1 + s2);
+    dda_algo(x2, y1 + s2, x1 + s1, y2);
+    dda_algo(x1 + s1, y2, x1, y1 + s2);
+    dda_algo(x1, y1 + s2, x1 + s1, y1);
+
+    //draw circle
+    bresenham_circle(xc, yc, r);
+
+    ui->display->setPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::on_clear_clicked()
+{
+    img.fill(bgColor);
+    ui->display->setPixmap(QPixmap::fromImage(img));
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/CGL Lab Manual 2022-23 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

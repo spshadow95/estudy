@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Imagine a publishing company which does marketing for book
+                    and audio cassette versions. Create a class publication that
+                    stores the title (a string) and price (type float) of publications.
+                    From this class derive two classes: book which adds a page
+                    count (type int) and tape which adds a playing time in minutes
+                    (type float). Write a program that instantiates the book and
+                    tape class, allows user to enter data and displays the data
+                    members. If an exception is caught, replace all the data
+                    member values with zero values.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+using namespace std;
+
+class Publication{
+protected:
+    string title;
+    float price;
+
+public:
+    Publication(){
+        title = "&lt;title&gt;";
+        price = 0;
+    }
+};
+
+
+class Book : public Publication{
+private:
+    int pageCount;
+
+public:
+    static int bookCount;
+    Book(){
+        pageCount = 0;
+        Book::bookCount++;
+    }
+
+    void getData();
+    void getPageCount();
+    void display();
+    static void bookCountDisplay(){
+        cout &lt;&lt; "Current no. of books =" &lt;&lt; Book::bookCount &lt;&lt; endl;
+    }
+};
+
+
+class Tape : public Publication{
+private:
+    float playTime;
+
+public:
+    static int tapeCount;
+    Tape(){
+        playTime = 0;
+        Tape::tapeCount++;
+    }
+
+    void getData();
+    void getPlayTime();
+    void display();
+    static void tapeCountDisplay(){
+        cout &lt;&lt; "Current no. of tapes =" &lt;&lt; Tape::tapeCount &lt;&lt; endl;
+    }
+};
+
+void Book :: getPageCount(){
+    while(true){
+        cout &lt;&lt; "Enter no. of pages: " &lt;&lt; endl;
+        try{
+            cin &gt;&gt; pageCount;
+            if (pageCount &lt; 0){
+                throw pageCount;
+            }
+            break;
+        }
+        catch(int pageCount){
+            this-&gt;pageCount = 0;
+            cout &lt;&lt; "Page count cannot be negative!" &lt;&lt; endl;
+        }
+    }
+}
+
+
+void Tape :: getPlayTime(){
+    while(true){
+        cout &lt;&lt; "Enter play time of tape: " &lt;&lt; endl;
+        try{
+            cin &gt;&gt; playTime;
+            if (playTime &lt; 0){
+                throw playTime;
+            }
+            break;
+        }
+        catch(float playTime){
+            this-&gt;playTime = 0;
+            cout &lt;&lt; "playtime cannot be negative!" &lt;&lt; endl &lt;&lt; endl;
+        }
+    }
+}
+
+
+void Book :: getData(){
+    cout &lt;&lt; "Enter Title : ";
+    cin.clear();
+    cin.ignore(1000,'\n');
+    getline(cin, this-&gt;title);
+    while(true){
+        cout &lt;&lt; "Enter Price:";
+        try{
+            cin &gt;&gt; price;
+            if (price &lt; 0){
+                throw price;
+            }
+            break;
+        }
+        catch(float price){
+            this-&gt;price = 0;
+            cout &lt;&lt; "Price cannot be negative!" &lt;&lt; endl;
+        }
+    }
+    this-&gt;getPageCount();
+}
+
+void Tape :: getData(){
+    cout &lt;&lt; "Enter Title : ";
+    cin.clear();
+    cin.ignore(1000,'\n');
+    getline(cin, this-&gt;title);
+    while(true){
+        cout &lt;&lt; "Enter Price:";
+        try{
+            cin &gt;&gt; price;
+            if (price &lt; 0){
+                throw price;
+            }
+            break;
+        }
+        catch(float price){
+            this-&gt;price = 0;
+            cout &lt;&lt; "Price cannot be negative!" &lt;&lt; endl;
+        }
+    }
+    this-&gt;getPlayTime();
+}
+
+void Book :: display(){
+    cout &lt;&lt; "&lt;Book Data&gt;" &lt;&lt; endl;
+    cout &lt;&lt; "Title = " &lt;&lt; this-&gt;title &lt;&lt; endl;
+    cout &lt;&lt; "Price = " &lt;&lt; this-&gt;price &lt;&lt; endl;
+    cout &lt;&lt; "Pages Count = " &lt;&lt; this-&gt;pageCount &lt;&lt; endl &lt;&lt; endl;
+}
+
+
+void Tape :: display(){
+    cout &lt;&lt; "&lt;Tape Data&gt;" &lt;&lt; endl;
+    cout &lt;&lt; "Title = " &lt;&lt; this-&gt;title &lt;&lt; endl;
+    cout &lt;&lt; "Price = " &lt;&lt; this-&gt;price &lt;&lt; endl;
+    cout &lt;&lt; "Play Time = " &lt;&lt; this-&gt;playTime &lt;&lt; endl;
+}
+
+int Book::bookCount;
+int Tape::tapeCount;
+
+//driver code
+int main()
+{
+    int choice = 0;
+    vector&lt;Book&gt; bookDB;
+    vector&lt;Tape&gt; tapeDB;
+
+    while(choice != -1){
+        cout &lt;&lt; "------Menu------" &lt;&lt; endl;
+        cout &lt;&lt; "1. New Book Entry" &lt;&lt; endl
+            &lt;&lt; "2. New Tape Entry" &lt;&lt; endl
+            &lt;&lt; "3. Display No. of Books in DB" &lt;&lt; endl
+            &lt;&lt; "4. Display No. of Tapes in DB" &lt;&lt; endl
+            &lt;&lt; "5. Display Book Data" &lt;&lt; endl
+            &lt;&lt; "6. Display Tape Data" &lt;&lt; endl
+            &lt;&lt; "-1. Exit" &lt;&lt; endl;
+        cout &lt;&lt; "----------------" &lt;&lt; endl;
+        cout &lt;&lt; "Enter your choice :";
+        cin &gt;&gt; choice;
+
+        switch(choice){
+        case 1: //New Book Entry
+            {Book B;
+            cout &lt;&lt; "Enter Book Data: " &lt;&lt; endl;
+            B.getData();
+            bookDB.push_back(B);
+            break;}
+
+        case 2: //New Tape Entry
+            {Tape T;
+            cout &lt;&lt; "Enter Tape Data: " &lt;&lt; endl;
+            T.getData();
+            tapeDB.push_back(T);
+            break;}
+
+        case 3: // Display No. of Books in DB
+            {Book::bookCountDisplay();
+            break;}
+
+        case 4: // Display No. of Tapes in DB
+            {Tape::tapeCountDisplay();
+            break;}
+
+        case 5: // Display Book Data
+            {for (auto B : bookDB){
+                B.display();
+                cout &lt;&lt; endl;
+            }
+            break;}
+
+        case 6: // Display Tape Data
+            {for (auto T : tapeDB){
+                T.display();
+                cout &lt;&lt; endl;
+            }
+            break;}
+
+        case -1: // Exit
+            {cout &lt;&lt; "----Exit from Database----" &lt;&lt; endl;
+            choice = -1;
+            break;}
+
+        default: // Exit
+            {cout &lt;&lt; "----Exit from Database----" &lt;&lt; endl;
+            choice = -1;
+            break;}
+        }
+    }
+
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/E9FhLdfBpjM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+class Publication{
+protected:
+	string title;
+	float price;
+
+public:
+	Publication(){
+		title = "<title>";
+		price = 0;
+	}
+};
+
+
+class Book : public Publication{
+private:
+	int pageCount;
+
+public:
+	static int bookCount;
+	Book(){
+		pageCount = 0;
+		Book::bookCount++;
+	}
+
+	void getData();
+	void getPageCount();
+	void display();
+	static void bookCountDisplay(){
+		cout << "Current no. of books =" << Book::bookCount << endl;
+	}
+};
+
+
+class Tape : public Publication{
+private:
+	float playTime;
+
+public:
+	static int tapeCount;
+	Tape(){
+		playTime = 0;
+		Tape::tapeCount++;
+	}
+
+	void getData();
+	void getPlayTime();
+	void display();
+	static void tapeCountDisplay(){
+		cout << "Current no. of tapes =" << Tape::tapeCount << endl;
+	}
+};
+
+void Book :: getPageCount(){
+	while(true){
+		cout << "Enter no. of pages: " << endl;
+		try{
+			cin >> pageCount;
+			if (pageCount < 0){
+				throw pageCount;
+			}
+			break;
+		}
+		catch(int pageCount){
+			this->pageCount = 0;
+			cout << "Page count cannot be negative!" << endl;
+		}
+	}
+}
+
+
+void Tape :: getPlayTime(){
+	while(true){
+		cout << "Enter play time of tape: " << endl;
+		try{
+			cin >> playTime;
+			if (playTime < 0){
+				throw playTime;
+			}
+			break;
+		}
+		catch(float playTime){
+			this->playTime = 0;
+			cout << "playtime cannot be negative!" << endl << endl;
+		}
+	}
+}
+
+
+void Book :: getData(){
+	cout << "Enter Title : ";
+	cin.clear();
+	cin.ignore(1000,'\n');
+	getline(cin, this->title);
+	while(true){
+		cout << "Enter Price:";
+		try{
+			cin >> price;
+			if (price < 0){
+				throw price;
+			}
+			break;
+		}
+		catch(float price){
+			this->price = 0;
+			cout << "Price cannot be negative!" << endl;
+		}
+	}
+	this->getPageCount();
+}
+
+void Tape :: getData(){
+	cout << "Enter Title : ";
+	cin.clear();
+	cin.ignore(1000,'\n');
+	getline(cin, this->title);
+	while(true){
+		cout << "Enter Price:";
+		try{
+			cin >> price;
+			if (price < 0){
+				throw price;
+			}
+			break;
+		}
+		catch(float price){
+			this->price = 0;
+			cout << "Price cannot be negative!" << endl;
+		}
+	}
+	this->getPlayTime();
+}
+
+void Book :: display(){
+	cout << "<Book Data>" << endl;
+	cout << "Title = " << this->title << endl;
+	cout << "Price = " << this->price << endl;
+	cout << "Pages Count = " << this->pageCount << endl << endl;
+}
+
+
+void Tape :: display(){
+	cout << "<Tape Data>" << endl;
+	cout << "Title = " << this->title << endl;
+	cout << "Price = " << this->price << endl;
+	cout << "Play Time = " << this->playTime << endl;
+}
+
+int Book::bookCount;
+int Tape::tapeCount;
+
+//driver code
+int main()
+{
+	int choice = 0;
+	vector<Book> bookDB;
+	vector<Tape> tapeDB;
+
+	while(choice != -1){
+		cout << "------Menu------" << endl;
+		cout << "1. New Book Entry" << endl
+			 << "2. New Tape Entry" << endl
+			 << "3. Display No. of Books in DB" << endl
+			 << "4. Display No. of Tapes in DB" << endl
+			 << "5. Display Book Data" << endl
+			 << "6. Display Tape Data" << endl
+			 << "-1. Exit" << endl;
+		cout << "----------------" << endl;
+		cout << "Enter your choice :";
+		cin >> choice;
+
+		switch(choice){
+		case 1: //New Book Entry
+			{Book B;
+			cout << "Enter Book Data: " << endl;
+			B.getData();
+			bookDB.push_back(B);
+			break;}
+
+		case 2: //New Tape Entry
+			{Tape T;
+			cout << "Enter Tape Data: " << endl;
+			T.getData();
+			tapeDB.push_back(T);
+			break;}
+
+		case 3: // Display No. of Books in DB
+			{Book::bookCountDisplay();
+			break;}
+
+		case 4: // Display No. of Tapes in DB
+			{Tape::tapeCountDisplay();
+			break;}
+
+		case 5: // Display Book Data
+			{for (auto B : bookDB){
+				B.display();
+				cout << endl;
+			}
+			break;}
+
+		case 6: // Display Tape Data
+			{for (auto T : tapeDB){
+				T.display();
+				cout << endl;
+			}
+			break;}
+
+		case -1: // Exit
+			{cout << "----Exit from Database----" << endl;
+			choice = -1;
+			break;}
+
+		default: // Exit
+			{cout << "----Exit from Database----" << endl;
+			choice = -1;
+			break;}
+		}
+	}
+
+	return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/OOP_LAB MANUAL 2022-23 OOP (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

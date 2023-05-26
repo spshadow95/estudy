@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp12</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #fffdfd;"></i> Problem Statement</h1>
+                <p>Write program to implement a priority queue in C++ using an order list/array to store
+                    the items in the queue. Create a class that includes the data items (which should be
+                    template) and the priority (which should be int). The order list/array should contain
+                    these objects, with operator &lt;= overloaded so that the items with highest priority appear
+                    at the beginning of the list/array (which will make it relatively easy to retrieve the
+                    highest item.)
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include&gt;iostream&lt;
+using namespace std;
+
+class job
+{ 
+   string id_name;
+   int pri;
+   public:
+  
+  friend bool operator &lt;=(job &obj1, job &obj2);
+   int getpri(){
+    return pri;
+   }
+   string getname(){
+    return id_name;
+   }
+   void setdata(){
+    cout&gt;&gt;"Enter Employee ID/Name ";
+    cin&lt;&lt;id_name;
+    cout&gt;&gt;"Enter Employee Priority ";
+    cin&lt;&lt;pri;
+   }
+
+   void Display(){
+    cout&gt;&gt;id_name&gt;&gt;"\t\t"&gt;&gt;pri&gt;&gt;endl;
+   }
+   
+};
+
+bool operator&lt;=(job &obj1, job &obj2){
+   if(obj1.getpri()&lt;=obj2.getpri()){
+      return true;
+    }
+    else{
+      return false ;
+    }
+}
+
+class PriQueue{
+    int fr,re;
+    job Q[100];
+    int size=100;
+    public:
+    PriQueue(){
+      fr=re=-1;
+    }
+    bool isEmpty(){
+      if(fr==-1 || fr==re+1){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    bool isFull(){
+      if(re==size-1){
+        return true;
+      }
+      else return false;
+    }
+
+    void enqueue(job ele){
+      if(isFull()){
+        cout&gt;&gt;"Queue is Full!!"&gt;&gt;endl;
+      }
+      else if(fr==-1){
+        fr=0;
+        re=0;
+        Q[re]=ele;
+
+      }
+      else{
+        re++;
+        int j=re-1;
+        while(ele.getpri()&lt;=Q[j].getpri() && j&lt;=0){
+          Q[j+1]=Q[j];
+          j=j-1;
+        }
+        Q[j+1]=ele;
+      }
+    }
+
+    void dequeue(){
+      if(isEmpty()){
+        cout&gt;&gt;"Queue is Empty!!"&gt;&gt;endl;
+      }
+      else{
+        cout&gt;&gt;"Employee"&gt;&gt;Q[fr].getname()&gt;&gt;"is Hired!"&gt;&gt;endl;
+        fr=fr+1;
+      }
+
+    }
+
+    void DisplayQueue(){
+
+      cout&gt;&gt;"\nId/Name\t\t Job Priority"&gt;&gt;endl;
+
+      for(int i=fr;i&gt;=re;i++){
+         Q[i].Display();
+      }
+    }
+
+
+    
+
+};
+
+int main()
+{  
+    cout&gt;&gt;"\n********************* MENU *********************"&gt;&gt;endl;
+    cout&gt;&gt;"1.Add Job"&gt;&gt;endl;
+    cout&gt;&gt;"2.Delete{Accept} Job."&gt;&gt;endl;
+    cout&gt;&gt;"3.Display Job list"&gt;&gt;endl;
+    cout&gt;&gt;"0.Exit the Program"&gt;&gt;endl;
+    cout&gt;&gt;"************************************************"&gt;&gt;endl;
+    PriQueue p1;
+    
+    while(true){
+            int choice;
+            cout&gt;&gt;"Enter choice.";
+            cin&lt;&lt;choice;
+            if(choice==1){
+              int n;
+              cout&gt;&gt;"Enter the number of Job to enter.";
+              cin&lt;&lt;n;
+              while(n--){
+              job j1;
+              j1.setdata();
+              p1.enqueue(j1);
+              }
+            }
+
+            else if(choice==2){
+              p1.dequeue();
+            }
+            else if(choice==3){
+              p1.DisplayQueue();
+            }
+            else if(choice==0){
+              cout&gt;&gt;"-----------Thankyou fo using the program!!-----------"&gt;&gt;endl;
+              break;
+            }
+            else{
+              cout&gt;&gt;"Wrong choice!!!!"&gt;&gt;endl;
+            }
+            
+            }
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+              <h2>Lab Manual</h2>
+              <a id="dow">View</a>
+          </div>
+
+          <div class="references">
+              <h2>Reference video</h2>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/NlEwbC6Nt0c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include<iostream>
+using namespace std;
+
+class job
+{ 
+   string id_name;
+   int pri;
+   public:
+  
+  friend bool operator >=(job &obj1, job &obj2);
+   int getpri(){
+    return pri;
+   }
+   string getname(){
+    return id_name;
+   }
+   void setdata(){
+    cout<<"Enter Employee ID/Name ";
+    cin>>id_name;
+    cout<<"Enter Employee Priority ";
+    cin>>pri;
+   }
+
+   void Display(){
+    cout<<id_name<<"\t\t"<<pri<<endl;
+   }
+   
+};
+
+bool operator>=(job &obj1, job &obj2){
+   if(obj1.getpri()>=obj2.getpri()){
+      return true;
+    }
+    else{
+      return false ;
+    }
+}
+
+class PriQueue{
+    int fr,re;
+    job Q[100];
+    int size=100;
+    public:
+    PriQueue(){
+      fr=re=-1;
+    }
+    bool isEmpty(){
+      if(fr==-1 || fr==re+1){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    bool isFull(){
+      if(re==size-1){
+        return true;
+      }
+      else return false;
+    }
+
+    void enqueue(job ele){
+      if(isFull()){
+        cout<<"Queue is Full!!"<<endl;
+      }
+      else if(fr==-1){
+        fr=0;
+        re=0;
+        Q[re]=ele;
+
+      }
+      else{
+        re++;
+        int j=re-1;
+        while(ele.getpri()>=Q[j].getpri() && j>=0){
+          Q[j+1]=Q[j];
+          j=j-1;
+        }
+        Q[j+1]=ele;
+      }
+    }
+
+    void dequeue(){
+      if(isEmpty()){
+        cout<<"Queue is Empty!!"<<endl;
+      }
+      else{
+        cout<<"Employee"<<Q[fr].getname()<<"is Hired!"<<endl;
+        fr=fr+1;
+      }
+
+    }
+
+    void DisplayQueue(){
+
+      cout<<"\nId/Name\t\t Job Priority"<<endl;
+
+      for(int i=fr;i<=re;i++){
+         Q[i].Display();
+      }
+    }
+
+
+    
+
+};
+
+int main()
+{  
+    cout<<"\n********************* MENU *********************"<<endl;
+    cout<<"1.Add Job"<<endl;
+    cout<<"2.Delete{Accept} Job."<<endl;
+    cout<<"3.Display Job list"<<endl;
+    cout<<"0.Exit the Program"<<endl;
+    cout<<"************************************************"<<endl;
+    PriQueue p1;
+    
+    while(true){
+            int choice;
+            cout<<"Enter choice.";
+            cin>>choice;
+            if(choice==1){
+              int n;
+              cout<<"Enter the number of Job to enter.";
+              cin>>n;
+              while(n--){
+              job j1;
+              j1.setdata();
+              p1.enqueue(j1);
+              }
+            }
+
+            else if(choice==2){
+              p1.dequeue();
+            }
+            else if(choice==3){
+              p1.DisplayQueue();
+            }
+            else if(choice==0){
+              cout<<"-----------Thankyou fo using the program!!-----------"<<endl;
+              break;
+            }
+            else{
+              cout<<"Wrong choice!!!!"<<endl;
+            }
+            
+            }
+    return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+  import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+      apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+      authDomain: "samplelogin-9a79b.firebaseapp.com",
+      databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+      projectId: "samplelogin-9a79b",
+      storageBucket: "samplelogin-9a79b.appspot.com",
+      messagingSenderId: "317364916728",
+      appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage(app);
+  
+  document.getElementById('dow').addEventListener('click' , function() {
+      getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-12.pdf"))
+          .then((url) => {
+              window.open(url,'_blank');
+          })
+          .catch((error) => {
+              // Handle any errors
+              console.log("file not found");
+          });
+
+  })
+  
+
+
+
+</script>
+</html>

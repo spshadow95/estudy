@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp1</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #fffdfd;"></i> Problem Statement</h1>
+                <p>In second year computer engineering class, group A student’s play cricket, group B students
+                    play badminton and group C students play football. Write a Python program using functions
+                    to compute following: - a) List of students who play both cricket and badminton b) List of
+                    students who play either cricket or badminton but not both c) Number of students who play
+                    neither cricket nor badminton d) Number of students who play cricket and football but not
+                    badminton. (Note- While realizing the group, duplicate entries should be avoided, Do not
+                    use SET built-in functions)
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-py">
+cric=[]
+badm=[]
+foot=[]
+cr=int(input("Enter no of students play cricket\n"))
+for i in range(0,cr):
+    name=str(input("enter name of the student"))
+    cric.append(name)
+
+ba =int(input("Enter no of students play Badminton\n"))
+for i in range(0,ba):
+    name1=str(input("enter name of the student"))
+    badm.append(name1)
+
+fo =int(input("Enter no of students play Football\n"))
+for i in range(0,fo):
+    name2=str(input("enter name of the student"))
+    foot.append(name2)
+
+print("list of students playing cricket:",cric)
+print("list of students playing badminton:",badm)
+print("list of students playing football:",foot)
+
+#Subtask1: # list of students play both cricket adn badminton
+def subtask1(cric,badmi):
+    cricAndbadm=[]
+    for x in cric:
+            if x in badm:
+                cricAndbadm.append(x)
+
+    print("The list of Students play both Cricket And Badminton :",cricAndbadm)
+
+#Subtask2:   list of students playing either cricket or badminton
+
+def subtask2(cric,badm):
+    cricORbadm=[]
+    for x in cric:
+        if x not in badm:
+            cricORbadm.append(x)
+
+    for x in badm:
+        if x not in cric:
+            cricORbadm.append(x)
+
+    print("The list of Students play either Cricket or Badminton :",cricORbadm)
+
+#SubTask 3: no of students neiter play cricket nor badminton
+
+def subtask3(foot,cric,badm):
+    nocricnobad=[]
+    for x in foot:
+        if x not in badm and x not in cric:
+           nocricnobad.append(x)
+
+    print("The No of Students Neither play Cricket Nor Badminton",len(nocricnobad))
+
+#Subtask4 : No of students playing cricket and football but not badminton
+
+def subtask4(foot,cric,badm):
+    cricandfootnobad=[]
+    for x in cric:
+        if x in foot and x not in badm :
+          cricandfootnobad.append(x)
+    print("The No of Students playing cricket and football but not badminton ",len(cricandfootnobad))
+
+def menu(choice):
+    if(choice==1):
+        subtask1(cric,badm)
+
+    elif(choice==2):
+        subtask2(cric,badm)
+
+    elif(choice==3):
+        subtask3(foot, cric, badm)
+
+    elif(choice==4):
+        subtask4(foot, cric, badm)
+
+    else:
+        print("plese enter proper choice")
+
+choice=int(input('''Enter the number of operation to be performed:  
+                 1=Task1                                            
+                 2=Task2                                            
+                 3=Task3                                            
+                 4=Task4\n'''))
+menu(choice)
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/8FVq5f1Csns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `cric=[]
+badm=[]
+foot=[]
+cr=int(input("Enter no of students play cricket\n"))
+for i in range(0,cr):
+    name=str(input("enter name of the student"))
+    cric.append(name)
+
+ba =int(input("Enter no of students play Badminton\n"))
+for i in range(0,ba):
+    name1=str(input("enter name of the student"))
+    badm.append(name1)
+
+fo =int(input("Enter no of students play Football\n"))
+for i in range(0,fo):
+    name2=str(input("enter name of the student"))
+    foot.append(name2)
+
+print("list of students playing cricket:",cric)
+print("list of students playing badminton:",badm)
+print("list of students playing football:",foot)
+
+#Subtask1: # list of students play both cricket adn badminton
+def subtask1(cric,badmi):
+    cricAndbadm=[]
+    for x in cric:
+            if x in badm:
+                cricAndbadm.append(x)
+
+    print("The list of Students play both Cricket And Badminton :",cricAndbadm)
+
+#Subtask2:   list of students playing either cricket or badminton
+
+def subtask2(cric,badm):
+    cricORbadm=[]
+    for x in cric:
+        if x not in badm:
+            cricORbadm.append(x)
+
+    for x in badm:
+        if x not in cric:
+            cricORbadm.append(x)
+
+    print("The list of Students play either Cricket or Badminton :",cricORbadm)
+
+#SubTask 3: no of students neiter play cricket nor badminton
+
+def subtask3(foot,cric,badm):
+    nocricnobad=[]
+    for x in foot:
+        if x not in badm and x not in cric:
+           nocricnobad.append(x)
+
+    print("The No of Students Neither play Cricket Nor Badminton",len(nocricnobad))
+
+#Subtask4 : No of students playing cricket and football but not badminton
+
+def subtask4(foot,cric,badm):
+    cricandfootnobad=[]
+    for x in cric:
+        if x in foot and x not in badm :
+          cricandfootnobad.append(x)
+    print("The No of Students playing cricket and football but not badminton ",len(cricandfootnobad))
+
+
+
+
+
+
+
+def menu(choice):
+    if(choice==1):
+        subtask1(cric,badm)
+
+    elif(choice==2):
+        subtask2(cric,badm)
+
+    elif(choice==3):
+        subtask3(foot, cric, badm)
+
+    elif(choice==4):
+        subtask4(foot, cric, badm)
+
+    else:
+        print("plese enter proper choice")
+
+choice=int(input('''Enter the number of operation to be performed:  
+                 1=Task1                                            
+                 2=Task2                                            
+                 3=Task3                                            
+                 4=Task4\n'''))
+menu(choice)`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-1 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

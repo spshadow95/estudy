@@ -1,0 +1,160 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+body{
+    background-color: #0e141e;
+}
+.ID{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+.container{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    visibility: hidden;
+    /*  */
+}
+#signup-form{
+    margin: 05vw;
+    height: 60vh;
+    width: 25vw;
+    /* background-color: antiquewhite; */
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    background-color: #1d2432;
+    border-radius: 5%;
+}
+#login-form{
+    margin: 05vw;
+    height: 60vh;
+    width: 25vw;
+    /* background-color: antiquewhite; */
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    background-color: #1d2432;
+    border-radius: 5%;
+}
+.inputform{
+    margin: 15px 0;
+    border-radius: 5px;
+    display:flex;
+    align-items: center;
+    padding-left:0px;
+    max-height: 65px;
+}
+input{
+    width: 100%;
+    /* background: transparent; */
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+    background-color: #eaeaea;
+    border-radius: 0.75em;
+    font-size: 15px;
+    height: 50px;
+    /* margin: 15px 0;
+    border-radius: 5px;
+    display:flex;
+    align-items: center;
+    padding-left:0px;
+    /* border: 1px solid green; */
+    /* width: 20px;
+    max-height: 65px; */ 
+}
+.buttonfield{
+    width: 100%;
+    display: flex;
+    padding-left: 30px;
+    padding-top: 20px;
+    justify-content: center;
+    align-items: center;
+    
+}
+.buttonfield button{
+    flex-basis: 88%;
+    background: #2ec866;
+    color: #fff;
+    font-size: 17px;
+    height: 50px;
+    width: 50px;
+    border-radius: 20px;
+    margin-right: 21px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+
+}
+.buttonfield button:hover{
+    background-color: #22974d;
+
+}
+#login-email{
+    margin-top: 20px;
+}
+#login-password{
+    margin-top: 20px;
+}
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}
+h1{
+    font-size: 35px;
+    margin-bottom: 25px;
+    position: relative;
+    color: #2ec866;
+}
+.idbutton button{
+    flex-basis: 88%;
+    background: #2ec866;
+    color: #fff;
+    font-size: 17px;
+    height: 50px;
+    width: 110px;
+    border-radius: 20px;
+    margin-left: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.idbutton button:hover{
+    background-color: #22974d;
+
+}
+
+.overlay{
+    position: absolute;
+    z-index: 999;
+    background: #151e2e;
+    width: 100%;
+    height: 100%;
+    animation: reveal 1s ease-in forwards;
+    transform-origin:bottom;
+}
+
+@keyframes reveal {
+    from{
+        transform: scaleY(1);
+    }
+    to{
+        transform :scaleY(0);
+    }
+}

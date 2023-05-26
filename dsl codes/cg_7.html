@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overalay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p> Write a C++ program to control a ball using arrow keys. Apply the concept of
+                    polymorphism.
+                    <br>OR<br>
+                    Write a C++ program to implement bouncing ball using sine wave form. Apply the concept of polymorphism.
+                    <br>OR<br>
+                    Write C++ program to draw man walking in the rain with an umbrella. Apply the concept of polymorphism.
+                    <br>OR<br>
+                    Write a C++ program to implement the game of 8 puzzle. Apply the concept of polymorphism.
+                    <br>OR<br>
+                    Write a C++ program to implement the game Tic Tac Toe. Apply the concept of polymorphism.
+                    
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include&lt;iostream&gt;
+#include&lt;stdlib.h&gt;
+#ifdef __APPLE__
+#include&lt;openGL/openGL.h&gt;
+#include&lt;GLUT/glut.h&gt;
+#else
+#include&lt;GL/glut.h&gt;
+#endif
+
+using namespace std;
+
+float ballX = -0.8f;
+float ballY = -0.3f;
+float ballZ = -1.2f;
+
+static int flag=1;
+void drawBall(void) {
+        glColor3f(1,1,1); //set ball colour
+        glTranslatef(ballX,ballY,ballZ); //moving it toward the screen a bit on creation
+        glutSolidSphere (0.05, 30, 30); //create ball.
+
+}
+void keyPress(int key, int x, int y)
+{
+        if(key==GLUT_KEY_RIGHT)
+        ballX += 0.05f;
+    if(key==GLUT_KEY_LEFT)
+        ballX  -= 0.05f;
+if(key==GLUT_KEY_UP)
+        ballY += 0.05f;
+    if(key==GLUT_KEY_DOWN)
+        ballY  -= 0.05f;
+    glutPostRedisplay();
+}
+//Called when the window is resized
+void handleResize(int w, int h) {
+    //Tell OpenGL how to convert from coordinates to pixel values
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION); //Switch to setting the camera perspective
+    //Set the camera perspective
+    glLoadIdentity(); //Reset the camera
+    gluPerspective(45.0,                  //The camera angle
+                    (double)w / (double)h, //The width-to-height ratio
+                    1.0,                   //The near z clipping coordinate
+                    200.0);                //The far z clipping coordinate
+}
+
+void drawScene()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    //  glClearColor(bgColR,bgColG,bgColB,0.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    //drawing the SUN
+    glPushMatrix();
+        drawBall();
+    glPopMatrix();
+    //drawing the Mount Avarest
+    glPushMatrix();
+    glPopMatrix();
+    //drawing the Clouds
+    glPushMatrix();
+    glPopMatrix();
+    glutSwapBuffers();
+}
+
+int main(int argc,char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH);
+    glutInitWindowSize(400,400);
+    glutCreateWindow("Sun");
+    glutDisplayFunc(drawScene);
+    glutFullScreen();
+    glutSpecialFunc(keyPress);
+    glutReshapeFunc(handleResize);
+    //glutTimerFunc(25, update, 0);
+    glutMainLoop();
+    return(0);
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/YlC6Vn21swI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include<iostream>
+#include<stdlib.h>
+#ifdef __APPLE__
+#include<openGL/openGL.h>
+#include<GLUT/glut.h>
+#else
+#include<GL/glut.h>
+#endif
+
+using namespace std;
+
+float ballX = -0.8f;
+float ballY = -0.3f;
+float ballZ = -1.2f;
+
+static int flag=1;
+void drawBall(void) {
+        glColor3f(1,1,1); //set ball colour
+        glTranslatef(ballX,ballY,ballZ); //moving it toward the screen a bit on creation
+        glutSolidSphere (0.05, 30, 30); //create ball.
+
+}
+void keyPress(int key, int x, int y)
+{
+      if(key==GLUT_KEY_RIGHT)
+        ballX += 0.05f;
+    if(key==GLUT_KEY_LEFT)
+        ballX  -= 0.05f;
+if(key==GLUT_KEY_UP)
+        ballY += 0.05f;
+    if(key==GLUT_KEY_DOWN)
+        ballY  -= 0.05f;
+    glutPostRedisplay();
+}
+//Called when the window is resized
+void handleResize(int w, int h) {
+    //Tell OpenGL how to convert from coordinates to pixel values
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION); //Switch to setting the camera perspective
+    //Set the camera perspective
+    glLoadIdentity(); //Reset the camera
+    gluPerspective(45.0,                  //The camera angle
+                   (double)w / (double)h, //The width-to-height ratio
+                   1.0,                   //The near z clipping coordinate
+                   200.0);                //The far z clipping coordinate
+}
+
+void drawScene()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+  //  glClearColor(bgColR,bgColG,bgColB,0.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    //drawing the SUN
+    glPushMatrix();
+        drawBall();
+    glPopMatrix();
+    //drawing the Mount Avarest
+    glPushMatrix();
+    glPopMatrix();
+    //drawing the Clouds
+    glPushMatrix();
+    glPopMatrix();
+    glutSwapBuffers();
+}
+
+int main(int argc,char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH);
+    glutInitWindowSize(400,400);
+    glutCreateWindow("Sun");
+    glutDisplayFunc(drawScene);
+    glutFullScreen();
+    glutSpecialFunc(keyPress);
+    glutReshapeFunc(handleResize);
+    //glutTimerFunc(25, update, 0);
+    glutMainLoop();
+    return(0);
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/CGL Lab Manual 2022-23 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

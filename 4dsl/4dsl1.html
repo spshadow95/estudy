@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Beginning with an empty binary search tree. Construct the binary search tree by inserting the values in given order. After constructing binary search tree perform following operations 
+                    1) Insert a new node 2) Find numbers of node in longest path
+                     3) Minimum and maximum data value found in tree
+                     4) Change a tree so that the roles of the left and right pointers are swapped at every node 5)Search an element
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+
+#include &lt;iostream&gt;
+using namespace std;
+
+class node    //Class Node For node of the tree
+{
+public:
+    int data;
+    node *left, *right;
+    node()
+    {
+        left = NULL;
+        right = NULL;
+    }
+    node(int x)
+    {
+        left = NULL;
+        right = NULL;
+        data = x;
+    }
+};
+class Bst     //tree class for bst having root as data member
+{
+public:
+    node *root;
+
+    Bst()
+    {
+        root = NULL;
+    }
+
+    void create(int num)
+    {                               //Normal Creation function
+        int counter = 0;
+        if (root == NULL)
+        {
+            node *r = new node;
+            r-&gt;data = num;
+            root = r;
+        }
+        else
+        {
+            node *p = root;
+            bool flag = true;
+            while (flag)
+            {
+                if (p-&gt;left != NULL && p-&gt;data &gt; num)
+                {
+                    p = p-&gt;left;
+                    counter++;
+                }
+                else if (p-&gt;left == NULL && p-&gt;data &gt; num)
+                {
+                    node *n = new node;
+                    n-&gt;data = num;
+                    p-&gt;left = n;
+                    p = p-&gt;left;
+                    flag = false;
+                    counter++;
+                    break;
+                }
+                if (p-&gt;right != NULL && p-&gt;data &lt; num)
+                {
+                    p = p-&gt;right;
+                    counter++;
+                }
+                else if (p-&gt;right == NULL && p-&gt;data &lt; num)
+                {
+                    node *n = new node;
+                    n-&gt;data = num;
+                    p-&gt;right = n;
+                    p = p-&gt;right;
+                    flag = false;
+                    counter++;
+
+                    break;
+                }
+            }
+        }
+    }
+                       //Traversals
+    void Preorder(node *p)
+    {
+        if (p)
+        {
+            cout &lt;&lt; p-&gt;data &lt;&lt; " ";  //Preorder   node-left-right
+            Preorder(p-&gt;left);
+            Preorder(p-&gt;right);
+        }
+        else
+            return;
+    }
+    void Inorder(node *p)
+    {
+        if (p)
+        {
+            Inorder(p-&gt;left);
+            cout &lt;&lt; p-&gt;data &lt;&lt; " ";   //Inorder   left-node-right
+            Inorder(p-&gt;right);
+        }
+        else
+            return;
+    }
+    void Postorder(node *p)
+    {
+        if (p)
+        {
+            Postorder(p-&gt;left);
+            Postorder(p-&gt;right);              //postorder   left-right-node
+            cout &lt;&lt; p-&gt;data &lt;&lt; " ";
+        }
+        else
+            return;
+    }
+
+    int Height(node *p)
+    {
+        int x, y;
+        if (p != NULL)                     //for calculating the height of the Tree .
+        {
+            x = Height(p-&gt;left);
+            y = Height(p-&gt;right);
+
+            return max(x + 1, y + 1);
+        }
+
+        return 0;
+    }
+
+   int Max(node *p)
+    {
+        while (p-&gt;right != NULL)
+        {
+            p = p-&gt;right;                          //max value is the rightmost node of the tree.
+        }
+        cout &lt;&lt; "The Maximum Value in the tree is:- " &lt;&lt; p-&gt;data &lt;&lt; endl;
+        return p-&gt;data;
+    }
+    int Min(node *p)
+    {
+        while (p-&gt;left != NULL)
+        {                                         //min valu is the leftmost node of the tree
+            p = p-&gt;left;
+        }
+        cout &lt;&lt; "The Minimum Value in the tree is:- " &lt;&lt; p-&gt;data &lt;&lt; endl;
+        return p-&gt;data;
+    }
+
+    node *Searchnode(node *&curr, node *&par, int Key)
+    {
+        //Searching the position of the new value,
+
+        while (curr != NULL)
+        {
+            if (curr-&gt;data == Key)
+            {
+                return NULL;
+            }
+            else
+            {
+                par = curr;
+
+                if (curr-&gt;data &gt; Key)
+                {
+                    curr = curr-&gt;left;
+                }
+                else
+                {
+                    curr = curr-&gt;right;
+                }
+            }
+        }
+    }
+
+     void Search(int key){
+        node *curr = this-&gt;root;
+        node *par = NULL;
+
+        Searchnode(curr,par,key);
+        if(curr){
+            cout&lt;&lt;"The Node is found :- "&lt;&lt;curr-&gt;data&lt;&lt;endl;;
+            return;
+        }
+        else{
+            cout&lt;&lt;"The Node is Not Present in the Tree."&lt;&lt;endl;
+            return;
+        }
+     }
+
+
+
+    void insert(int x)              //Insert Function using Searching Technique.
+    {
+        node *curr = this-&gt;root;
+        node *par = NULL;
+
+        if (root == NULL)
+        {
+            node *t = new node(x);
+            root = t;
+        }
+        else
+        {
+            Searchnode(curr, par, x);
+
+            if (curr != NULL)
+            {
+                cout &lt;&lt; "You Enterd a Node which is already Present" &lt;&lt; endl;
+                return;
+            }
+            else
+            {
+                if (par-&gt;data &gt; x)
+                {
+                    node *t = new node(x);
+                    par-&gt;left = t;
+                    return;
+                }
+                else
+                {
+                    node *t = new node(x);
+                    par-&gt;right = t;
+                    return;
+                }
+            }
+        }
+    }
+
+    node* deletefromBST(node* &root,int key){
+           if(root==NULL){
+               return root;
+           }
+           if(root-&gt;data==key){
+
+               if(root-&gt;left==NULL && root-&gt;right==NULL){
+                   delete root;
+                   return NULL;
+
+               }
+               if(root-&gt;left!=NULL && root-&gt;right==NULL){
+                   node* temp=root;
+                   delete root;
+                   return temp-&gt;left;
+               }
+               if(root-&gt;right!=NULL && root-&gt;left==NULL){
+                   node* temp=root;
+                   delete root;
+                   return temp-&gt;right;
+               }
+               if(root-&gt;right!=NULL && root-&gt;left!=NULL){
+                   int mini=Min(root-&gt;right);
+                   root-&gt;data=mini;
+                   root-&gt;right=deletefromBST(root-&gt;right,mini);
+                   return root;
+               }
+           }
+           else if(root-&gt;data &gt; key){
+               root-&gt;left=deletefromBST(root-&gt;left,key);
+               return root;
+           }
+           else{
+               root-&gt;right=deletefromBST(root-&gt;right,key);
+               return root;
+           }
+       }
+
+
+    void SwapBst(node * &curr){
+
+        if(curr){
+            swap(curr-&gt;left,curr-&gt;right);
+            SwapBst(curr-&gt;left);
+            SwapBst(curr-&gt;right);
+        }
+        else return;
+    }
+};
+
+int main()
+{
+
+    Bst bsttree;
+    cout &lt;&lt; "Enter the Number of nodes in the tree." &lt;&lt; endl;
+    int nodes;
+    cin &gt;&gt; nodes;
+    while (nodes--)
+    {
+        int num;
+        cout &lt;&lt; "Enter Node value";
+        cin &gt;&gt; num;
+        bsttree.insert(num);
+    }
+
+    cout &lt;&lt; "\n--------Program MENU----------" &lt;&lt; endl;
+    cout &lt;&lt; "1.Insert one more node." &lt;&lt; endl;
+    cout &lt;&lt; "2.PREOrder Traversal." &lt;&lt; endl;
+    cout &lt;&lt; "3.INOrder Traversal." &lt;&lt; endl;
+    cout &lt;&lt; "4.POSTOrder Traversal." &lt;&lt; endl;
+    cout &lt;&lt; "5.Height of the BST." &lt;&lt; endl;
+    cout &lt;&lt; "6.Maximum value in the tree" &lt;&lt; endl;
+    cout &lt;&lt; "7.Miniimum value in the tree" &lt;&lt; endl;
+    cout &lt;&lt; "8.Search a node in the tree." &lt;&lt; endl;
+    cout &lt;&lt; "9.Delete a Node from a tree" &lt;&lt; endl;
+    cout &lt;&lt; "10.SWAP The Node of Each internal node." &lt;&lt; endl;
+
+    while (true)
+    {
+        int choice;
+        cout &lt;&lt; "\nEnter The Choice From MENU :- ";
+        cin &gt;&gt; choice;
+
+        if (choice == 0)
+        {
+            cout &lt;&lt; "Thankyou" &lt;&lt; endl;
+            break;
+        }
+        else if (choice == 1)
+        {
+            int num;
+            cout &lt;&lt; "Enter Node value";
+            cin &gt;&gt; num;
+            bsttree.insert(num);
+            cout &lt;&lt; "New node Added" &lt;&lt; endl;
+        }
+        else if (choice == 2)
+        {
+            cout &lt;&lt; "The PREOrder Traversal is :- ";
+            bsttree.Preorder(bsttree.root);
+        }
+        else if (choice == 3)
+        {
+            cout &lt;&lt; "The INOrder Traversal is :- ";
+            bsttree.Inorder(bsttree.root);
+        }
+        else if (choice == 4)
+        {
+            cout &lt;&lt; "The POSTOrder Traversal is :- ";
+            bsttree.Postorder(bsttree.root);
+        }
+
+        else if (choice == 5)
+        {
+            cout &lt;&lt; bsttree.Height(bsttree.root);
+        }
+        else if (choice == 6)
+        {
+            bsttree.Max(bsttree.root);
+        }
+        else if (choice == 7)
+        {
+            bsttree.Min(bsttree.root);
+        }
+        else if (choice == 8)
+        {
+            int key;
+            cout &lt;&lt; "Enter The Node to search in the tree.";
+            cin &gt;&gt; key;
+            bsttree.Search(key);
+        }
+
+        else if(choice==9){
+            int key;
+            cout &lt;&lt; "Enter The Node to search in the tree.";
+            cin &gt;&gt; key;
+            bsttree.deletefromBST(bsttree.root,key);
+        }
+
+        else if (choice == 10)
+        {
+               bsttree.SwapBst(bsttree.root);
+               bsttree.Inorder(bsttree.root);
+
+        }
+        else
+        {
+            cout &lt;&lt; " Out-of range choice!!!! Please try again!" &lt;&lt; endl;
+        }
+    }
+
+    return 0;
+}
+                        
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/UeRUKRJvPa4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+using namespace std;
+
+class node    //Class Node For node of the tree
+{
+public:
+    int data;
+    node *left, *right;
+    node()
+    {
+        left = NULL;
+        right = NULL;
+    }
+    node(int x)
+    {
+        left = NULL;
+        right = NULL;
+        data = x;
+    }
+};
+class Bst     //tree class for bst having root as data member
+{
+public:
+    node *root;
+
+    Bst()
+    {
+        root = NULL;
+    }
+
+    void create(int num)
+    {                               //Normal Creation function
+        int counter = 0;
+        if (root == NULL)
+        {
+            node *r = new node;
+            r->data = num;
+            root = r;
+        }
+        else
+        {
+            node *p = root;
+            bool flag = true;
+            while (flag)
+            {
+                if (p->left != NULL && p->data > num)
+                {
+                    p = p->left;
+                    counter++;
+                }
+                else if (p->left == NULL && p->data > num)
+                {
+                    node *n = new node;
+                    n->data = num;
+                    p->left = n;
+                    p = p->left;
+                    flag = false;
+                    counter++;
+                    break;
+                }
+                if (p->right != NULL && p->data < num)
+                {
+                    p = p->right;
+                    counter++;
+                }
+                else if (p->right == NULL && p->data < num)
+                {
+                    node *n = new node;
+                    n->data = num;
+                    p->right = n;
+                    p = p->right;
+                    flag = false;
+                    counter++;
+
+                    break;
+                }
+            }
+        }
+    }
+                       //Traversals
+    void Preorder(node *p)
+    {
+        if (p)
+        {
+            cout << p->data << " ";  //Preorder   node-left-right
+            Preorder(p->left);
+            Preorder(p->right);
+        }
+        else
+            return;
+    }
+    void Inorder(node *p)
+    {
+        if (p)
+        {
+            Inorder(p->left);
+            cout << p->data << " ";   //Inorder   left-node-right
+            Inorder(p->right);
+        }
+        else
+            return;
+    }
+    void Postorder(node *p)
+    {
+        if (p)
+        {
+            Postorder(p->left);
+            Postorder(p->right);              //postorder   left-right-node
+            cout << p->data << " ";
+        }
+        else
+            return;
+    }
+
+    int Height(node *p)
+    {
+        int x, y;
+        if (p != NULL)                     //for calculating the height of the Tree .
+        {
+            x = Height(p->left);
+            y = Height(p->right);
+
+            return max(x + 1, y + 1);
+        }
+
+        return 0;
+    }
+
+   int Max(node *p)
+    {
+        while (p->right != NULL)
+        {
+            p = p->right;                          //max value is the rightmost node of the tree.
+        }
+        cout << "The Maximum Value in the tree is:- " << p->data << endl;
+        return p->data;
+    }
+    int Min(node *p)
+    {
+        while (p->left != NULL)
+        {                                         //min valu is the leftmost node of the tree
+            p = p->left;
+        }
+        cout << "The Minimum Value in the tree is:- " << p->data << endl;
+        return p->data;
+    }
+
+    node *Searchnode(node *&curr, node *&par, int Key)
+    {
+        //Searching the position of the new value,
+
+        while (curr != NULL)
+        {
+            if (curr->data == Key)
+            {
+                return NULL;
+            }
+            else
+            {
+                par = curr;
+
+                if (curr->data > Key)
+                {
+                    curr = curr->left;
+                }
+                else
+                {
+                    curr = curr->right;
+                }
+            }
+        }
+    }
+
+     void Search(int key){
+        node *curr = this->root;
+        node *par = NULL;
+
+        Searchnode(curr,par,key);
+        if(curr){
+            cout<<"The Node is found :- "<<curr->data<<endl;;
+            return;
+        }
+        else{
+            cout<<"The Node is Not Present in the Tree."<<endl;
+            return;
+        }
+     }
+
+
+
+    void insert(int x)              //Insert Function using Searching Technique.
+    {
+        node *curr = this->root;
+        node *par = NULL;
+
+        if (root == NULL)
+        {
+            node *t = new node(x);
+            root = t;
+        }
+        else
+        {
+            Searchnode(curr, par, x);
+
+            if (curr != NULL)
+            {
+                cout << "You Enterd a Node which is already Present" << endl;
+                return;
+            }
+            else
+            {
+                if (par->data > x)
+                {
+                    node *t = new node(x);
+                    par->left = t;
+                    return;
+                }
+                else
+                {
+                    node *t = new node(x);
+                    par->right = t;
+                    return;
+                }
+            }
+        }
+    }
+
+    node* deletefromBST(node* &root,int key){
+           if(root==NULL){
+               return root;
+           }
+           if(root->data==key){
+
+               if(root->left==NULL && root->right==NULL){
+                   delete root;
+                   return NULL;
+
+               }
+               if(root->left!=NULL && root->right==NULL){
+                   node* temp=root;
+                   delete root;
+                   return temp->left;
+               }
+               if(root->right!=NULL && root->left==NULL){
+                   node* temp=root;
+                   delete root;
+                   return temp->right;
+               }
+               if(root->right!=NULL && root->left!=NULL){
+                   int mini=Min(root->right);
+                   root->data=mini;
+                   root->right=deletefromBST(root->right,mini);
+                   return root;
+               }
+           }
+           else if(root->data > key){
+               root->left=deletefromBST(root->left,key);
+               return root;
+           }
+           else{
+               root->right=deletefromBST(root->right,key);
+               return root;
+           }
+       }
+
+
+    void SwapBst(node * &curr){
+
+        if(curr){
+            swap(curr->left,curr->right);
+            SwapBst(curr->left);
+            SwapBst(curr->right);
+        }
+        else return;
+    }
+};
+
+int main()
+{
+
+    Bst bsttree;
+    cout << "Enter the Number of nodes in the tree." << endl;
+    int nodes;
+    cin >> nodes;
+    while (nodes--)
+    {
+        int num;
+        cout << "Enter Node value";
+        cin >> num;
+        bsttree.insert(num);
+    }
+
+    cout << "\n--------Program MENU----------" << endl;
+    cout << "1.Insert one more node." << endl;
+    cout << "2.PREOrder Traversal." << endl;
+    cout << "3.INOrder Traversal." << endl;
+    cout << "4.POSTOrder Traversal." << endl;
+    cout << "5.Height of the BST." << endl;
+    cout << "6.Maximum value in the tree" << endl;
+    cout << "7.Miniimum value in the tree" << endl;
+    cout << "8.Search a node in the tree." << endl;
+    cout << "9.Delete a Node from a tree" << endl;
+    cout << "10.SWAP The Node of Each internal node." << endl;
+
+    while (true)
+    {
+        int choice;
+        cout << "\nEnter The Choice From MENU :- ";
+        cin >> choice;
+
+        if (choice == 0)
+        {
+            cout << "Thankyou" << endl;
+            break;
+        }
+        else if (choice == 1)
+        {
+            int num;
+            cout << "Enter Node value";
+            cin >> num;
+            bsttree.insert(num);
+            cout << "New node Added" << endl;
+        }
+        else if (choice == 2)
+        {
+            cout << "The PREOrder Traversal is :- ";
+            bsttree.Preorder(bsttree.root);
+        }
+        else if (choice == 3)
+        {
+            cout << "The INOrder Traversal is :- ";
+            bsttree.Inorder(bsttree.root);
+        }
+        else if (choice == 4)
+        {
+            cout << "The POSTOrder Traversal is :- ";
+            bsttree.Postorder(bsttree.root);
+        }
+
+        else if (choice == 5)
+        {
+            cout << bsttree.Height(bsttree.root);
+        }
+        else if (choice == 6)
+        {
+            bsttree.Max(bsttree.root);
+        }
+        else if (choice == 7)
+        {
+            bsttree.Min(bsttree.root);
+        }
+        else if (choice == 8)
+        {
+            int key;
+            cout << "Enter The Node to search in the tree.";
+            cin >> key;
+            bsttree.Search(key);
+        }
+
+        else if(choice==9){
+        	int key;
+        	cout << "Enter The Node to search in the tree.";
+            cin >> key;
+            bsttree.deletefromBST(bsttree.root,key);
+        }
+
+        else if (choice == 10)
+        {
+               bsttree.SwapBst(bsttree.root);
+               bsttree.Inorder(bsttree.root);
+
+        }
+        else
+        {
+            cout << " Out-of range choice!!!! Please try again!" << endl;
+        }
+    }
+
+    return 0;
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 1.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

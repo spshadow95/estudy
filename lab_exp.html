@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>In second year computer engineering class, group A student's play cricket, group B students play badminton and group C students play football.
+                    Write a Python program using functions to compute following: -
+                    a) List of students who play both cricket and badminton
+                    b) List of students who play either cricket or badminton but not both
+                    c) Number of students who play neither cricket nor badminton
+                    d) Number of students who play cricket and football but not badminton.
+                    (Note- While realizing the group, duplicate entries should be avoided, Do not use SET built-in functions)
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+bool dfsCycle(int node, int parent, int visited[], vector&lt;int&gt;adj[]){
+    visited[node] = 1;
+    
+    for(auto it : adj[node]){
+        if(visited[it] ==0){
+            if(dfsCycle(it,node,visited,adj)==true){
+                return true;
+            }
+        }
+        else if (it != parent){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool isCycle(int v, vector&lt;int&gt;adj[]){
+    int visited[v]={1};
+
+    // for multiple connected graphs
+    for (int i = 0; i&lt;v; i++){
+        if(visited[i]==0){
+            if(dfsCycle(i,-1,visited,adj) == true){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main(){
+    
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a href="">Download</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/iqbV0d5xwP8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include<bits/stdc++.h>
+using namespace std;
+
+bool dfsCycle(int node, int parent, int visited[], vector<int>adj[]){
+    visited[node] = 1;
+    
+    for(auto it : adj[node]){
+        if(visited[it] ==0){
+            if(dfsCycle(it,node,visited,adj)==true){
+                return true;
+            }
+        }
+        else if (it != parent){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool isCycle(int v, vector<int>adj[]){
+    int visited[v]={1};
+
+    // for multiple connected graphs
+    for (int i = 0; i<v; i++){
+        if(visited[i]==0){
+            if(dfsCycle(i,-1,visited,adj) == true){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main(){
+    
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

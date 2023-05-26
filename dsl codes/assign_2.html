@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Develop a program in C++ to create a database of student’s
+                    information system containing the following information:
+                    Name, Roll number, Class, Division, Date of Birth, Blood
+                    group, contact address, Telephone number, Driving license no.
+                    and other. Construct the database with suitable member
+                    functions. Make use of constructor, default constructor, copy
+                    constructor, destructor, static member functions, friend class,
+                    this pointer, inline code and dynamic memory allocation
+                    operators-new and delete as well as exception handling.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;sstream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+
+class Student{
+private:
+    //Data of student
+    string *name, *Class, *div, *dob;
+    string *bloodGrp, *contactNo, *licNo;
+    int *rollNo, *marks;
+        //Count of student
+    static int count;
+
+public:
+
+
+    //Default Constructor
+    Student();
+
+    //Function to get roll number of Student
+    int rollCall(){
+        return *this-&gt;rollNo;
+    }
+
+    //Function to obtain student data from user
+    void setData();
+
+    //Function to display student data from DB
+    void readData();
+
+    //Function to delete data of student from DB
+    void deleteData();
+
+    //Function to declare pass or fail
+    friend void result(int m);
+
+    //Copy Constructor
+    Student(Student &obj);
+    Student(const Student &obj);
+
+    //Destructor
+    ~Student();
+
+    //Static Function to return current count of students in DB - in-line function
+    inline static int objectCount(){
+        return count;
+    }
+
+};
+
+
+Student::Student(){					//Default constructor
+    name = new string;
+    rollNo = new int;
+    Class = new string;
+    div = new string;
+    dob = new string;
+    bloodGrp = new string;
+    contactNo = new string;
+    licNo = new string;
+    marks = new int;
+
+    Student::count++;		//update no of students in DB
+    setData();
+}
+
+void Student::setData(){
+
+    string tempS;			//Temporary storage for all string data
+
+    cout &lt;&lt; "Enter name = ";		//Name
+    cin.ignore();
+    getline(cin, tempS);
+    *name = tempS;
+
+    while(true)						//Roll number with exception handling
+    {
+        cout &lt;&lt; "Enter Roll Number = ";
+        if (cin &gt;&gt; *rollNo){		//May set error flag if roll no. not read properly by cin
+            break;
+        }
+
+        else{
+            cout &lt;&lt; "Invalid Roll Number!\n";		//error flag generated
+            cin.clear();								//clears error flag
+            cin.ignore(1000, '\n');						//clears buffer till 1k char or new line
+        }
+    }
+
+    cout &lt;&lt; "Enter your Class = ";		//Class
+    cin.ignore();
+    cin &gt;&gt; tempS;
+    *Class = tempS;
+
+    cout &lt;&lt; "Enter your Division = ";		//Division
+    cin.ignore();
+    cin &gt;&gt; tempS;
+    *div = tempS;
+
+    //DOB with exception handling
+    while(true){
+        try
+        {
+            cout &lt;&lt; "Enter Date of Birth (dd/mm/yyyy) = \n";
+            cin &gt;&gt; tempS;
+            int dayInt, monthInt, yearInt;
+            stringstream dayStream, monthStream, yearStream;	//convert d, m, y into int
+
+            dayStream &lt;&lt; tempS.substr(0,2);		//day
+            dayStream &gt;&gt; dayInt;
+            monthStream &lt;&lt; tempS.substr(3,2);	//month
+            monthStream &gt;&gt; monthInt;
+            yearStream &lt;&lt; tempS.substr(6,4);	//year
+            yearStream &gt;&gt; yearInt;
+
+            if (dayInt &gt; 31 || dayInt &lt; 1){
+                throw "Invalid day input!";
+            }
+
+            if (monthInt &gt; 12 || monthInt &lt; 1){
+                throw "Invalid month input!";
+            }
+
+            if (yearInt &gt; 2022){
+                throw "Invalid year input!";
+            }
+
+            *dob = tempS;
+            break;
+        }
+
+        catch (const string *msg){
+            cout &lt;&lt; msg &lt;&lt; endl;
+            cin.clear();
+            cin.ignore(1000,'\n');
+        }
+    }
+
+    //blood group and exception handling
+    while(true)
+    {
+        cout &lt;&lt; "Enter your blood group (e.g A+ / AB-) = ";
+        try
+        {
+            cin &gt;&gt; *this-&gt;bloodGrp;
+            string temp = *this-&gt;bloodGrp;
+            if (temp == "A+" || temp == "A-" || temp == "B+" || temp == "B-" || temp == "AB+" || temp == "AB-" || temp == "O+" || temp == "O-")
+            {
+                break;
+            }
+
+            else{
+                throw "Invalid Blood Group!";
+            }
+        }
+
+        catch (const string *msg){
+            cout &lt;&lt; msg &lt;&lt; endl;
+            cin.clear();
+            cin.ignore(1000,'\n');
+        }
+    }
+
+    //contact number with exception handling
+    while(true)
+    {
+        cout &lt;&lt; "Enter your contact number = ";
+        try
+        {
+            cin &gt;&gt; tempS;
+            if (tempS.size() != 10){
+                throw "Phone number must be 10 digit!";
+            }
+            for (char i : tempS){
+                if (!isdigit(i)){
+                    throw "Phone number must contain only digits\n";
+                    break;
+                }
+            }
+            *contactNo = tempS;
+            break;
+        }
+        catch (const char *msg){
+            cout &lt;&lt; msg &lt;&lt; endl;
+            cin.clear();
+            cin.ignore(1000,'\n');
+        }
+    }
+
+    cout &lt;&lt; "Enter Driving License No = ";	//License number
+    cin.ignore();
+    cin &gt;&gt; *licNo;
+
+    cout &lt;&lt; "\nEnter Marks = "; 	//Marks
+    cin &gt;&gt; *marks;
+}
+
+Student::Student(Student &obj)			//Copy Constructor
+{
+    this-&gt;name = new string;
+    *name = *obj.name;
+
+    this-&gt;rollNo = new int;
+    *rollNo = *obj.rollNo;
+
+    this-&gt;Class = new string;
+    *Class = *obj.Class;
+
+    this-&gt;div = new string;
+    *div = *obj.div;
+
+    this-&gt;dob = new string;
+    *dob = *obj.dob;
+
+    this-&gt;bloodGrp = new string;
+    *bloodGrp = *obj.bloodGrp;
+
+    this-&gt;contactNo = new string;
+    *contactNo = *obj.contactNo;
+
+    this-&gt;licNo = new string;
+    *licNo = *obj.licNo;
+
+    this-&gt;marks = new int;
+    *marks = *obj.marks;
+
+    count++;
+}
+
+Student::Student(const Student &obj)			//Copy Constructor for vector.pushback
+{
+    this-&gt;name = new string;
+    *name = *obj.name;
+
+    this-&gt;rollNo = new int;
+    *rollNo = *obj.rollNo;
+
+    this-&gt;Class = new string;
+    *Class = *obj.Class;
+
+    this-&gt;div = new string;
+    *div = *obj.div;
+
+    this-&gt;dob = new string;
+    *dob = *obj.dob;
+
+    this-&gt;bloodGrp = new string;
+    *bloodGrp = *obj.bloodGrp;
+
+    this-&gt;contactNo = new string;
+    *contactNo = *obj.contactNo;
+
+    this-&gt;licNo = new string;
+    *licNo = *obj.licNo;
+
+    this-&gt;marks = new int;
+    *marks = *obj.marks;
+}
+
+void result(int m){			//Friend function to show result of student
+    if (m &gt;= 95){
+        cout &lt;&lt; "Pass : Grade O" &lt;&lt; endl;
+    }
+    else if (m &gt;= 90){
+        cout &lt;&lt; "Pass : Grade A+" &lt;&lt; endl;
+    }
+    else if (m &gt;= 80){
+        cout &lt;&lt; "Pass : Grade A" &lt;&lt; endl;
+    }
+    else if (m &gt;= 70){
+            cout &lt;&lt; "Pass : Grade B" &lt;&lt; endl;
+        }
+    else if (m &gt;= 55){
+            cout &lt;&lt; "Pass : Grade C" &lt;&lt; endl;
+        }
+    else if (m &gt;= 40){
+            cout &lt;&lt; "Pass : Grade D" &lt;&lt; endl;
+        }
+    else {
+        cout &lt;&lt; "Fail" &lt;&lt; endl;
+    }
+}
+
+void Student::readData(){
+    cout &lt;&lt; "---------------- STUDENT DATA ----------------"
+        &lt;&lt; "\nName = " &lt;&lt; *this-&gt;name
+        &lt;&lt; "\nRoll No. = " &lt;&lt; *this-&gt;rollNo
+        &lt;&lt; "\nClass = " &lt;&lt; *this-&gt;Class
+        &lt;&lt; "\nDivision = " &lt;&lt; *this-&gt;div
+        &lt;&lt; "\nDate of Birth = " &lt;&lt; *this-&gt;dob
+        &lt;&lt; "\nBlood Group = " &lt;&lt; *this-&gt;bloodGrp
+        &lt;&lt; "\nContact No. = " &lt;&lt; *this-&gt;contactNo
+        &lt;&lt; "\nLicense No. = " &lt;&lt; *this-&gt;licNo
+        &lt;&lt; "\nMarks = " &lt;&lt; *this-&gt;marks &lt;&lt; endl;
+
+    cout &lt;&lt; "Result = ";
+    result(*this-&gt;marks);
+
+    cout &lt;&lt; "Current No. of studentsin Database = " &lt;&lt; objectCount() &lt;&lt; endl;
+    cout &lt;&lt; "----------------------------------------------" &lt;&lt; endl;
+}
+
+void Student::deleteData(){
+    delete name;
+    delete Class;
+    delete div;
+    delete dob;
+    delete bloodGrp;
+    delete contactNo;
+    delete licNo;
+    delete rollNo;
+    delete marks;
+    cout &lt;&lt; "Student data deleted" &lt;&lt; endl;
+    Student::count--;
+}
+
+Student::~Student(){ 		//destructor
+    delete name,
+    delete Class;
+    delete div;
+    delete dob;
+    delete bloodGrp;
+    delete contactNo;
+    delete licNo;
+    delete rollNo;
+    delete marks;
+}
+
+int Student::count;
+
+int main(){
+
+    vector&lt;Student&gt; database;	//vector containing database elements
+    int idx;		//index to iterate over vector
+
+    cout &lt;&lt; "---- Welcome to PICT Students Database! ----" &lt;&lt; endl;
+    int choice = 0;
+
+    while(choice != -1){
+        cout &lt;&lt; "\n---- MENU ----" &lt;&lt; endl;
+        cout &lt;&lt; "1. Get current students count in DB\n"
+            &lt;&lt; "2. Create new student entry in DB\n"
+            &lt;&lt; "3. Get data of a student in DB\n"
+            &lt;&lt; "4. Delete data of a student from DB\n"
+            &lt;&lt; "5. Copy data of a student in DB\n"
+            &lt;&lt; "-1. Exit" &lt;&lt; endl;
+
+        cout &lt;&lt; "Enter you choice = ";
+
+        cin &gt;&gt; choice;
+
+        switch (choice)
+        {
+        case 1 : // Get current students count in DB
+            cout &lt;&lt; "Current student count in DB = " &lt;&lt; Student::objectCount() &lt;&lt; endl;
+            break;
+
+        case 2 : // Create new student entry in DB
+            {cout &lt;&lt; "New entry at index = " &lt;&lt; Student::objectCount() + 1 &lt;&lt; endl;
+            Student newStudent;
+            database.push_back(newStudent);
+            break;}
+
+        case 3 : // Get data of a student in DB
+            cout &lt;&lt; "Enter index of student to get data = ";
+            cin &gt;&gt; idx;
+            cout &lt;&lt; endl;
+            database[idx].readData();
+            break;
+
+        case 4 : // Delete data of a student from DB
+            cout &lt;&lt; "Enter index of student to delete data = ";
+            cin &gt;&gt; idx;
+            database[idx].deleteData();
+            database.erase(database.begin() + idx);
+            break;
+
+        case 5: // Copy data of a student in DB
+            {cout &lt;&lt; "New entry at index = " &lt;&lt; Student::objectCount() + 1 &lt;&lt; endl;
+            cout &lt;&lt; "Enter index of student to copy data = ";
+            int idx;
+            cin &gt;&gt; idx;
+            Student newStudent(database[idx]);
+            database.push_back(newStudent);
+            break;}
+
+        case -1 : //Exit
+            cout &lt;&lt; "\n---- Exit from Database ----" &lt;&lt; endl;
+            choice = -1;
+            break;
+
+        default :
+            cout &lt;&lt; "Enter a valid choice" &lt;&lt; endl;
+            break;
+        }
+    }
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/qh4vYVQQK-Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+
+class Student{
+private:
+	//Data of student
+	string *name, *Class, *div, *dob;
+	string *bloodGrp, *contactNo, *licNo;
+	int *rollNo, *marks;
+		//Count of student
+	static int count;
+
+public:
+
+
+	//Default Constructor
+	Student();
+
+	//Function to get roll number of Student
+	int rollCall(){
+		return *this->rollNo;
+	}
+
+	//Function to obtain student data from user
+	void setData();
+
+	//Function to display student data from DB
+	void readData();
+
+	//Function to delete data of student from DB
+	void deleteData();
+
+	//Function to declare pass or fail
+	friend void result(int m);
+
+	//Copy Constructor
+	Student(Student &obj);
+	Student(const Student &obj);
+
+	//Destructor
+	~Student();
+
+	//Static Function to return current count of students in DB - in-line function
+	inline static int objectCount(){
+		return count;
+	}
+
+};
+
+
+Student::Student(){					//Default constructor
+	name = new string;
+	rollNo = new int;
+	Class = new string;
+	div = new string;
+	dob = new string;
+	bloodGrp = new string;
+	contactNo = new string;
+	licNo = new string;
+	marks = new int;
+
+	Student::count++;		//update no of students in DB
+	setData();
+}
+
+void Student::setData(){
+
+	string tempS;			//Temporary storage for all string data
+
+	cout << "Enter name = ";		//Name
+	cin.ignore();
+	getline(cin, tempS);
+	*name = tempS;
+
+	while(true)						//Roll number with exception handling
+	{
+		cout << "Enter Roll Number = ";
+		if (cin >> *rollNo){		//May set error flag if roll no. not read properly by cin
+			break;
+		}
+
+		else{
+			cout << "Invalid Roll Number!\n";		//error flag generated
+			cin.clear();								//clears error flag
+			cin.ignore(1000, '\n');						//clears buffer till 1k char or new line
+		}
+	}
+
+	cout << "Enter your Class = ";		//Class
+	cin.ignore();
+	cin >> tempS;
+	*Class = tempS;
+
+	cout << "Enter your Division = ";		//Division
+	cin.ignore();
+	cin >> tempS;
+	*div = tempS;
+
+	//DOB with exception handling
+	while(true){
+		try
+		{
+			cout << "Enter Date of Birth (dd/mm/yyyy) = \n";
+			cin >> tempS;
+			int dayInt, monthInt, yearInt;
+			stringstream dayStream, monthStream, yearStream;	//convert d, m, y into int
+
+			dayStream << tempS.substr(0,2);		//day
+			dayStream >> dayInt;
+			monthStream << tempS.substr(3,2);	//month
+			monthStream >> monthInt;
+			yearStream << tempS.substr(6,4);	//year
+			yearStream >> yearInt;
+
+			if (dayInt > 31 || dayInt < 1){
+				throw "Invalid day input!";
+			}
+
+			if (monthInt > 12 || monthInt < 1){
+				throw "Invalid month input!";
+			}
+
+			if (yearInt > 2022){
+				throw "Invalid year input!";
+			}
+
+			*dob = tempS;
+			break;
+		}
+
+		catch (const string *msg){
+			cout << msg << endl;
+			cin.clear();
+			cin.ignore(1000,'\n');
+		}
+	}
+
+	//blood group and exception handling
+	while(true)
+	{
+		cout << "Enter your blood group (e.g A+ / AB-) = ";
+		try
+		{
+			cin >> *this->bloodGrp;
+			string temp = *this->bloodGrp;
+			if (temp == "A+" || temp == "A-" || temp == "B+" || temp == "B-" || temp == "AB+" || temp == "AB-" || temp == "O+" || temp == "O-")
+			{
+				break;
+			}
+
+			else{
+				throw "Invalid Blood Group!";
+			}
+		}
+
+		catch (const string *msg){
+			cout << msg << endl;
+			cin.clear();
+			cin.ignore(1000,'\n');
+		}
+	}
+
+	//contact number with exception handling
+	while(true)
+	{
+		cout << "Enter your contact number = ";
+		try
+		{
+			cin >> tempS;
+			if (tempS.size() != 10){
+				throw "Phone number must be 10 digit!";
+			}
+			for (char i : tempS){
+				if (!isdigit(i)){
+					throw "Phone number must contain only digits\n";
+					break;
+				}
+			}
+			*contactNo = tempS;
+			break;
+		}
+		catch (const char *msg){
+			cout << msg << endl;
+			cin.clear();
+			cin.ignore(1000,'\n');
+		}
+	}
+
+	cout << "Enter Driving License No = ";	//License number
+	cin.ignore();
+	cin >> *licNo;
+
+	cout << "\nEnter Marks = "; 	//Marks
+	cin >> *marks;
+}
+
+Student::Student(Student &obj)			//Copy Constructor
+{
+	this->name = new string;
+	*name = *obj.name;
+
+	this->rollNo = new int;
+	*rollNo = *obj.rollNo;
+
+	this->Class = new string;
+	*Class = *obj.Class;
+
+	this->div = new string;
+	*div = *obj.div;
+
+	this->dob = new string;
+	*dob = *obj.dob;
+
+	this->bloodGrp = new string;
+	*bloodGrp = *obj.bloodGrp;
+
+	this->contactNo = new string;
+	*contactNo = *obj.contactNo;
+
+	this->licNo = new string;
+	*licNo = *obj.licNo;
+
+	this->marks = new int;
+	*marks = *obj.marks;
+
+	count++;
+}
+
+Student::Student(const Student &obj)			//Copy Constructor for vector.pushback
+{
+	this->name = new string;
+	*name = *obj.name;
+
+	this->rollNo = new int;
+	*rollNo = *obj.rollNo;
+
+	this->Class = new string;
+	*Class = *obj.Class;
+
+	this->div = new string;
+	*div = *obj.div;
+
+	this->dob = new string;
+	*dob = *obj.dob;
+
+	this->bloodGrp = new string;
+	*bloodGrp = *obj.bloodGrp;
+
+	this->contactNo = new string;
+	*contactNo = *obj.contactNo;
+
+	this->licNo = new string;
+	*licNo = *obj.licNo;
+
+	this->marks = new int;
+	*marks = *obj.marks;
+}
+
+void result(int m){			//Friend function to show result of student
+	if (m >= 95){
+		cout << "Pass : Grade O" << endl;
+	}
+	else if (m >= 90){
+		cout << "Pass : Grade A+" << endl;
+	}
+	else if (m >= 80){
+		cout << "Pass : Grade A" << endl;
+	}
+	else if (m >= 70){
+			cout << "Pass : Grade B" << endl;
+		}
+	else if (m >= 55){
+			cout << "Pass : Grade C" << endl;
+		}
+	else if (m >= 40){
+			cout << "Pass : Grade D" << endl;
+		}
+	else {
+		cout << "Fail" << endl;
+	}
+}
+
+void Student::readData(){
+	cout << "---------------- STUDENT DATA ----------------"
+		 << "\nName = " << *this->name
+		 << "\nRoll No. = " << *this->rollNo
+		 << "\nClass = " << *this->Class
+		 << "\nDivision = " << *this->div
+		 << "\nDate of Birth = " << *this->dob
+		 << "\nBlood Group = " << *this->bloodGrp
+		 << "\nContact No. = " << *this->contactNo
+		 << "\nLicense No. = " << *this->licNo
+		 << "\nMarks = " << *this->marks << endl;
+
+	cout << "Result = ";
+	result(*this->marks);
+
+	cout << "Current No. of studentsin Database = " << objectCount() << endl;
+	cout << "----------------------------------------------" << endl;
+}
+
+void Student::deleteData(){
+	delete name;
+	delete Class;
+	delete div;
+	delete dob;
+	delete bloodGrp;
+	delete contactNo;
+	delete licNo;
+	delete rollNo;
+	delete marks;
+	cout << "Student data deleted" << endl;
+	Student::count--;
+}
+
+Student::~Student(){ 		//destructor
+	delete name,
+	delete Class;
+	delete div;
+	delete dob;
+	delete bloodGrp;
+	delete contactNo;
+	delete licNo;
+	delete rollNo;
+	delete marks;
+}
+
+int Student::count;
+
+int main(){
+
+	vector<Student> database;	//vector containing database elements
+	int idx;		//index to iterate over vector
+
+	cout << "---- Welcome to PICT Students Database! ----" << endl;
+	int choice = 0;
+
+	while(choice != -1){
+		cout << "\n---- MENU ----" << endl;
+		cout << "1. Get current students count in DB\n"
+			 << "2. Create new student entry in DB\n"
+			 << "3. Get data of a student in DB\n"
+			 << "4. Delete data of a student from DB\n"
+			 << "5. Copy data of a student in DB\n"
+			 << "-1. Exit" << endl;
+
+		cout << "Enter you choice = ";
+
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 1 : // Get current students count in DB
+			cout << "Current student count in DB = " << Student::objectCount() << endl;
+			break;
+
+		case 2 : // Create new student entry in DB
+			{cout << "New entry at index = " << Student::objectCount() + 1 << endl;
+			Student newStudent;
+			database.push_back(newStudent);
+			break;}
+
+		case 3 : // Get data of a student in DB
+			cout << "Enter index of student to get data = ";
+			cin >> idx;
+			cout << endl;
+			database[idx].readData();
+			break;
+
+		case 4 : // Delete data of a student from DB
+			cout << "Enter index of student to delete data = ";
+			cin >> idx;
+			database[idx].deleteData();
+			database.erase(database.begin() + idx);
+			break;
+
+		case 5: // Copy data of a student in DB
+			{cout << "New entry at index = " << Student::objectCount() + 1 << endl;
+			cout << "Enter index of student to copy data = ";
+			int idx;
+			cin >> idx;
+		    Student newStudent(database[idx]);
+			database.push_back(newStudent);
+			break;}
+
+		case -1 : //Exit
+			cout << "\n---- Exit from Database ----" << endl;
+			choice = -1;
+			break;
+
+		default :
+			cout << "Enter a valid choice" << endl;
+			break;
+		}
+	}
+	return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/OOP_LAB MANUAL 2022-23 OOP (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

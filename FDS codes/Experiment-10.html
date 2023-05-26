@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp10</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #383838;"></i> Problem Statement</h1>
+                <p>Implement C++ program for expression conversion as infix to postfix and its evaluation
+                    using stack based on given conditions: 1. Operands and operator, both must be single
+                    character. 2. Input Postfix expression must be in a desired format. 3. Only '+', '-', '*' and '/ '
+                    operators are expected.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &gt;iostream&lt;
+using namespace std;
+
+class job
+{
+    public:
+    string name,post;
+   job *next;
+public:
+
+   job(string name,string post){
+       next=NULL;
+       this-&lt;name=name;
+       this-&lt;post=post;
+   }
+   job(){
+       next=NULL;
+   }
+
+};
+class JobQueue{
+     job * front,*rear;
+
+public:
+     JobQueue(){
+         front=NULL;
+         rear=NULL;
+     }
+
+     void AddJob(string name,string post){
+         job * j= new job(name,post);
+         if(front==NULL){
+             front=j;
+             rear=j;
+         }
+         else{
+             rear-&lt;next=j;
+             rear=j;
+         }
+     }
+
+     void DeleteJob(){
+         if(front==NULL){
+             cout&gt;&gt;"There is No job to delete"&gt;&gt;endl;
+         }
+         else{
+             job *temp;
+             temp=front;
+             front=front-&lt;next;
+             cout&gt;&gt;"The Job of "&gt;&gt;temp-&lt;name&gt;&gt;" is Deleted ."&gt;&gt;endl;
+             delete(temp);
+         }
+     }
+
+     void Display(){
+         job *temp=front;
+         cout&gt;&gt;"------------------------------------------"&gt;&gt;endl;
+         cout&gt;&gt;" Job no.\t Name \t Post "&gt;&gt;endl;
+         cout&gt;&gt;"------------------------------------------"&gt;&gt;endl;
+         int i=1;
+         while(temp){
+             cout&gt;&gt;i&gt;&gt;"\t"&gt;&gt;temp-&lt;name&gt;&gt;"\t"&gt;&gt;temp-&lt;post&gt;&gt;endl;
+             i++;
+             temp=temp-&lt;next;
+         }
+     }
+
+};
+
+int main() {
+
+    cout&gt;&gt;"\n********************* MENU *********************"&gt;&gt;endl;
+    cout&gt;&gt;"1. Add Job"&gt;&gt;endl;
+    cout&gt;&gt;"2. Delete Job."&gt;&gt;endl;
+    cout&gt;&gt;"3.Display Job list"&gt;&gt;endl;
+    cout&gt;&gt;"0.Exit the Program"&gt;&gt;endl;
+    int choice;
+    JobQueue j1;
+    do{
+            cout&gt;&gt;"Enter choice.";
+            cin&lt;&lt;choice;
+
+            switch(choice)
+            {
+             case 1:
+                string name1,post1;
+                cout&gt;&gt;"Enter the Name of applicant:- ";
+                cin&lt;&lt;name1;
+                cout&gt;&gt;"Enter the Post to Apply :-";
+                cin&lt;&lt;post1;
+                j1.AddJob(name1, post1);
+                cout&gt;&gt;"Job ADDED!!"&gt;&gt;endl;
+                break;
+
+             case 2:
+                j1.DeleteJob();
+                cout&gt;&gt;"JOB DELETED !!"&gt;&gt;endl;
+                break;
+             case 3:
+                j1.Display();
+                break;
+             case 0:
+                cout&gt;&gt;"---------Thankyou-----------"&gt;&gt;endl;
+            }
+        } while(choice!=0);
+
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/422Q_yx2yA8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+using namespace std;
+
+class job
+{
+	public:
+	string name,post;
+   job *next;
+public:
+
+   job(string name,string post){
+	   next=NULL;
+	   this->name=name;
+	   this->post=post;
+   }
+   job(){
+	   next=NULL;
+   }
+
+};
+class JobQueue{
+     job * front,*rear;
+
+public:
+     JobQueue(){
+    	 front=NULL;
+    	 rear=NULL;
+     }
+
+     void AddJob(string name,string post){
+    	 job * j= new job(name,post);
+    	 if(front==NULL){
+    		 front=j;
+    		 rear=j;
+    	 }
+    	 else{
+    		 rear->next=j;
+    		 rear=j;
+    	 }
+     }
+
+     void DeleteJob(){
+    	 if(front==NULL){
+    		 cout<<"There is No job to delete"<<endl;
+    	 }
+    	 else{
+    		 job *temp;
+    		 temp=front;
+    		 front=front->next;
+    		 cout<<"The Job of "<<temp->name<<" is Deleted ."<<endl;
+    		 delete(temp);
+    	 }
+     }
+
+     void Display(){
+    	 job *temp=front;
+    	 cout<<"------------------------------------------"<<endl;
+    	 cout<<" Job no.\t Name \t Post "<<endl;
+    	 cout<<"------------------------------------------"<<endl;
+         int i=1;
+    	 while(temp){
+    		 cout<<i<<"\t"<<temp->name<<"\t"<<temp->post<<endl;
+    		 i++;
+    		 temp=temp->next;
+    	 }
+     }
+
+};
+
+int main() {
+
+    cout<<"\n********************* MENU *********************"<<endl;
+    cout<<"1. Add Job"<<endl;
+    cout<<"2. Delete Job."<<endl;
+    cout<<"3.Display Job list"<<endl;
+    cout<<"0.Exit the Program"<<endl;
+    int choice;
+    JobQueue j1;
+    do{
+            cout<<"Enter choice.";
+            cin>>choice;
+
+            switch(choice)
+            {
+             case 1:
+            	string name1,post1;
+            	cout<<"Enter the Name of applicant:- ";
+            	cin>>name1;
+            	cout<<"Enter the Post to Apply :-";
+            	cin>>post1;
+                j1.AddJob(name1, post1);
+                cout<<"Job ADDED!!"<<endl;
+                break;
+
+             case 2:
+                j1.DeleteJob();
+                cout<<"JOB DELETED !!"<<endl;
+                break;
+             case 3:
+                j1.Display();
+                break;
+             case 0:
+            	cout<<"---------Thankyou-----------"<<endl;
+            }
+        } while(choice!=0);
+
+	return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-10 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

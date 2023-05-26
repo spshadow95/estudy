@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Consider telephone book database of N clients. Make use of a hash table
+                    implementation to quickly look up client‘s telephone number. Make use of two
+                    collision handling techniques and compare them using number of comparisons
+                    required to find a set of telephone numbers (Note: Use linear probing with
+                    replacement and without replacement)
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+class node
+{
+
+public:
+    string name;
+    long long int mb;
+
+    node()
+    {
+        name = "--";
+        mb = 0;
+    }
+
+    friend class hashmap;
+};
+
+class hashmap
+{
+
+    int size;
+    node *arr;
+
+public:
+    hashmap(int size)
+    {
+        this-&gt;size = size;
+        arr = new node[size];
+    }
+
+    int hash(string name)
+    {
+        int sum = 0;
+        for (int i = 0; i &lt; name.size(); i++)
+        {
+            sum = (sum + (int(name[i])));
+        }
+        return sum % size;
+    }
+
+    void insertWithoutReplacement(string n, int mbl)
+    {
+
+        int index = hash(n);
+        int cnt = 0;
+
+        if (arr[index].name == "--" && arr[index].mb == 0)
+        {
+            arr[index].name = n;
+            arr[index].mb = mbl;
+            cnt++;
+        }
+        else
+        {
+            index++;
+            while (arr[index].name != "--" && arr[index].mb != 0)
+            {
+                index++;
+                index %= size;
+            }
+            arr[index].name = n;
+            arr[index].mb = mbl;
+            cnt++;
+        }
+
+        if (cnt == size)
+        {
+            cout &lt;&lt; "Hash Table is full..." &lt;&lt; endl;
+        }
+    }
+
+    void insertWithReplacement(string n, int mbl)
+    {
+
+        int index = hash(n);
+        int cnt = 0;
+
+        if (arr[index].name == "--" && arr[index].mb == 0)
+        {
+            arr[index].name = n;
+            arr[index].mb = mbl;
+            cnt++;
+        }
+        else
+        {
+            string temp = arr[index].name;
+            int tem = hash(temp);
+
+            if (tem == index)
+            {
+                insertWithoutReplacement(n, mbl);
+            }
+            else
+            {
+                string copy = arr[index].name;
+                int cop = arr[index].mb;
+                arr[index].name = n;
+                arr[index].mb = mbl;
+                insertWithoutReplacement(copy, cop);
+            }
+        }
+    }
+
+    void searching(string n)
+    {
+        int index = hash(n);
+        int iteration = 0;
+        if (arr[index].name == n)
+        {
+            iteration++;
+            cout &lt;&lt; "Data is found --" &lt;&lt; endl;
+            cout &lt;&lt; arr[index].name &lt;&lt; " : " &lt;&lt; arr[index].mb &lt;&lt; endl;
+        }
+        else
+        {
+            int j = 1;
+            bool t = false;
+            while (j &lt; size)
+            {
+                if (arr[(index + j) % size].name == n)
+                {
+                    iteration++;
+                    cout &lt;&lt; "Data is found --" &lt;&lt; endl;
+                    cout &lt;&lt; arr[(index + j) % size].name &lt;&lt; " : " &lt;&lt; arr[(index + j) % size].mb &lt;&lt; endl;
+                    t = true;
+                    break;
+                }
+                else
+                {
+                    iteration++;
+                    j++;
+                }
+            }
+            if (t == false)
+            {
+                cout &lt;&lt; "NOt Present ..." &lt;&lt; endl;
+            }
+        }
+
+        cout &lt;&lt; endl;
+        cout &lt;&lt; "Number of comparisions : " &lt;&lt; iteration &lt;&lt; endl;
+    }
+    void deleting(string n)
+    {
+        int index = hash(n);
+        int iteration = 0;
+        if (arr[index].name == n)
+        {
+            cout &lt;&lt; "Data is Deleted Successfully --" &lt;&lt; endl;
+            arr[index].name = "--";
+            arr[index].mb = 0;
+            iteration++;
+        }
+        else
+        {
+            int j = 1;
+            bool t = false;
+            while (j &lt; size)
+            {
+                if (arr[(index + j) % size].name == n)
+                {
+                    cout &lt;&lt; "Data is Deleted Successfully --" &lt;&lt; endl;
+                    arr[index].name = "--";
+                    arr[index].mb = 0;
+                    iteration++;
+                    t = true;
+                    break;
+                }
+                else
+                {
+                    iteration++;
+                    j++;
+                }
+            }
+            if (t == false)
+            {
+                cout &lt;&lt; "Data is NOt Present ..." &lt;&lt; endl;
+            }
+        }
+        cout &lt;&lt; endl;
+        cout &lt;&lt; "Number of comparisions : " &lt;&lt; iteration &lt;&lt; endl;
+    }
+
+    void print()
+    {
+        for (int i = 0; i &lt; size; i++)
+        {
+            cout &lt;&lt; arr[i].name &lt;&lt; " : " &lt;&lt; arr[i].mb &lt;&lt; endl;
+        }
+        cout &lt;&lt; endl;
+    }
+};
+
+int main()
+{
+
+    cout &lt;&lt; "Enter the no. of elements : ";
+    int n;
+    cin &gt;&gt; n;
+    cout &lt;&lt; endl;
+    hashmap o(n);
+    hashmap o1(n);
+
+    while (true)
+    {
+        cout &lt;&lt; endl;
+        cout &lt;&lt; "-------------MENU--------------------" &lt;&lt; endl;
+        cout &lt;&lt; "Enter 1 for Inserting the elements in HashTable" &lt;&lt; endl;
+        cout &lt;&lt; "Enter 2 for Displaying withoutReplacement Directory" &lt;&lt; endl;
+        cout &lt;&lt; "Enter 3 for Displaying withReplacement Directory" &lt;&lt; endl;
+        cout &lt;&lt; "Enter 4 for Deleting the element in withoutReplacement directory " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 5 for Deleting the element in withReplacement directory " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 6 for Searching the element in withoutReplacement directory " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 7 for Searching the element in withReplacement directory " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 8 for EXIT !! " &lt;&lt; endl;
+        cout &lt;&lt; endl;
+        int n;
+        cout &lt;&lt; "Enter your choice : ";
+        cin &gt;&gt; n;
+        if (n == 1)
+        {
+            string n;
+            int mbl;
+            cout &lt;&lt; "Enter the name and mb : " &lt;&lt; endl;
+            cin &gt;&gt; n &gt;&gt; mbl;
+            o.insertWithoutReplacement(n, mbl);
+            o1.insertWithReplacement(n, mbl);
+        }
+        else if (n == 2)
+        {
+            o.print();
+        }
+        else if (n == 3)
+        {
+            o1.print();
+        }
+        else if (n == 4)
+        {
+            cout &lt;&lt; "Enter name for deleting : ";
+            string ele;
+            cin &gt;&gt; ele;
+            o.deleting(ele);
+        }
+        else if (n == 5)
+        {
+            cout &lt;&lt; "Enter name for deleting : ";
+            string ele;
+            cin &gt;&gt; ele;
+            o1.deleting(ele);
+        }
+        else if (n == 6)
+        {
+            cout &lt;&lt; "Enter name for Searching : ";
+            string ele;
+            cin &gt;&gt; ele;
+            o.searching(ele);
+        }
+        else if (n == 7)
+        {
+            cout &lt;&lt; "Enter name for Searching : ";
+            string ele;
+            cin &gt;&gt; ele;
+            o.searching(ele);
+        }
+        else if (n == 8)
+        {
+            cout &lt;&lt; " ---Thanks for using the program --- " &lt;&lt; endl;
+            break;
+        }
+        else
+        {
+            cout &lt;&lt; "---Enter the correct choice---" &lt;&lt; endl;
+        }
+    }
+
+    return 0;
+}                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/W5q0xgxmRd8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <bits/stdc++.h>
+using namespace std;
+
+class node
+{
+
+public:
+	string name;
+	long long int mb;
+
+	node()
+	{
+		name = "--";
+		mb = 0;
+	}
+
+	friend class hashmap;
+};
+
+class hashmap
+{
+
+	int size;
+	node *arr;
+
+public:
+	hashmap(int size)
+	{
+		this->size = size;
+		arr = new node[size];
+	}
+
+	int hash(string name)
+	{
+		int sum = 0;
+		for (int i = 0; i < name.size(); i++)
+		{
+			sum = (sum + (int(name[i])));
+		}
+		return sum % size;
+	}
+
+	void insertWithoutReplacement(string n, int mbl)
+	{
+
+		int index = hash(n);
+		int cnt = 0;
+
+		if (arr[index].name == "--" && arr[index].mb == 0)
+		{
+			arr[index].name = n;
+			arr[index].mb = mbl;
+			cnt++;
+		}
+		else
+		{
+			index++;
+			while (arr[index].name != "--" && arr[index].mb != 0)
+			{
+				index++;
+				index %= size;
+			}
+			arr[index].name = n;
+			arr[index].mb = mbl;
+			cnt++;
+		}
+
+		if (cnt == size)
+		{
+			cout << "Hash Table is full..." << endl;
+		}
+	}
+
+	void insertWithReplacement(string n, int mbl)
+	{
+
+		int index = hash(n);
+		int cnt = 0;
+
+		if (arr[index].name == "--" && arr[index].mb == 0)
+		{
+			arr[index].name = n;
+			arr[index].mb = mbl;
+			cnt++;
+		}
+		else
+		{
+			string temp = arr[index].name;
+			int tem = hash(temp);
+
+			if (tem == index)
+			{
+				insertWithoutReplacement(n, mbl);
+			}
+			else
+			{
+				string copy = arr[index].name;
+				int cop = arr[index].mb;
+				arr[index].name = n;
+				arr[index].mb = mbl;
+				insertWithoutReplacement(copy, cop);
+			}
+		}
+	}
+
+	void searching(string n)
+	{
+		int index = hash(n);
+		int iteration = 0;
+		if (arr[index].name == n)
+		{
+			iteration++;
+			cout << "Data is found --" << endl;
+			cout << arr[index].name << " : " << arr[index].mb << endl;
+		}
+		else
+		{
+			int j = 1;
+			bool t = false;
+			while (j < size)
+			{
+				if (arr[(index + j) % size].name == n)
+				{
+					iteration++;
+					cout << "Data is found --" << endl;
+					cout << arr[(index + j) % size].name << " : " << arr[(index + j) % size].mb << endl;
+					t = true;
+					break;
+				}
+				else
+				{
+					iteration++;
+					j++;
+				}
+			}
+			if (t == false)
+			{
+				cout << "NOt Present ..." << endl;
+			}
+		}
+
+		cout << endl;
+		cout << "Number of comparisions : " << iteration << endl;
+	}
+	void deleting(string n)
+	{
+		int index = hash(n);
+		int iteration = 0;
+		if (arr[index].name == n)
+		{
+			cout << "Data is Deleted Successfully --" << endl;
+			arr[index].name = "--";
+			arr[index].mb = 0;
+			iteration++;
+		}
+		else
+		{
+			int j = 1;
+			bool t = false;
+			while (j < size)
+			{
+				if (arr[(index + j) % size].name == n)
+				{
+					cout << "Data is Deleted Successfully --" << endl;
+					arr[index].name = "--";
+					arr[index].mb = 0;
+					iteration++;
+					t = true;
+					break;
+				}
+				else
+				{
+					iteration++;
+					j++;
+				}
+			}
+			if (t == false)
+			{
+				cout << "Data is NOt Present ..." << endl;
+			}
+		}
+		cout << endl;
+		cout << "Number of comparisions : " << iteration << endl;
+	}
+
+	void print()
+	{
+		for (int i = 0; i < size; i++)
+		{
+			cout << arr[i].name << " : " << arr[i].mb << endl;
+		}
+		cout << endl;
+	}
+};
+
+int main()
+{
+
+	cout << "Enter the no. of elements : ";
+	int n;
+	cin >> n;
+	cout << endl;
+	hashmap o(n);
+	hashmap o1(n);
+
+	while (true)
+	{
+		cout << endl;
+		cout << "-------------MENU--------------------" << endl;
+		cout << "Enter 1 for Inserting the elements in HashTable" << endl;
+		cout << "Enter 2 for Displaying withoutReplacement Directory" << endl;
+		cout << "Enter 3 for Displaying withReplacement Directory" << endl;
+		cout << "Enter 4 for Deleting the element in withoutReplacement directory " << endl;
+		cout << "Enter 5 for Deleting the element in withReplacement directory " << endl;
+		cout << "Enter 6 for Searching the element in withoutReplacement directory " << endl;
+		cout << "Enter 7 for Searching the element in withReplacement directory " << endl;
+		cout << "Enter 8 for EXIT !! " << endl;
+		cout << endl;
+		int n;
+		cout << "Enter your choice : ";
+		cin >> n;
+		if (n == 1)
+		{
+			string n;
+			int mbl;
+			cout << "Enter the name and mb : " << endl;
+			cin >> n >> mbl;
+			o.insertWithoutReplacement(n, mbl);
+			o1.insertWithReplacement(n, mbl);
+		}
+		else if (n == 2)
+		{
+			o.print();
+		}
+		else if (n == 3)
+		{
+			o1.print();
+		}
+		else if (n == 4)
+		{
+			cout << "Enter name for deleting : ";
+			string ele;
+			cin >> ele;
+			o.deleting(ele);
+		}
+		else if (n == 5)
+		{
+			cout << "Enter name for deleting : ";
+			string ele;
+			cin >> ele;
+			o1.deleting(ele);
+		}
+		else if (n == 6)
+		{
+			cout << "Enter name for Searching : ";
+			string ele;
+			cin >> ele;
+			o.searching(ele);
+		}
+		else if (n == 7)
+		{
+			cout << "Enter name for Searching : ";
+			string ele;
+			cin >> ele;
+			o.searching(ele);
+		}
+		else if (n == 8)
+		{
+			cout << " ---Thanks for using the program --- " << endl;
+			break;
+		}
+		else
+		{
+			cout << "---Enter the correct choice---" << endl;
+		}
+	}
+
+	return 0;
+}
+
+
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 4.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

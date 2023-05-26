@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Beginning with an empty binary tree, Construct binary tree by inserting the values in the order given. After constructing a binary tree perform following operations on it- 1] Perform inorder, preorder and post order traversal 2]Change a tree so that the roles of the left and right pointers are swapped at every node 3] Find the height of tree 4] Copy this tree to another [operator=] 5] Count number of leaves, number of internal nodes. 6] Erase all nodes in a binary tree. (Implement both recursive and non-recursive methods)
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include&lt;iostream&gt;
+#include&lt;climits&gt;
+#include&lt;stack&gt;
+#include&lt;queue&gt;
+using namespace std;
+
+class node
+{
+public:
+    int data;
+    node *right;
+    node *left;
+
+    node(int data)
+    {
+        this-&gt;data = data;
+        right = NULL;
+        left = NULL;
+    }
+
+    friend class tree;
+};
+
+class tree
+{
+
+public:
+    node *root;
+    queue&lt;node *&gt; q;
+
+
+    tree()
+    {
+        root = NULL;
+    }
+
+    void InsertNR(node *&root, int x)
+    {
+
+    	node *temp=new node(x);
+    	    	if(root==NULL){
+    	    		root=temp;
+    	    	}
+    	    	else if(q.front()-&gt;left==NULL){
+    	    		q.front()-&gt;left=temp;
+    	    	}
+    	    	else if(q.front()-&gt;right==NULL){
+    	    		q.front()-&gt;right=temp;
+    	    		q.pop();
+    	    	}
+    	    	q.push(temp);
+    		}
+
+
+    void create()
+    {
+        int n;
+        cout &lt;&lt; "Enter the no of nodes in tree : ";
+        cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++)
+        {
+            int x;
+            cout &lt;&lt; "Enter the data : ";
+            cin &gt;&gt; x;
+            InsertNR(root, x);
+        }
+    }
+
+    void InorderITR(node *root)
+    {
+        stack&lt;node *&gt; st;
+        node *temp = root;
+        while (!st.empty() || temp != NULL)
+        {
+            if (temp != NULL)
+            {
+                st.push(temp);
+                temp = temp-&gt;left;
+            }
+            else
+            {
+                temp = st.top();
+                cout &lt;&lt; temp-&gt;data &lt;&lt; " ";
+                st.pop();
+                temp = temp-&gt;right;
+            }
+        }
+    }
+
+    void PreorderITR(node *root)
+    {
+
+        if (root == NULL)
+        {
+            return;
+        }
+        stack&lt;node *&gt; st;
+        st.push(root);
+
+        while (!st.empty())
+        {
+            root = st.top();
+            st.pop();
+            cout &lt;&lt; root-&gt;data &lt;&lt; " ";
+
+            if (root-&gt;right != NULL)
+            {
+                st.push(root-&gt;right);
+            }
+            if (root-&gt;left != NULL)
+            {
+                st.push(root-&gt;left);
+            }
+        }
+    }
+
+    void PostorderITR(node *root)
+    {
+
+        stack&lt;node *&gt; st1, st2;
+
+        if (root == NULL)
+        {
+            return;
+        }
+        st1.push(root);
+        while (!st1.empty())
+        {
+            node *temp=st1.top();
+            st1.pop();
+            st2.push(temp);
+            if (temp-&gt;left)
+            {
+                st1.push(temp-&gt;left);
+            }
+            if (temp-&gt;right)
+            {
+                st1.push(temp-&gt;right);
+            }
+        }
+        while (!st2.empty())
+        {
+
+            cout &lt;&lt; st2.top()-&gt;data &lt;&lt; " ";
+            st2.pop();
+        }
+    }
+
+    node *  InsertR(node *&root)
+    {
+        int x;
+        cout &lt;&lt; "Enter the data : ";
+        cin &gt;&gt; x;
+        if (x == -1)
+        {
+            return NULL;
+        }
+        if (root == NULL)
+        {
+            root = new node(x);
+        }
+        cout &lt;&lt; "Enter the data for left part of " &lt;&lt; root-&gt;data &lt;&lt; endl;
+        root-&gt;left = InsertR(root-&gt;left);
+        cout &lt;&lt; "Enter the data for right part of " &lt;&lt; root-&gt;data &lt;&lt; endl;
+        root-&gt;right = InsertR(root-&gt;right);
+        return root;
+    }
+
+    void Inorder(node *root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+        else
+        {
+           Inorder(root-&gt;left);
+            cout &lt;&lt; root-&gt;data &lt;&lt; " ";
+            Inorder(root-&gt;right);
+        }
+    }
+
+    void Preorder(node *root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+
+        cout &lt;&lt; root-&gt;data &lt;&lt; " ";
+        Preorder(root-&gt;left);
+        Preorder(root-&gt;right);
+    }
+
+    void Postorder(node *root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+
+        Postorder(root-&gt;left);
+       Postorder(root-&gt;right);
+        cout &lt;&lt; root-&gt;data &lt;&lt; " ";
+    }
+
+    void swapp(node * &root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+        else
+        {
+            swap(root-&gt;left, root-&gt;right);
+            swapp(root-&gt;left);
+            swapp(root-&gt;right);
+        }
+    }
+
+    int height(node *root)
+    {
+        if (root == NULL)
+        {
+            return 0;
+        }
+        else
+        {
+            int r = height(root-&gt;right);
+            int l = height(root-&gt;left);
+
+            return max(r+1, l+1);
+        }
+    }
+
+    int countLeves(node *root)
+    {
+        if (root == NULL)
+        {
+            return 0;
+        }
+        if (root-&gt;right == NULL && root-&gt;left == NULL)
+        {
+            return 1;
+        }
+        else
+        {
+            return countLeves(root-&gt;left) + countLeves(root-&gt;right);
+        }
+    }
+
+    int countInternalNodes(node *root)
+    {
+        if (root == NULL || (root-&gt;right == NULL && root-&gt;left == NULL))
+        {
+            return 0;
+        }
+        else
+        {
+            return countInternalNodes(root-&gt;left) + countInternalNodes(root-&gt;right) + 1;
+        }
+    }
+
+    void erase(node *&root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+        else
+        {
+            erase(root-&gt;left);
+            erase(root-&gt;right);
+            free(root);
+        }
+    }
+
+    node *makeCopy(node *&root)
+    {
+    	node *newRoot = new node(root-&gt;data);
+        if (root == NULL)
+        {
+            return NULL;
+        }
+        else
+        {
+
+            newRoot-&gt;left = makeCopy(root-&gt;left);
+            newRoot-&gt;right = makeCopy(root-&gt;right);
+            return newRoot;
+        }
+
+
+    }
+
+    void Maxn(node *&p,int & max){
+    	 if (root == NULL)
+    	        {
+    	            return;
+    	        }
+    	        stack&lt;node *&gt; s;
+    	        node *temp = root;
+    	        while (!s.empty() || temp != NULL)
+    	        {
+    	            while (temp != NULL)
+    	            {
+    	                s.push(temp);
+    	                temp = temp-&gt;left;
+    	            }
+    	            temp = s.top();
+    	            s.pop();
+    	            if(temp-&gt;data&gt;max){
+    	                max=temp-&gt;data;
+    	            }
+    	            temp = temp-&gt;right;
+    	        }
+    }
+    void Minn(node *&p,int & min){
+        	 if (root == NULL)
+        	        {
+        	            return;
+        	        }
+        	        stack&lt;node *&gt; s;
+        	        node *temp = root;
+        	        while (!s.empty() || temp != NULL)
+        	        {
+        	            while (temp != NULL)
+        	            {
+        	                s.push(temp);
+        	                temp = temp-&gt;left;
+        	            }
+        	            temp = s.top();
+        	            s.pop();
+        	            if(temp-&gt;data&lt;min){
+        	                min=temp-&gt;data;
+        	            }
+        	            temp = temp-&gt;right;
+        	        }
+        }
+};
+
+int main()
+{
+    tree o;
+
+    while (true)
+    {
+        cout &lt;&lt; endl;
+        cout &lt;&lt; "-------------MENU--------------------" &lt;&lt; endl;
+        cout &lt;&lt; "Enter 1 for creating the BT " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 2 for Displaying the BT " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 3 for finding height of the tree " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 4 for swapping elements in the tree " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 5 for Copy this tree to another [operator=] " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 6 Count number of leaves, number of internal nodes " &lt;&lt; endl;
+        cout &lt;&lt; "Enter 7 Erase all nodes in a binary tree " &lt;&lt; endl;
+        cout&lt;&lt;  " Enter 9 Max and min ."&lt;&lt;endl;
+        cout &lt;&lt; "Enter 8 for EXIT !! " &lt;&lt; endl;
+        cout &lt;&lt; endl;
+        int n;
+        cout &lt;&lt; "Enter your choice : ";
+        cin &gt;&gt; n;
+        if (n == 1)
+        {
+            o.create();
+        }
+        else if (n == 2)
+        {
+            cout &lt;&lt; "Inorder traversal : ";
+            o.Inorder(o.root);
+            cout &lt;&lt; endl;
+            cout &lt;&lt; "preorder traversal : ";
+            o.PreorderITR(o.root);
+            cout &lt;&lt; endl;
+            cout &lt;&lt; "postorder traversal : ";
+            o.Postorder(o.root);
+            cout &lt;&lt; endl;
+        }
+        else if (n == 3)
+        {
+            cout &lt;&lt; "Height of the tree is : ";
+            cout &lt;&lt; o.height(o.root)-1 &lt;&lt; endl;
+        }
+        else if (n == 4)
+        {
+            o.swapp(o.root);
+            cout &lt;&lt; "Nodes are swapped successfully..." &lt;&lt; endl;
+        }
+        else if (n == 5)
+        {
+            o.makeCopy(o.root);
+        }
+        else if (n == 6)
+        {
+            cout &lt;&lt; "No. of Internal nodes are : ";
+            cout &lt;&lt; o.countInternalNodes(o.root) &lt;&lt; endl;
+            cout &lt;&lt; "No. of leaves are : ";
+            cout &lt;&lt; o.countLeves(o.root) &lt;&lt; endl;
+        }
+        else if (n == 7)
+        {
+            o.erase(o.root);
+            cout &lt;&lt; "Tree is erased..!" &lt;&lt; endl;
+        }
+        else if (n == 8)
+        {
+            cout &lt;&lt; " ---Thanks for using the program --- " &lt;&lt; endl;
+            break;
+        }
+        else if (n == 9)
+                {
+                     int maxi =INT_MIN;
+                     o.Maxn(o.root,maxi);
+                     cout&lt;&lt;maxi&lt;&lt;endl;
+
+                     int mini=INT_MAX;
+                     o.Minn(o.root,mini);
+                     cout&lt;&lt;mini&lt;&lt;endl;
+
+
+                }
+
+
+        else
+        {
+            cout &lt;&lt; "---Enter the correct choice---" &lt;&lt; endl;
+        }
+    }
+
+    return 0;
+}
+       
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/-DzowlcaUmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include<iostream>
+#include<climits>
+#include<stack>
+#include<queue>
+using namespace std;
+
+class node
+{
+public:
+    int data;
+    node *right;
+    node *left;
+
+    node(int data)
+    {
+        this->data = data;
+        right = NULL;
+        left = NULL;
+    }
+
+    friend class tree;
+};
+
+class tree
+{
+
+public:
+    node *root;
+    queue<node *> q;
+
+
+    tree()
+    {
+        root = NULL;
+    }
+
+    void InsertNR(node *&root, int x)
+    {
+
+    	node *temp=new node(x);
+    	    	if(root==NULL){
+    	    		root=temp;
+    	    	}
+    	    	else if(q.front()->left==NULL){
+    	    		q.front()->left=temp;
+    	    	}
+    	    	else if(q.front()->right==NULL){
+    	    		q.front()->right=temp;
+    	    		q.pop();
+    	    	}
+    	    	q.push(temp);
+    		}
+
+
+    void create()
+    {
+        int n;
+        cout << "Enter the no of nodes in tree : ";
+        cin >> n;
+        for (int i = 0; i < n; i++)
+        {
+            int x;
+            cout << "Enter the data : ";
+            cin >> x;
+            InsertNR(root, x);
+        }
+    }
+
+    void InorderITR(node *root)
+    {
+        stack<node *> st;
+        node *temp = root;
+        while (!st.empty() || temp != NULL)
+        {
+            if (temp != NULL)
+            {
+                st.push(temp);
+                temp = temp->left;
+            }
+            else
+            {
+                temp = st.top();
+                cout << temp->data << " ";
+                st.pop();
+                temp = temp->right;
+            }
+        }
+    }
+
+    void PreorderITR(node *root)
+    {
+
+        if (root == NULL)
+        {
+            return;
+        }
+        stack<node *> st;
+        st.push(root);
+
+        while (!st.empty())
+        {
+            root = st.top();
+            st.pop();
+            cout << root->data << " ";
+
+            if (root->right != NULL)
+            {
+                st.push(root->right);
+            }
+            if (root->left != NULL)
+            {
+                st.push(root->left);
+            }
+        }
+    }
+
+    void PostorderITR(node *root)
+    {
+
+        stack<node *> st1, st2;
+
+        if (root == NULL)
+        {
+            return;
+        }
+        st1.push(root);
+        while (!st1.empty())
+        {
+            node *temp=st1.top();
+            st1.pop();
+            st2.push(temp);
+            if (temp->left)
+            {
+                st1.push(temp->left);
+            }
+            if (temp->right)
+            {
+                st1.push(temp->right);
+            }
+        }
+        while (!st2.empty())
+        {
+
+            cout << st2.top()->data << " ";
+            st2.pop();
+        }
+    }
+
+    node *  InsertR(node *&root)
+    {
+        int x;
+        cout << "Enter the data : ";
+        cin >> x;
+        if (x == -1)
+        {
+            return NULL;
+        }
+        if (root == NULL)
+        {
+            root = new node(x);
+        }
+        cout << "Enter the data for left part of " << root->data << endl;
+        root->left = InsertR(root->left);
+        cout << "Enter the data for right part of " << root->data << endl;
+        root->right = InsertR(root->right);
+        return root;
+    }
+
+    void Inorder(node *root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+        else
+        {
+           Inorder(root->left);
+            cout << root->data << " ";
+            Inorder(root->right);
+        }
+    }
+
+    void Preorder(node *root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+
+        cout << root->data << " ";
+        Preorder(root->left);
+        Preorder(root->right);
+    }
+
+    void Postorder(node *root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+
+        Postorder(root->left);
+       Postorder(root->right);
+        cout << root->data << " ";
+    }
+
+    void swapp(node * &root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+        else
+        {
+            swap(root->left, root->right);
+            swapp(root->left);
+            swapp(root->right);
+        }
+    }
+
+    int height(node *root)
+    {
+        if (root == NULL)
+        {
+            return 0;
+        }
+        else
+        {
+            int r = height(root->right);
+            int l = height(root->left);
+
+            return max(r+1, l+1);
+        }
+    }
+
+    int countLeves(node *root)
+    {
+        if (root == NULL)
+        {
+            return 0;
+        }
+        if (root->right == NULL && root->left == NULL)
+        {
+            return 1;
+        }
+        else
+        {
+            return countLeves(root->left) + countLeves(root->right);
+        }
+    }
+
+    int countInternalNodes(node *root)
+    {
+        if (root == NULL || (root->right == NULL && root->left == NULL))
+        {
+            return 0;
+        }
+        else
+        {
+            return countInternalNodes(root->left) + countInternalNodes(root->right) + 1;
+        }
+    }
+
+    void erase(node *&root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+        else
+        {
+            erase(root->left);
+            erase(root->right);
+            free(root);
+        }
+    }
+
+    node *makeCopy(node *&root)
+    {
+    	node *newRoot = new node(root->data);
+        if (root == NULL)
+        {
+            return NULL;
+        }
+        else
+        {
+
+            newRoot->left = makeCopy(root->left);
+            newRoot->right = makeCopy(root->right);
+            return newRoot;
+        }
+
+
+    }
+
+    void Maxn(node *&p,int & max){
+    	 if (root == NULL)
+    	        {
+    	            return;
+    	        }
+    	        stack<node *> s;
+    	        node *temp = root;
+    	        while (!s.empty() || temp != NULL)
+    	        {
+    	            while (temp != NULL)
+    	            {
+    	                s.push(temp);
+    	                temp = temp->left;
+    	            }
+    	            temp = s.top();
+    	            s.pop();
+    	            if(temp->data>max){
+    	                max=temp->data;
+    	            }
+    	            temp = temp->right;
+    	        }
+    }
+    void Minn(node *&p,int & min){
+        	 if (root == NULL)
+        	        {
+        	            return;
+        	        }
+        	        stack<node *> s;
+        	        node *temp = root;
+        	        while (!s.empty() || temp != NULL)
+        	        {
+        	            while (temp != NULL)
+        	            {
+        	                s.push(temp);
+        	                temp = temp->left;
+        	            }
+        	            temp = s.top();
+        	            s.pop();
+        	            if(temp->data<min){
+        	                min=temp->data;
+        	            }
+        	            temp = temp->right;
+        	        }
+        }
+};
+
+int main()
+{
+    tree o;
+
+    while (true)
+    {
+        cout << endl;
+        cout << "-------------MENU--------------------" << endl;
+        cout << "Enter 1 for creating the BT " << endl;
+        cout << "Enter 2 for Displaying the BT " << endl;
+        cout << "Enter 3 for finding height of the tree " << endl;
+        cout << "Enter 4 for swapping elements in the tree " << endl;
+        cout << "Enter 5 for Copy this tree to another [operator=] " << endl;
+        cout << "Enter 6 Count number of leaves, number of internal nodes " << endl;
+        cout << "Enter 7 Erase all nodes in a binary tree " << endl;
+        cout<<  " Enter 9 Max and min ."<<endl;
+        cout << "Enter 8 for EXIT !! " << endl;
+        cout << endl;
+        int n;
+        cout << "Enter your choice : ";
+        cin >> n;
+        if (n == 1)
+        {
+            o.create();
+        }
+        else if (n == 2)
+        {
+            cout << "Inorder traversal : ";
+            o.Inorder(o.root);
+            cout << endl;
+            cout << "preorder traversal : ";
+            o.PreorderITR(o.root);
+            cout << endl;
+            cout << "postorder traversal : ";
+            o.Postorder(o.root);
+            cout << endl;
+        }
+        else if (n == 3)
+        {
+            cout << "Height of the tree is : ";
+            cout << o.height(o.root)-1 << endl;
+        }
+        else if (n == 4)
+        {
+            o.swapp(o.root);
+            cout << "Nodes are swapped successfully..." << endl;
+        }
+        else if (n == 5)
+        {
+            o.makeCopy(o.root);
+        }
+        else if (n == 6)
+        {
+            cout << "No. of Internal nodes are : ";
+            cout << o.countInternalNodes(o.root) << endl;
+            cout << "No. of leaves are : ";
+            cout << o.countLeves(o.root) << endl;
+        }
+        else if (n == 7)
+        {
+            o.erase(o.root);
+            cout << "Tree is erased..!" << endl;
+        }
+        else if (n == 8)
+        {
+            cout << " ---Thanks for using the program --- " << endl;
+            break;
+        }
+        else if (n == 9)
+                {
+                     int maxi =INT_MIN;
+                     o.Maxn(o.root,maxi);
+                     cout<<maxi<<endl;
+
+                     int mini=INT_MAX;
+                     o.Minn(o.root,mini);
+                     cout<<mini<<endl;
+
+
+                }
+
+
+        else
+        {
+            cout << "---Enter the correct choice---" << endl;
+        }
+    }
+
+    return 0;
+}
+
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 2.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

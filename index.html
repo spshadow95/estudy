@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body{
+        background-color: #151e2e;
+        overflow: hidden;
+        height: 100vh;
+    }
+    #blob{
+        background-color: white;
+        height: 60vh;
+        aspect-ratio: 1;
+        position: absolute;
+        top:  0px;
+        left: 0px;
+        border-radius: 60vh;
+        background : linear-gradient(
+            to right,
+            #1BA94C,
+            #03cccf
+        ); 
+        animation: rotatefull 20s infinite;
+        transition: all 0.5s ease-out;
+    }
+    #blur{
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: 3;
+        backdrop-filter: blur(200px) ;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    @keyframes rotatefull {
+        from{
+            rotate: 0deg;
+        }
+        50%{
+            scale: 1 1.5  ;
+        }
+        to{
+            rotate: 360deg;
+        }
+        
+    }
+    img {
+        width: 1000px;
+        position: absolute;
+        top: 5%;
+        left: 15%;
+    }
+    .button{
+        padding: 1.5em 5.75em;
+        position: absolute;
+        bottom: 10%;
+        font-size: 0.5em;
+        border: 2px solid white;
+        transition: all 0.2s ease-out;
+        cursor: pointer;
+    }
+
+    .button a{
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 4.5em;
+        font-family: 'Almarai', sans-serif;
+        transition: all 0.4s ease-out;
+    }
+
+    .button:hover{
+        border-radius: 5em;
+    }
+
+
+    
+    
+</style>
+<body>
+    <div id="blob"></div>
+    <div id="blur">
+        <h1>
+            <img src="img/logo.png" alt="">
+        </h1>
+        <div class="button"><a href="front_page.html">Explore now</a></div>
+    </div>
+
+    <script>
+        const bolb = document.getElementById("blob");
+        addEventListener("mousemove",(event)=>{  
+            console.log(event);  
+            bolb.style.top = `${event.pageY-250}px`;
+            bolb.style.left = `${event.pageX-250}px`;
+        })
+    </script>
+</body>
+</html>

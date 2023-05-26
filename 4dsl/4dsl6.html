@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Represent a given graph using adjacency list to perform DFS and BFS. 
+                   Use the map of the area around the college as the graph.
+                   Identify the prominent land marks as nodes and perform DFS and BFS on that.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &lt;iostream&gt;
+#define size 20
+using namespace std;
+class node
+{
+    int x;
+    //string name;
+    node* next;
+public:
+    node(int x)
+    {
+        this-&gt;x = x;
+        //name = n;
+        next = NULL;
+    }
+    friend class Graph;
+};
+class Stack
+{
+    char top;
+    int s[20];
+    public:
+        Stack()
+        {
+            top = -1;
+        }
+        void push(int p)
+        {
+            if (top == 19)
+            {
+                cout &lt;&lt; "Stack is Full!!" &lt;&lt; endl;
+            }
+            else
+            {
+                s[++top] = p;
+
+            }
+        }
+
+        int pop()
+        {
+            int x;
+            if (top == -1)
+            {
+                cout &lt;&lt; "Stack is Empty" &lt;&lt; endl;
+            }
+            else
+            {
+                x = s[top];
+                top--;
+                return x;
+            }
+        }
+        bool isempty()
+        {
+            if (top == -1)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+};
+
+class Queue
+{
+    int front, rear;
+    int q[size];
+public:
+    Queue()
+    {
+        front = -1;
+        rear = -1;
+    }
+    bool isempty();
+    bool isfull();
+    void enqueue(int);
+    int dequeue();
+};
+bool Queue::isempty()
+{
+    if (rear == -1 && front == -1)
+    {
+        return true;
+    }
+    return false;
+}
+bool Queue::isfull()
+{
+    if (rear == size - 1)
+    {
+        return true;
+    }
+    return false;
+}
+void Queue::enqueue(int s)
+{
+    if (isfull())
+    {
+        cout &lt;&lt; "\nOveflow condition!!" &lt;&lt; endl;
+        return;
+    }
+    if (front == -1)
+    {
+        front = 0;
+        rear = 0;
+        q[front] = s;
+    }
+    else
+    {
+        rear++;
+        q[rear] = s;
+    }
+}
+int Queue::dequeue()
+{
+    int r;
+    if (isempty())
+    {
+        cout &lt;&lt; "\nUnderflow condition!!" &lt;&lt; endl;
+    }
+    else
+    {
+        if (front == rear)
+        {
+            r = q[front];
+            front = rear = -1;
+        }
+        else
+        {
+            r = q[front];
+            front++;
+        }
+        return r;
+    }
+}
+class Graph
+{
+    node* adjlist[10];
+    int v, e;
+    string name[10];
+    bool* visited;
+public:
+    Graph(int v, int e)
+    {
+        this-&gt;v = v;
+        this-&gt;e = e;
+        visited = new bool[v];
+        for (int i = 0; i &lt; v; i++)
+        {
+            adjlist[i] = NULL;
+            visited[i] = false;
+
+        }
+    }
+    void read();
+    void display();
+    void DFS(int);
+    void DFSr(int,Stack);
+    void BFS(int);
+};
+void Graph::read()
+{
+    int s, d,n;
+    string n1, n2;
+    cout &lt;&lt; "Enter Name of Landmarks: ";
+    for (int i = 0; i &lt; v; i++)
+    {
+        cin &gt;&gt; name[i];
+    }
+    for (int i = 0; i &lt; e; i++)
+    {
+        cout &lt;&lt; "Enter source and destination : " &lt;&lt; endl;
+        cin &gt;&gt; n1 &gt;&gt; n2;
+        for (int i = 0; i &lt; v; i++)
+        {
+            if (n1 == name[i])
+            {
+                s = i;
+                break;
+            }
+        }
+        for (int i = 0; i &lt; v; i++)
+        {
+            if (n2 == name[i])
+            {
+                d = i;
+                break;
+            }
+        }
+        node* t1 = new node(s);
+        node* t2 = new node(d);
+        if (adjlist[s] == NULL)
+        {
+            adjlist[s] = t1;
+            adjlist[s]-&gt;next = t2;
+        }
+        else
+        {
+            node* head = adjlist[s];
+            while (head-&gt;next != NULL)
+            {
+                head = head-&gt;next;
+            }
+            head-&gt;next = t2;
+        }
+    }
+}
+
+
+void Graph::display()
+{
+    node* temp;
+    for (int i = 0; i &lt; v; i++)
+    {
+        temp = adjlist[i];
+        while (temp != NULL)
+        {
+            cout &lt;&lt; name[temp-&gt;x] &lt;&lt; "-&gt; ";
+            temp = temp-&gt;next;
+        }
+        cout &lt;&lt; endl;
+    }
+}
+void Graph::DFS(int s)
+{
+    string n;
+
+    node* temp = adjlist[s];
+    cout &lt;&lt; name[s] &lt;&lt; " -&gt; ";
+    visited[s] = true;
+    for(temp;temp!=NULL;temp=temp-&gt;next)
+    //while (temp != NULL)
+    {
+        s = temp-&gt;x;
+        if (!visited[s])
+        {
+            DFS(s);
+        }
+        //temp = temp-&gt;next;
+    }
+}
+void Graph::DFSr(int s, Stack st)
+{
+    for (int i = 0; i &lt; v; i++)
+    {
+        visited[i] = false;
+    }
+    node* temp;
+    cout &lt;&lt; name[s] &lt;&lt; " -&gt; ";
+    st.push(s);
+    visited[s] = true;
+    while (!st.isempty())
+    {
+        int a = st.pop();
+        if (visited[a] == false)
+        {
+            cout &lt;&lt; name[a] &lt;&lt; " -&gt; ";
+            visited[a] = true;
+
+        }
+        temp = adjlist[a];
+        while (temp != NULL)
+        {
+            if (visited[temp-&gt;x] == false)
+            {
+                //cout &lt;&lt; name[temp-&gt;x] &lt;&lt; " -&gt; ";
+                st.push(temp-&gt;x);
+                //visited[temp-&gt;x] = true;
+
+            }
+            temp = temp-&gt;next;
+        }
+    }
+}
+void Graph::BFS(int s)
+{
+    for (int i = 0; i &lt; v; i++)
+    {
+        visited[i] = false;
+    }
+    Queue q;
+    visited[s] = true;
+    q.enqueue(s);
+    node* head;
+    while (!q.isempty())
+    {
+        s = q.dequeue();
+        cout &lt;&lt; name[s] &lt;&lt; " -&gt; ";
+        head = adjlist[s];
+        for (head; head != NULL; head = head-&gt;next)
+        {
+            if (!visited[head-&gt;x])
+            {
+                q.enqueue(head-&gt;x);
+                visited[head-&gt;x] = true;
+            }
+        }
+    }
+}
+int main()
+{
+    int ne, nv;
+    cout &lt;&lt; "Enter number of vertices: ";
+    cin &gt;&gt; nv;
+    cout &lt;&lt; "\nEnter number of edges: ";
+    cin &gt;&gt; ne;
+    cout &lt;&lt; endl;
+    Graph g(nv, ne);
+    Stack st;
+    int ch;
+    while(true)
+    {
+        cout &lt;&lt; "\n----------Menu----------" &lt;&lt; endl;
+        cout &lt;&lt; "1.Read the Graph" &lt;&lt; endl;
+        cout &lt;&lt; "2.Display the graph" &lt;&lt; endl;
+        cout &lt;&lt; "3.DFS Traversal with recursion" &lt;&lt; endl;
+        cout &lt;&lt; "4.DFS Traversal without Recursion" &lt;&lt; endl;
+        cout &lt;&lt; "5.BFS Traversal" &lt;&lt; endl;
+        cout &lt;&lt; "6.Exit " &lt;&lt; endl;
+        cout &lt;&lt; "Enter your choice: ";
+        cin &gt;&gt; ch;
+        switch (ch)
+        {
+        case 1:
+            g.read();
+            break;
+        case 2:
+            g.display();
+            break;
+        case 3:
+            cout &lt;&lt; "DFS traversal" &lt;&lt; endl;
+            g.DFS(0);
+            cout &lt;&lt; endl;
+            break;
+        case 4:
+            cout &lt;&lt; "DFS traversal without recursion: " &lt;&lt; endl;
+            g.DFSr(0,st);
+            break;
+        case 5:
+            cout &lt;&lt; "\nBFS traversal" &lt;&lt; endl;
+            g.BFS(0);
+            break;
+        case 6:
+            cout &lt;&lt; "Code Exited" &lt;&lt; endl;
+            exit('0');
+        default:
+            cout &lt;&lt; "\nEnter correct choice!!" &lt;&lt; endl;
+            break;
+        }
+    }
+    return 0;
+}
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">view</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/jtnRXHAzIUc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+#define size 20
+using namespace std;
+class node
+{
+	int x;
+	//string name;
+	node* next;
+public:
+	node(int x)
+	{
+		this->x = x;
+		//name = n;
+		next = NULL;
+	}
+	friend class Graph;
+};
+class Stack
+{
+	char top;
+	int s[20];
+	public:
+		Stack()
+		{
+			top = -1;
+		}
+		void push(int p)
+		{
+			if (top == 19)
+			{
+				cout << "Stack is Full!!" << endl;
+			}
+			else
+			{
+				s[++top] = p;
+
+			}
+		}
+
+		int pop()
+		{
+			int x;
+			if (top == -1)
+			{
+				cout << "Stack is Empty" << endl;
+			}
+			else
+			{
+				x = s[top];
+				top--;
+				return x;
+			}
+		}
+		bool isempty()
+		{
+			if (top == -1)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+};
+
+class Queue
+{
+	int front, rear;
+	int q[size];
+public:
+	Queue()
+	{
+		front = -1;
+		rear = -1;
+	}
+	bool isempty();
+	bool isfull();
+	void enqueue(int);
+	int dequeue();
+};
+bool Queue::isempty()
+{
+	if (rear == -1 && front == -1)
+	{
+		return true;
+	}
+	return false;
+}
+bool Queue::isfull()
+{
+	if (rear == size - 1)
+	{
+		return true;
+	}
+	return false;
+}
+void Queue::enqueue(int s)
+{
+	if (isfull())
+	{
+		cout << "\nOveflow condition!!" << endl;
+		return;
+	}
+	if (front == -1)
+	{
+		front = 0;
+		rear = 0;
+		q[front] = s;
+	}
+	else
+	{
+		rear++;
+		q[rear] = s;
+	}
+}
+int Queue::dequeue()
+{
+	int r;
+	if (isempty())
+	{
+		cout << "\nUnderflow condition!!" << endl;
+	}
+	else
+	{
+		if (front == rear)
+		{
+			r = q[front];
+			front = rear = -1;
+		}
+		else
+		{
+			r = q[front];
+			front++;
+		}
+		return r;
+	}
+}
+class Graph
+{
+	node* adjlist[10];
+	int v, e;
+	string name[10];
+	bool* visited;
+public:
+	Graph(int v, int e)
+	{
+		this->v = v;
+		this->e = e;
+		visited = new bool[v];
+		for (int i = 0; i < v; i++)
+		{
+			adjlist[i] = NULL;
+			visited[i] = false;
+
+		}
+	}
+	void read();
+	void display();
+	void DFS(int);
+	void DFSr(int,Stack);
+	void BFS(int);
+};
+void Graph::read()
+{
+	int s, d,n;
+	string n1, n2;
+	cout << "Enter Name of Landmarks: ";
+	for (int i = 0; i < v; i++)
+	{
+		cin >> name[i];
+	}
+	for (int i = 0; i < e; i++)
+	{
+		cout << "Enter source and destination : " << endl;
+		cin >> n1 >> n2;
+		for (int i = 0; i < v; i++)
+		{
+			if (n1 == name[i])
+			{
+				s = i;
+				break;
+			}
+		}
+		for (int i = 0; i < v; i++)
+		{
+			if (n2 == name[i])
+			{
+				d = i;
+				break;
+			}
+		}
+		node* t1 = new node(s);
+		node* t2 = new node(d);
+		if (adjlist[s] == NULL)
+		{
+			adjlist[s] = t1;
+			adjlist[s]->next = t2;
+		}
+		else
+		{
+			node* head = adjlist[s];
+			while (head->next != NULL)
+			{
+				head = head->next;
+			}
+			head->next = t2;
+		}
+	}
+}
+
+
+void Graph::display()
+{
+	node* temp;
+	for (int i = 0; i < v; i++)
+	{
+		temp = adjlist[i];
+		while (temp != NULL)
+		{
+			cout << name[temp->x] << "-> ";
+			temp = temp->next;
+		}
+		cout << endl;
+	}
+}
+void Graph::DFS(int s)
+{
+	string n;
+
+	node* temp = adjlist[s];
+	cout << name[s] << " -> ";
+	visited[s] = true;
+	for(temp;temp!=NULL;temp=temp->next)
+	//while (temp != NULL)
+	{
+		s = temp->x;
+		if (!visited[s])
+		{
+			DFS(s);
+		}
+		//temp = temp->next;
+	}
+}
+void Graph::DFSr(int s, Stack st)
+{
+	for (int i = 0; i < v; i++)
+	{
+		visited[i] = false;
+	}
+	node* temp;
+	cout << name[s] << " -> ";
+	st.push(s);
+	visited[s] = true;
+	while (!st.isempty())
+	{
+		int a = st.pop();
+		if (visited[a] == false)
+		{
+			cout << name[a] << " -> ";
+			visited[a] = true;
+
+		}
+		temp = adjlist[a];
+		while (temp != NULL)
+		{
+			if (visited[temp->x] == false)
+			{
+				//cout << name[temp->x] << " -> ";
+				st.push(temp->x);
+				//visited[temp->x] = true;
+
+			}
+			temp = temp->next;
+		}
+	}
+}
+void Graph::BFS(int s)
+{
+	for (int i = 0; i < v; i++)
+	{
+		visited[i] = false;
+	}
+	Queue q;
+	visited[s] = true;
+	q.enqueue(s);
+	node* head;
+	while (!q.isempty())
+	{
+		s = q.dequeue();
+		cout << name[s] << " -> ";
+		head = adjlist[s];
+		for (head; head != NULL; head = head->next)
+		{
+			if (!visited[head->x])
+			{
+				q.enqueue(head->x);
+				visited[head->x] = true;
+			}
+		}
+	}
+}
+int main()
+{
+	int ne, nv;
+	cout << "Enter number of vertices: ";
+	cin >> nv;
+	cout << "\nEnter number of edges: ";
+	cin >> ne;
+	cout << endl;
+	Graph g(nv, ne);
+	Stack st;
+	int ch;
+	while(true)
+	{
+		cout << "\n----------Menu----------" << endl;
+		cout << "1.Read the Graph" << endl;
+		cout << "2.Display the graph" << endl;
+		cout << "3.DFS Traversal with recursion" << endl;
+		cout << "4.DFS Traversal without Recursion" << endl;
+		cout << "5.BFS Traversal" << endl;
+		cout << "6.Exit " << endl;
+		cout << "Enter your choice: ";
+		cin >> ch;
+		switch (ch)
+		{
+		case 1:
+			g.read();
+			break;
+		case 2:
+			g.display();
+			break;
+		case 3:
+			cout << "DFS traversal" << endl;
+			g.DFS(0);
+			cout << endl;
+			break;
+		case 4:
+			cout << "DFS traversal without recursion: " << endl;
+			g.DFSr(0,st);
+			break;
+		case 5:
+			cout << "\nBFS traversal" << endl;
+			g.BFS(0);
+			break;
+		case 6:
+			cout << "Code Exited" << endl;
+			exit('0');
+		default:
+			cout << "\nEnter correct choice!!" << endl;
+			break;
+		}
+	}
+	return 0;
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 6.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

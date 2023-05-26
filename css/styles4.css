@@ -1,0 +1,275 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color :#0E141E;
+    font-family: 'Poppins', sans-serif;
+    
+}
+/* #111827 */
+
+/* nav bar section */
+
+
+.nav{
+    display: flex;
+    background-color: #111827;
+    height: 10vh;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.411);
+    align-items: center;
+    justify-content: center;
+}
+
+.nav img{
+    width: 110px;
+    margin-left: 9vw;
+}
+
+.nav .logo{
+    width: 50vw;
+}
+
+.nav ul{
+    display: flex;
+    width: 50%;
+    justify-content: space-around;
+    list-style: none;
+    align-items: center;
+    margin-right:9vw ;
+}
+
+.nav ul li{
+    font-size: 1.1em;
+}
+
+.nav ul li a{
+    position: relative;
+    color: rgb(208, 208, 208);
+    cursor: pointer;
+}
+
+.nav ul li a:before{
+    position: absolute;
+    content: "";
+    width : 0%;
+    height: 1px;
+    border-bottom: 3px solid #2ec866;
+    border-radius: 1.5em;
+    bottom: -8px;
+    transition: all 0.3s;
+}
+
+.nav ul li a:hover:before{
+    width:70%;
+}
+
+.nav ul li a:hover{
+    color: white;
+}
+
+.nav ul li a{
+    text-decoration: none;
+}
+
+/* hero section */
+.hero{
+    display: flex;
+    background-color: #0E141E;
+    height: 90vh;
+}
+
+.left{
+    display: flex;
+    width: 50vw;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 9vw;
+}
+
+.left h1{
+    font-size: 5em;
+    color: white;
+    line-height:1.0;
+}
+
+.left h1 span{
+    color: #2ec866;
+    position: relative;
+}
+
+.left span::before{
+    content: "HARD WORK";
+    color: #2ec866;
+    animation: words 20s infinite;
+}
+
+.left span::after{
+    content: "";
+    position: absolute;
+    width: calc(100% + 8px);
+    height: 100%;
+    background-color: #0E141E;
+    border-left: 2px solid #2ec866;
+    right: -8px;
+    animation: cursor .8s infinite, typing 33s steps(15) infinite;
+}
+
+@keyframes cursor {
+    to{
+        border-left: 2px solid #ff7f5000;
+    }
+}
+
+@keyframes words {
+    0%,33%{
+        content: "HARD WORK";
+    }
+    34%,67%{
+        content: "CONSISTENCY";
+    }
+    68%,100%{
+        content: "ENGINEERING";
+    }
+}
+
+@keyframes typing {
+    10%,15%,30%,35%,50%,55%,70%,75%,90%,95%{
+        width: 0;
+    }
+    5%,20%,25%,40%,45%,60%,65%,80%,85%{
+        width: calc(100% + 8px);
+    }
+}
+
+.left p{
+    font-size: 1.5em;
+    font-weight: normal;
+    color: #d4e4f9;
+    margin-top: 2em;
+    width: 90%;
+    text-align: justify;
+}
+
+
+.left .btn{
+    margin-top: 1.2em;
+    display: flex;
+    gap: 2.2em;
+    width: 100%;
+}
+
+.left .btn a{
+    background-color: #2ec866;
+    text-decoration: none;
+    color: white;
+    padding: 0.5em 1.5em;
+    border-radius: 1.2em;
+    font-size: 1.4em;
+    transition: all 0.3s ease-in;
+}
+
+.left .btn a:hover{
+    background-color: #166b35;
+}
+
+.right{
+    width: 50vw;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.right img{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 150%;
+    opacity: 1;
+}
+
+.about{
+    height: 100vh;
+    background-color: #0E141E;
+    color: #2ec866;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.about h1{
+    position: relative;
+    top: 2.2em;
+    font-size: 3.2rem;
+}
+
+
+.con{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    gap: 1em ;
+    align-items: center;
+}
+
+.pep{
+    width: 18%;
+    height: 50%;
+    /* background-color: white; */
+    position: relative;
+}
+
+.pep img{
+    width: 80%;
+    border-radius: 200px;
+    text-align: center;
+}
+
+.pep h1{
+    font-size: 2.5em;
+}
+
+
+.pep .info{
+    margin-top: 0.5em;
+    color: #d4e4f9;
+    transition: all 0.3s ease-in;
+}
+
+.info h2{
+    font-size: 2.0em;
+    font-weight: 700;
+    transition: all 0.2s ease-in;
+}
+
+.info p{
+    font-size: 0.7em;
+    letter-spacing: 3px;
+
+}
+
+.pep:hover .info h2{
+    color: #2ec866;
+}
+
+
+.overlay{
+    position: absolute;
+    z-index: 999;
+    background: #151e2e;
+    width: 100%;
+    height: 100%;
+    animation: reveal 1s ease-in forwards;
+    transform-origin:bottom;
+}
+
+@keyframes reveal {
+    from{
+        transform: scaleY(1);
+    }
+    to{
+        transform :scaleY(0);
+    }
+}

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp2</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #fffdfd;"></i> Problem Statement</h1>
+                <p>Write a Python program to compute following operations on String: a) To display word with
+                    the longest length b) To determines the frequency of occurrence of particular character in the
+                    string c) To check whether given string is palindrome or not d) To display index of first
+                    appearance of the substring e) To count the occurrences of each word in a given string (Do
+                    not use string built-in functions)
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-py">
+class Stringoperation:
+def __init__(self,stringmain):
+    self.stringmain=stringmain
+
+    
+# Function for finding the length of te string :::::
+def lengthof(self,stringmain):
+    count = 0
+    for i in self.stringmain:
+        count = count + 1
+    return count
+# Function For finding The reverse of the function :
+def reverseof(self,stringmain, len):
+    stringnew = str()
+    for i in range(len - 1, -1, -1):
+        stringnew = stringnew + self.stringmain[i]
+    return stringnew
+# function for checking Palindrome::::
+def CheckPalindrone(self,stringmain, str34):
+    self.stringmain=stringmain
+    self.str34=str34
+    if (self.stringmain == self.str34):
+        print("\nYes The String Is Palindrome")
+    else:
+        print("\nNot A Palindrome")
+# function for Calculating Frequecncy of a Charector given:
+def Frequencycheck(self,stringmain, chr):
+    counter = 0
+    for i in self.stringmain:
+        if (i == chr):
+            counter = counter + 1
+        else:
+            pass
+    if (counter == 0):
+        print("The Charector you Enter is not in the String ")
+    else:
+        print("\nThe Frequency of occurence of ' ", chr, " ' is: ", counter)
+def getlist(self,stringmain):
+    u = self.stringmain + " "
+    spell = ""
+    wordlist = []
+    for i in u:
+        if (i != " "):
+            spell = spell + i
+        elif (i == " "):
+            wordlist.append(spell)
+            spell = ""
+    return wordlist
+
+def Longestword(self,stringmain):
+    u = self.stringmain + " "
+    spell = ""
+    wordlist = []
+    for i in u:
+        if (i != " "):
+            spell = spell + i
+        elif (i == " "):
+            wordlist.append(spell)
+            spell = ""
+    longword = ""
+    longlenth =0
+    for k in range(len(wordlist)):
+        if (len(wordlist[k])>longlenth)  :
+            longlenth=len(wordlist[k])
+            longword= wordlist[k]
+    print("The Longest word is:", longword)
+def indexcheck(self,stringmain,str):
+    self.stringmain=stringmain
+    self.str=str
+    newlist = self.getlist(stringmain)
+    indexfound = 0
+    for i in range(0, len(newlist)):
+        if str not in newlist[i]:
+            indexfound = indexfound + len(newlist[i])
+        else:
+            indexfound = indexfound + i
+            break
+    print("The Index of the 1st Apperance of the substring is :",indexfound)
+def checkoccurence(self,stringmain):
+    newlist = self.getlist(self.stringmain)
+    for i in range(0, len(newlist)):
+        counter = 0
+        for j in range(0, len(newlist)):
+            if newlist[i] == newlist[j]:
+                counter = counter + 1
+            else:
+                pass
+        if counter != 0:
+            print("The Ocurence of", newlist[i], "is :", counter, "times in the string.")
+            counter = 0
+#Calling of the class and their attribuets ::
+            ngmain=str(input("Enter A String For performing Operation \n"))
+            t("The string is:- " ,stringmain)
+            t("Chose the operation you want to perform:\n")
+            t("  1.To Display the Longest word of the string.")
+            t("  2.To Determine the frequency of the occerence of the particular charector .\n")
+            t("  3.To Check whether the String is a Palindrome or not.\n")
+            t("  4.To Display the index of the first appereance of the Substring .\n")
+            t("  5.To Count occerence of each word of the String .")
+            t("  0.To Exit.")
+            Stringoperation(stringmain)
+            e True:
+a=int(input("Enter the choice:"))
+if(a==1):
+    obj.Longestword(stringmain)
+elif(a==2):
+    chr=input("Enter A charecter for the frecquency check:\n")
+    obj.Frequencycheck(stringmain,chr)
+elif(a==3):
+    str34 = obj.reverseof(stringmain, obj.lengthof(stringmain))
+   
+    obj.CheckPalindrone(stringmain, str34)
+elif(a==4):
+    str=input("Enter a Substring For Index Check\n")
+    
+    obj.indexcheck(stringmain,str)
+elif(a==5):
+    obj.checkoccurence(stringmain)
+elif(a>5):
+    print("Choice Out of Range,Enter Coorect Choice \n")
+elif(a==0):
+    exit()
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/Wdjr6uoZ0e0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `class Stringoperation:
+    def __init__(self,stringmain):
+        self.stringmain=stringmain
+   
+        
+    # Function for finding the length of te string :::::
+    def lengthof(self,stringmain):
+
+        count = 0
+        for i in self.stringmain:
+            count = count + 1
+        return count
+
+
+    # Function For finding The reverse of the function :
+    def reverseof(self,stringmain, len):
+        stringnew = str()
+        for i in range(len - 1, -1, -1):
+            stringnew = stringnew + self.stringmain[i]
+        return stringnew
+
+    # function for checking Palindrome::::
+    def CheckPalindrone(self,stringmain, str34):
+        self.stringmain=stringmain
+        self.str34=str34
+        if (self.stringmain == self.str34):
+            print("\nYes The String Is Palindrome")
+        else:
+            print("\nNot A Palindrome")
+
+    # function for Calculating Frequecncy of a Charector given:
+    def Frequencycheck(self,stringmain, chr):
+        counter = 0
+        for i in self.stringmain:
+            if (i == chr):
+                counter = counter + 1
+            else:
+                pass
+        if (counter == 0):
+            print("The Charector you Enter is not in the String ")
+        else:
+            print("\nThe Frequency of occurence of ' ", chr, " ' is: ", counter)
+
+    def getlist(self,stringmain):
+        u = self.stringmain + " "
+        spell = ""
+        wordlist = []
+        for i in u:
+            if (i != " "):
+                spell = spell + i
+            elif (i == " "):
+                wordlist.append(spell)
+                spell = ""
+        return wordlist
+ 
+    def Longestword(self,stringmain):
+        u = self.stringmain + " "
+        spell = ""
+        wordlist = []
+        for i in u:
+            if (i != " "):
+                spell = spell + i
+            elif (i == " "):
+                wordlist.append(spell)
+                spell = ""
+        longword = ""
+        longlenth =0
+
+        for k in range(len(wordlist)):
+            if (len(wordlist[k])>longlenth)  :
+                longlenth=len(wordlist[k])
+                longword= wordlist[k]
+
+
+        print("The Longest word is:", longword)
+
+    def indexcheck(self,stringmain,str):
+        self.stringmain=stringmain
+        self.str=str
+        newlist = self.getlist(stringmain)
+        indexfound = 0
+        for i in range(0, len(newlist)):
+            if str not in newlist[i]:
+                indexfound = indexfound + len(newlist[i])
+
+            else:
+                indexfound = indexfound + i
+                break
+
+        print("The Index of the 1st Apperance of the substring is :",indexfound)
+
+    def checkoccurence(self,stringmain):
+        newlist = self.getlist(self.stringmain)
+        for i in range(0, len(newlist)):
+            counter = 0
+            for j in range(0, len(newlist)):
+                if newlist[i] == newlist[j]:
+                    counter = counter + 1
+
+                else:
+                    pass
+            if counter != 0:
+                print("The Ocurence of", newlist[i], "is :", counter, "times in the string.")
+                counter = 0
+
+
+    #Calling of the class and their attribuets ::
+
+stringmain=str(input("Enter A String For performing Operation \n"))
+print("The string is:- " ,stringmain)
+
+print("Chose the operation you want to perform:\n")
+print("  1.To Display the Longest word of the string.")
+print("  2.To Determine the frequency of the occerence of the particular charector .\n")
+print("  3.To Check whether the String is a Palindrome or not.\n")
+print("  4.To Display the index of the first appereance of the Substring .\n")
+print("  5.To Count occerence of each word of the String .")
+print("  0.To Exit.")
+
+
+obj=Stringoperation(stringmain)
+
+
+while True:
+    a=int(input("Enter the choice:"))
+    if(a==1):
+        obj.Longestword(stringmain)
+    elif(a==2):
+        chr=input("Enter A charecter for the frecquency check:\n")
+        obj.Frequencycheck(stringmain,chr)
+    elif(a==3):
+        str34 = obj.reverseof(stringmain, obj.lengthof(stringmain))
+       
+        obj.CheckPalindrone(stringmain, str34)
+    elif(a==4):
+        str=input("Enter a Substring For Index Check\n")
+        
+        obj.indexcheck(stringmain,str)
+    elif(a==5):
+        obj.checkoccurence(stringmain)
+    elif(a>5):
+        print("Choice Out of Range,Enter Coorect Choice \n")
+    elif(a==0):
+        exit()`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-2 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

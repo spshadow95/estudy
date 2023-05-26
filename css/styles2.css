@@ -1,0 +1,127 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #151e2e;
+}
+
+.problem{
+    font-size: 1.5em;
+    margin: 1.2em auto;
+    font-family: 'Poppins', sans-serif;
+    margin: 1.2em 5.2em;
+}
+
+.problem h1{
+    color: white;
+}
+
+.problem p{
+    color:#d4e4f9;
+}
+
+
+
+.codeblock{
+    width: 70%;
+    position: relative;
+}
+
+.codeblock #copy-btn{
+    position: absolute;
+    top: 30px;
+    right: 16px;
+    background-color: #2ec866;
+    outline: none;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1.2em;
+    transition: all 0.3s ease-in;
+    color: white;
+}
+
+
+.codeblock #copy-btn:hover{
+    background-color: #1f8544;
+}
+
+
+.hljs{
+    font-size: 1.5em;
+    border-radius: 0.5em;
+}
+
+.lab-manual{
+    margin: 3em;
+    display: flex;
+    gap: 4.1em;
+    font-family: 'Poppins', sans-serif;
+    justify-content: center;
+    align-items: center;
+}
+
+.lab-manual h2{
+    font-size: 2.2em;
+    color: #d4e4f9;
+}
+
+.lab-manual a{
+    text-decoration: none;
+    padding: 0.5em 2em;
+    background-color: #2ec866;
+    color: white;
+    font-size: 1.5em;
+    font-weight: normal;
+    border-radius: 2em;
+    transition: all 0.3s ease-in;
+}
+
+.lab-manual a:hover{
+    background-color: #1c8141;
+}
+
+.references{
+    margin-top: 3em;
+    color: #2ec866;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.references h2{
+    margin-bottom: 1em;
+}
+
+.references iframe{
+    margin-bottom: 10vh;
+}
+
+.overlay{
+    position: absolute;
+    z-index: 999;
+    background: #151e2e;
+    width: 100%;
+    height: 100%;
+    animation: reveal 0.4s ease-in forwards;
+    transform-origin:bottom;
+}
+
+@keyframes reveal {
+    from{
+        transform: scaleY(1);
+    }
+    to{
+        transform :scaleY(0);
+    }
+}

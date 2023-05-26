@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles6.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <h1><i class="fa-solid fa-chalkboard-user" style="color: #2ec866;"></i> Welcome, <span>XYZ</span></h1>
+            <div class="action">
+                <div class="left">
+                    <div class="form">
+                        <div class="item">
+                            <label for="cars">Choose subject:</label>
+                            <select name="subject" id="subjects">
+                              <option name='abcd' value="DELD">DELD</option>
+                              <option name='abcd' value="FDS">FDS</option>
+                              <option name='abcd' value="CG">CG</option>
+                              <option name='abcd' value="DM">DM</option>
+                              <option name='abcd' value="OOP">OOP</option>
+                              <option name='abcd' value="EM-3">EM-3</option>
+                              <option name='abcd' value="DSA">DSA</option>
+                              <option name='abcd'  value="SE">SE</option>
+                              <option name='abcd' value="MP">MP</option>
+                              <option name='abcd' value="PPL">PPL</option>
+                              
+                            </select>
+                        </div>
+                        <div class="item">
+                            <label for="unitname">Unit number :</label>
+                            <select name="unit" id="unitnumbers">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                              </select>
+                        </div>
+
+                        <div class="item">
+                            <input type="file" class="inputfile" id="inp">
+                            <button id="uploadbtn">upload</button>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="right">
+                    <i class="fa-solid fa-handshake-angle fa-fade" style="color: #d4e4f9;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    var fileitem;
+    var filename;
+    var foldername;
+
+    document.getElementById("uploadbtn").addEventListener('click', function () {
+        fileitem = document.getElementById("inp").files[0];
+        filename = document.getElementById("unitnumbers").value;
+        foldername=document.getElementById("subjects").value;
+
+        const storageRef = ref(storage, foldername+"/"+ "unit"+filename+".pdf");
+
+        // 'file' comes from the Blob or File API
+        uploadBytes(storageRef, fileitem).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+            alert("file uploaded successfully")
+        });
+
+    })
+    // document.getElementById('deletebtn').addEventListener('click', function () {
+    //     const desertRef = ref(storage, 'documents/unit1.pdf');
+
+    //     // Delete the file
+    //     deleteObject(desertRef).then(() => {
+    //         // File deleted successfully
+    //         console.log("File deleted successfully");
+    //     }).catch((error) => {
+    //         // Uh-oh, an error occurred!
+    //         console.log("Uh-oh, an error occurred!");
+    //     });
+
+    // })
+
+    // function checkfile(){
+    //     // const desertRef = ref(storage, 'documents/unit1.pdf');
+    //     // if(desertRef){
+    //     //     document.getElementById('inp').style.visibility= "hidden";
+    //     // }
+    //     getDownloadURL(ref(storage, 'documents/unit1.pdf'))
+    //         .then((url) => {
+    //             document.getElementById('inp').style.visibility= "hidden";
+    //             document.getElementById('uploadbtn').style.visibility="hidden";
+    //             document.getElementById('uploadfield').style.zIndex=-1;
+    //         })
+    //         .catch((error) => {
+    //             // Handle any errors
+    //         });
+    // }
+    // checkfile();
+
+    // // document.getElementById('openbtn').addEventListener('click', function(){
+    // //     window.location=''
+    // // })
+
+    // document.getElementById('openbtn').addEventListener('click', function () {
+    //     getDownloadURL(ref(storage, 'documents/unit1.pdf'))
+    //         .then((url) => {
+    //             // `url` is the download URL for 'images/stars.jpg'
+
+    //             // This can be downloaded directly:
+    //             // const xhr = new XMLHttpRequest();
+    //             // xhr.responseType = 'blob';
+    //             // xhr.onload = (event) => {
+    //             //     const blob = xhr.response;
+    //             // };
+    //             // xhr.open('GET', url);
+    //             // xhr.send();
+
+
+    //             // Or inserted into an <img> element
+    //             // const img = document.getElementById('img');
+    //             // img.setAttribute('src', url);
+    //             //window.location.href = url;
+    //             window.open(url);
+    //             // $('a.yourlink').click(function (e) {
+    //             //     e.preventDefault();
+    //             //     window.open(url); // it will open download of filepath
+
+    //             // });
+
+    //         })
+    //         .catch((error) => {
+    //             // Handle any errors
+    //         });
+
+    // })
+
+
+</script>
+</html>

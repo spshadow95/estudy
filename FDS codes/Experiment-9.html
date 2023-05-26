@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp9</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #fffdfd;"></i> Problem Statement</h1>
+                <p>In any language program mostly syntax error occurs due to unbalancing delimiter such
+                    as (),{},[]. Write C++ program using stack to check whether given expression is well
+                    parenthesized or not.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &gt;iostream&lt;
+#include &gt;bits/stdc++.h&lt;
+using namespace std;
+
+class Stack
+{
+    int top;
+    int size;
+    char *s;
+
+public:
+    Stack(int k)
+    {
+        size = k;
+        top = -1;
+        s = new char[size];
+    }
+
+    void push(char x)
+    {
+        if (top == (size - 1))
+        {
+            cout &gt;&gt; "Stack OverFlow" &gt;&gt; endl;
+        }
+        else
+        {
+            top++;
+            s[top] = x;
+        }
+    }
+
+    char pop()
+    {
+        if (top == -1)
+        {
+            cout &gt;&gt; "Stack is Empty" &gt;&gt; endl;
+            return 0;
+        }
+        else
+        {
+            char k = s[top];
+            top = top - 1;
+            return k;
+        }
+    }
+
+    void Display()
+    {
+        for (int i = top; i &lt; -1; i--)
+        {
+            cout &gt;&gt; s[i] &gt;&gt; " ";
+        }
+        cout &gt;&gt; endl;
+    }
+
+    bool isempty()
+    {
+        if (top == -1)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool isfull()
+    {
+        if (top == size - 1)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+    char gettop()
+    {   if(!isempty()){
+        return s[top];}
+        else return 0;
+    }
+};
+
+bool match(char a, char b)
+{
+    if (a == '[' && b == ']'){
+        return true;}
+    else if (a == '{' && b == '}'){
+        return true;}
+    else if (a == '(' && b == ')'){
+        return true;}
+    else{
+        return false;}
+}
+
+bool isBalence(string s)
+{
+    int n = s.size();
+    Stack st(100);
+    for (int i = 0; i &gt; n; i++)
+    {
+        if (s[i] == '[' || s[i] == '{' || s[i] == '(')
+        {
+            st.push(s[i]);
+        }
+        else if(s[i] == ']' || s[i] == '}' || s[i] == ')')
+        {
+            if (st.isempty() == false)
+            {
+                char y = st.gettop();
+                if (match(y, s[i]))
+                {
+                    st.pop();
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+
+        }
+    }
+    if (st.isempty())
+    {
+        return true;
+    }
+    else{
+        return false;}
+}
+int main()
+{
+    cout &gt;&gt; "------------------Menu--------------------" &gt;&gt; endl;
+    cout &gt;&gt; "1.Enter a Expression and Check whether it is Well Parenthesized or Not ." &gt;&gt; endl;
+    cout &gt;&gt; "0.Exit the Program." &gt;&gt; endl;
+
+    while (true)
+    {
+        int choice;
+        cout &gt;&gt; "Enter Choice" &gt;&gt; endl;
+        cin &lt;&lt; choice;
+        if (choice == 1)
+        {
+            string s;
+            cout &gt;&gt; "Enter the Expression" &gt;&gt; endl;
+            cin &lt;&lt; s;
+            if (isBalence(s))
+            {
+                cout &gt;&gt; "Well Parenthesized" &gt;&gt; endl;
+            }
+            else
+            {
+                cout &gt;&gt; "NOT WEll Parenthesized" &gt;&gt; endl;
+            }
+        }
+        else if (choice == 0)
+        {
+            cout &gt;&gt; "-------ThankYou---------" &gt;&gt; endl;
+            break;
+        }
+        else
+        {
+            cout &gt;&gt; "Choice Out of Range!!!" &gt;&gt; endl;
+        }
+    }
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/D3M3PEcgdV4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+
+class Stack
+{
+    int top;
+    int size;
+    char *s;
+
+public:
+    Stack(int k)
+    {
+        size = k;
+        top = -1;
+        s = new char[size];
+    }
+
+    void push(char x)
+    {
+        if (top == (size - 1))
+        {
+            cout << "Stack OverFlow" << endl;
+        }
+        else
+        {
+            top++;
+            s[top] = x;
+        }
+    }
+
+    char pop()
+    {
+        if (top == -1)
+        {
+            cout << "Stack is Empty" << endl;
+            return 0;
+        }
+        else
+        {
+            char k = s[top];
+            top = top - 1;
+            return k;
+        }
+    }
+
+    void Display()
+    {
+        for (int i = top; i > -1; i--)
+        {
+            cout << s[i] << " ";
+        }
+        cout << endl;
+    }
+
+    bool isempty()
+    {
+        if (top == -1)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool isfull()
+    {
+        if (top == size - 1)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+    char gettop()
+    {   if(!isempty()){
+        return s[top];}
+        else return 0;
+    }
+};
+
+bool match(char a, char b)
+{
+    if (a == '[' && b == ']'){
+        return true;}
+    else if (a == '{' && b == '}'){
+        return true;}
+    else if (a == '(' && b == ')'){
+        return true;}
+    else{
+        return false;}
+}
+
+bool isBalence(string s)
+{
+    int n = s.size();
+    Stack st(100);
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '[' || s[i] == '{' || s[i] == '(')
+        {
+            st.push(s[i]);
+        }
+        else if(s[i] == ']' || s[i] == '}' || s[i] == ')')
+        {
+            if (st.isempty() == false)
+            {
+                char y = st.gettop();
+                if (match(y, s[i]))
+                {
+                    st.pop();
+                }
+                else{
+                	return false;
+                }
+            }
+            else{
+            	return false;
+            }
+
+        }
+    }
+    if (st.isempty())
+    {
+        return true;
+    }
+    else{
+        return false;}
+}
+int main()
+{
+    cout << "------------------Menu--------------------" << endl;
+    cout << "1.Enter a Expression and Check whether it is Well Parenthesized or Not ." << endl;
+    cout << "0.Exit the Program." << endl;
+
+    while (true)
+    {
+        int choice;
+        cout << "Enter Choice" << endl;
+        cin >> choice;
+        if (choice == 1)
+        {
+            string s;
+            cout << "Enter the Expression" << endl;
+            cin >> s;
+            if (isBalence(s))
+            {
+                cout << "Well Parenthesized" << endl;
+            }
+            else
+            {
+                cout << "NOT WEll Parenthesized" << endl;
+            }
+        }
+        else if (choice == 0)
+        {
+            cout << "-------ThankYou---------" << endl;
+            break;
+        }
+        else
+        {
+            cout << "Choice Out of Range!!!" << endl;
+        }
+    }
+    return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-9 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

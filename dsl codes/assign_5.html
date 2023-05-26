@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Write a function template for selection sort that inputs, sorts
+                    and outputs an integer array and a float array.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+
+# include &lt;iostream&gt;
+using namespace std;
+
+template &lt;typename T&gt;
+
+void sort(T arr[], int n){
+    // selection sort
+    for (int i=0; i&lt;n-1; i++){
+        int minIndex = i;
+        for (int j=i+1; j&lt;n; j++){
+            if (arr[j] &lt; arr[minIndex]){
+                minIndex = j;
+            }
+        }
+        T temp = arr[minIndex];
+        arr[minIndex] = arr[i];
+        arr[i] = temp;
+    }
+}
+
+int main(){
+//  arrays of int and float ypes
+//	int a[] = {21, 45, 73, 11, 89, 34};
+//	int n = 6;
+//	float b[] = {1.24, 9.56, 3.45, 10.01, 3.32, 5.67};
+//	int m = 6;
+
+    // user input
+    int n, m;
+    cout &lt;&lt; "Enter No. of Elements for int array A:" &lt;&lt; endl;
+    cin &gt;&gt; n;
+    cout &lt;&lt; "Enter No. of Elements for float array B:" &lt;&lt; endl;
+    cin &gt;&gt; m;
+
+    int *a = new int[n];
+    float *b = new float[m];
+
+    cout &lt;&lt; "Enter " &lt;&lt; n &lt;&lt; " Integers:" &lt;&lt; endl;
+    for (int i=0; i&lt;n; i++){
+        cin &gt;&gt; a[i];
+    }
+
+    cout &lt;&lt; "Enter " &lt;&lt; m &lt;&lt; " Floats:" &lt;&lt; endl;
+    for (int i=0; i&lt;m; i++){
+        cin &gt;&gt; b[i];
+    }
+
+    // before sorting
+    cout &lt;&lt; "\nBefore Sorting : " &lt;&lt; endl;
+    cout &lt;&lt; "A = {";
+    for(int i=0; i&lt;n; i++){
+        cout &lt;&lt; a[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; "}" &lt;&lt; endl;
+
+    cout &lt;&lt; "B = {";
+    for(int i=0; i&lt;m; i++){
+        cout &lt;&lt; b[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; "}" &lt;&lt; endl;
+
+    sort&lt;int&gt;(a, n);
+    sort&lt;float>(b, m);
+
+    // after sorting
+    cout &lt;&lt; "\nAfter Sorting : " &lt;&lt; endl;
+    cout &lt;&lt; "A = {";
+    for(int i=0; i&lt;n; i++){
+        cout &lt;&lt; a[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; "}" &lt;&lt; endl;
+
+    cout &lt;&lt; "B = {";
+    for(int i=0; i&lt;m; i++){
+        cout &lt;&lt; b[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; "}" &lt;&lt; endl;
+
+    return 0;
+}
+    
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/N6tjqw-gg5I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `# include <iostream>
+using namespace std;
+
+template <typename T>
+
+void sort(T arr[], int n){
+	// selection sort
+	for (int i=0; i<n-1; i++){
+		int minIndex = i;
+		for (int j=i+1; j<n; j++){
+			if (arr[j] < arr[minIndex]){
+				minIndex = j;
+			}
+		}
+		T temp = arr[minIndex];
+		arr[minIndex] = arr[i];
+		arr[i] = temp;
+	}
+}
+
+int main(){
+//  arrays of int and float ypes
+//	int a[] = {21, 45, 73, 11, 89, 34};
+//	int n = 6;
+//	float b[] = {1.24, 9.56, 3.45, 10.01, 3.32, 5.67};
+//	int m = 6;
+
+	// user input
+	int n, m;
+	cout << "Enter No. of Elements for int array A:" << endl;
+	cin >> n;
+	cout << "Enter No. of Elements for float array B:" << endl;
+	cin >> m;
+
+	int *a = new int[n];
+	float *b = new float[m];
+
+	cout << "Enter " << n << " Integers:" << endl;
+	for (int i=0; i<n; i++){
+		cin >> a[i];
+	}
+
+	cout << "Enter " << m << " Floats:" << endl;
+	for (int i=0; i<m; i++){
+		cin >> b[i];
+	}
+
+	// before sorting
+	cout << "\nBefore Sorting : " << endl;
+	cout << "A = {";
+	for(int i=0; i<n; i++){
+		cout << a[i] << " ";
+	}
+	cout << "}" << endl;
+
+	cout << "B = {";
+	for(int i=0; i<m; i++){
+		cout << b[i] << " ";
+	}
+	cout << "}" << endl;
+
+	sort<int>(a, n);
+	sort<float>(b, m);
+
+	// after sorting
+	cout << "\nAfter Sorting : " << endl;
+	cout << "A = {";
+	for(int i=0; i<n; i++){
+		cout << a[i] << " ";
+	}
+	cout << "}" << endl;
+
+	cout << "B = {";
+	for(int i=0; i<m; i++){
+		cout << b[i] << " ";
+	}
+	cout << "}" << endl;
+
+	return 0;
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/OOP_LAB MANUAL 2022-23 OOP (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

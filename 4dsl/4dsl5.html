@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Implement all the functions of a dictionary (ADT) using open hashing technique:
+                    separate chaining using linked list
+                    Data: Set of (key, value) pairs, Keys are mapped to values, Keys must be
+                    comparable, and Keys must be unique. Standard Operations: Insert(key, value),
+                    Find(key), Delete(key)
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &lt;bits/stdc++.h&gt;
+#define size 10
+using namespace std;
+class Node
+{
+string key;
+string value;
+Node *next;
+public:
+Node()
+{
+key="";
+value="";
+next=NULL;
+}
+Node(string k, string v)
+{
+key=k;
+value=v;
+next=NULL;
+}
+friend class OpenHashing;
+};
+class OpenHashing
+{
+Node **hashArray = new Node*[size];
+public:
+OpenHashing()
+{
+for(int i=0;i&lt;size;i++)
+hashArray[i]=NULL;
+}
+void InsertAtBegin(Node *&head, string key, string value)
+{
+Node *p1 = new Node(key,value);
+if(head==NULL)
+head=p1;
+else
+{
+p1-&gt;next = head;
+head = p1;
+}
+}
+int HashFunction(string key)
+{
+return int(key[0])%size;
+}
+void Insert(string key, string value)
+{
+int index = HashFunction(key);
+InsertAtBegin(hashArray[index]
+}
+bool Search(string key)
+{
+
+int index = HashFunction(key);
+Node *p = hashArray[index];
+while(p!=NULL)
+{
+if(p-&gt;key==key)
+return true;
+p=p-&gt;next;
+}
+return false;
+}
+void Delete(string key)
+{
+if (Search(key)==true)
+{
+int index = HashFunction(key);
+Node *P = hashArray[index];
+Node *Q = NULL;
+while (P != NULL && P-&gt;key != key)
+{
+Q = P;
+P = P-&gt;next;
+}
+if (Q == NULL)
+{
+hashArray[index] = P-&gt;next;
+P-&gt;next = NULL;
+delete P;
+}
+else
+{
+Q-&gt;next = P-&gt;next;
+P-&gt;next = NULL;
+delete P;
+}
+}
+else
+{
+cout &lt;&lt; "Key is not present in the hash table." &lt;&lt; endl;
+}
+}
+void Display()
+{
+for (int i = 0; i &lt; size; i++)
+{
+cout &lt;&lt; i &lt;&lt; " ";
+Node *P = hashArray[i];
+while (P != NULL)
+{
+cout &lt;&lt; "{" &lt;&lt; P-&gt;key &lt;&lt; ":" &lt;&lt; P-&gt;value &lt;&lt; "}"
+&lt;&lt; "-&gt;";
+P = P-&gt;next;
+}
+cout &lt;&lt; endl;
+}
+}
+};
+
+int main()
+{
+OpenHashing h;
+while (true)
+{
+cout &lt;&lt; "1.Insert key\n2.Display Hash Table\n3.Delete key\n4.Find key\n5.Exit" &lt;&lt; endl;
+int n;
+cin &gt;&gt; n;
+if (n == 1)
+{
+string s, s1;
+cout &lt;&lt; "Enter the key you want to insert" &lt;&lt; endl;
+cin.ignore();
+getline(cin, s);
+cout &lt;&lt; "Enter the value you want to insert" &lt;&lt; endl;
+getline(cin, s1);
+h.Insert(s, s1);
+}
+else if (n == 2)
+h.Display();
+else if (n == 3)
+{
+string s;
+cout &lt;&lt; "Enter the key you want to delete" &lt;&lt; endl;
+cin.ignore();
+getline(cin, s);
+h.Delete(s);
+}
+else if (n == 4)
+{
+string s;
+cout &lt;&lt; "Enter the key you want to find" &lt;&lt; endl;
+cin.ignore();
+getline(cin, s);
+if (h.Search(s))
+cout &lt;&lt; "Element found" &lt;&lt; endl;
+else
+cout &lt;&lt; "Element not found" &lt;&lt; endl;
+}
+else if (n==5)
+break;
+else
+cout&lt;&lt;"Invalid choice. Please enter a valid number from 1 to 5."&lt;&lt;endl;
+}
+return 0;
+}                                        
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/7mUKGHznpfg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <bits/stdc++.h>
+#define size 10
+using namespace std;
+class Node
+{
+string key;
+string value;
+Node *next;
+public:
+Node()
+{
+key="";
+value="";
+next=NULL;
+}
+Node(string k, string v)
+{
+key=k;
+value=v;
+next=NULL;
+}
+friend class OpenHashing;
+};
+class OpenHashing
+{
+Node **hashArray = new Node*[size];
+public:
+OpenHashing()
+{
+for(int i=0;i<size;i++)
+hashArray[i]=NULL;
+}
+void InsertAtBegin(Node *&head, string key, string value)
+{
+Node *p1 = new Node(key,value);
+if(head==NULL)
+head=p1;
+else
+{
+p1->next = head;
+head = p1;
+}
+}
+int HashFunction(string key)
+{
+return int(key[0])%size;
+}
+void Insert(string key, string value)
+{
+int index = HashFunction(key);
+InsertAtBegin(hashArray[index]
+}
+bool Search(string key)
+{
+
+int index = HashFunction(key);
+Node *p = hashArray[index];
+while(p!=NULL)
+{
+if(p->key==key)
+return true;
+p=p->next;
+}
+return false;
+}
+void Delete(string key)
+{
+if (Search(key)==true)
+{
+int index = HashFunction(key);
+Node *P = hashArray[index];
+Node *Q = NULL;
+while (P != NULL && P->key != key)
+{
+Q = P;
+P = P->next;
+}
+if (Q == NULL)
+{
+hashArray[index] = P->next;
+P->next = NULL;
+delete P;
+}
+else
+{
+Q->next = P->next;
+P->next = NULL;
+delete P;
+}
+}
+else
+{
+cout << "Key is not present in the hash table." << endl;
+}
+}
+void Display()
+{
+for (int i = 0; i < size; i++)
+{
+cout << i << " ";
+Node *P = hashArray[i];
+while (P != NULL)
+{
+cout << "{" << P->key << ":" << P->value << "}"
+<< "->";
+P = P->next;
+}
+cout << endl;
+}
+}
+};
+
+int main()
+{
+OpenHashing h;
+while (true)
+{
+cout << "1.Insert key\n2.Display Hash Table\n3.Delete key\n4.Find key\n5.Exit" << endl;
+int n;
+cin >> n;
+if (n == 1)
+{
+string s, s1;
+cout << "Enter the key you want to insert" << endl;
+cin.ignore();
+getline(cin, s);
+cout << "Enter the value you want to insert" << endl;
+getline(cin, s1);
+h.Insert(s, s1);
+}
+else if (n == 2)
+h.Display();
+else if (n == 3)
+{
+string s;
+cout << "Enter the key you want to delete" << endl;
+cin.ignore();
+getline(cin, s);
+h.Delete(s);
+}
+else if (n == 4)
+{
+string s;
+cout << "Enter the key you want to find" << endl;
+cin.ignore();
+getline(cin, s);
+if (h.Search(s))
+cout << "Element found" << endl;
+else
+cout << "Element not found" << endl;
+}
+else if (n==5)
+break;
+else
+cout<<"Invalid choice. Please enter a valid number from 1 to 5."<<endl;
+}
+return 0;
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 5(1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

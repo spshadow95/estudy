@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Write a C++ program that creates an output file, writes
+                    information to it, closes the file, open it again as an input file
+                    and read the information from the file.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+# include &lt;iostream&gt;
+# include &lt;fstream&gt;
+# include &lt;string&gt;
+using namespace std;
+
+
+class student{
+    int rollno;
+    string name;
+public:
+    student(){
+        rollno = 0;
+        name = "xxx";
+    }
+
+    void setData(int rollNo, string name){
+        this-&gt;rollno = rollNo;
+        this-&gt;name = name;
+    }
+
+    int getRoll(){
+        return this-&gt;rollno;
+    }
+
+    string getName(){
+        return this-&gt;name;
+    }
+};
+
+
+// driver code
+int main()
+{
+    ofstream fout;
+    ifstream fin;
+    string line;
+    bool menu = true;
+    int choice;
+    int rollNo;
+    string name;
+
+    cout &lt;&lt; "Welcome to Student Profile System!" &lt;&lt; endl;
+
+    while(menu){
+
+        cout &lt;&lt; "\n------------ MENU -----------"
+            &lt;&lt; "\n1. Create New File"
+            &lt;&lt; "\n2. Edit File"
+            &lt;&lt; "\n3. Open and Read File"
+            &lt;&lt; "\n-1. Exit"
+            &lt;&lt; "\n------------------------------" &lt;&lt; endl;
+        cout &lt;&lt; "Enter your choice : ";
+        cin &gt;&gt; choice;
+        switch(choice)
+        {
+        case 1 : // create new file
+        {
+            fout.open("myFile.txt", ios::app);
+            cout &lt;&lt; "$ myFile.txt created!" &lt;&lt; endl;
+            break;
+        }
+        case 2 : // edit file and close
+        {
+            cout &lt;&lt; "$ Inside File Editor, press '-1' to exit" &lt;&lt; endl;
+            while(fout){
+                student s;
+                cin &gt;&gt; rollNo;
+                if (rollNo == -1) break;
+                cin &gt;&gt; name;
+                s.setData(rollNo, name);
+                fout &lt;&lt; s.getRoll() &lt;&lt; "  " &lt;&lt; s.getName() &lt;&lt; endl;
+            }
+            cout &lt;&lt; "$ File Edited Successfully!" &lt;&lt; endl;
+            fout.close();
+            cout &lt;&lt; "$ File Closed!" &lt;&lt; endl;
+            break;
+        }
+
+        case 3: // open and read file
+        {
+            cout &lt;&lt; "$ Inside File Reader" &lt;&lt; endl;
+            fin.open("myFile.txt", ios::in);
+            while(fin){
+                getline(fin, line);
+                cout &lt;&lt; line &lt;&lt; endl;
+            }
+            break;
+        }
+        case -1: // exit
+            menu = false;
+            cout &lt;&lt; "$ Exit from My Files . . ." &lt;&lt; endl;
+            break;
+        }
+    }
+
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/yCg0ysxp_Sg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `# include <iostream>
+# include <fstream>
+# include <string>
+using namespace std;
+
+
+class student{
+	int rollno;
+	string name;
+public:
+	student(){
+		rollno = 0;
+		name = "xxx";
+	}
+
+	void setData(int rollNo, string name){
+		this->rollno = rollNo;
+		this->name = name;
+	}
+
+	int getRoll(){
+		return this->rollno;
+	}
+
+	string getName(){
+		return this->name;
+	}
+};
+
+
+// driver code
+int main()
+{
+	ofstream fout;
+	ifstream fin;
+	string line;
+	bool menu = true;
+	int choice;
+	int rollNo;
+	string name;
+
+	cout << "Welcome to Student Profile System!" << endl;
+
+	while(menu){
+
+		cout << "\n------------ MENU -----------"
+			 << "\n1. Create New File"
+			 << "\n2. Edit File"
+			 << "\n3. Open and Read File"
+			 << "\n-1. Exit"
+			 << "\n------------------------------" << endl;
+		cout << "Enter your choice : ";
+		cin >> choice;
+		switch(choice)
+		{
+		case 1 : // create new file
+		{
+			fout.open("myFile.txt", ios::app);
+			cout << "$ myFile.txt created!" << endl;
+			break;
+		}
+		case 2 : // edit file and close
+		{
+			cout << "$ Inside File Editor, press '-1' to exit" << endl;
+			while(fout){
+				student s;
+				cin >> rollNo;
+				if (rollNo == -1) break;
+				cin >> name;
+				s.setData(rollNo, name);
+				fout << s.getRoll() << "  " << s.getName() << endl;
+			}
+			cout << "$ File Edited Successfully!" << endl;
+			fout.close();
+			cout << "$ File Closed!" << endl;
+			break;
+		}
+
+		case 3: // open and read file
+		{
+			cout << "$ Inside File Reader" << endl;
+			fin.open("myFile.txt", ios::in);
+			while(fin){
+				getline(fin, line);
+				cout << line << endl;
+			}
+			break;
+		}
+		case -1: // exit
+			menu = false;
+			cout << "$ Exit from My Files . . ." << endl;
+			break;
+		}
+	}
+
+	return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/OOP_LAB MANUAL 2022-23 OOP (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

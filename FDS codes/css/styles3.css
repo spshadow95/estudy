@@ -1,0 +1,99 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    overflow-x: hidden;
+    background-color: #0E141E;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    color: #0E141E;
+    justify-content: center;
+    text-align: center;
+}
+
+
+.content h1{
+    position: relative;
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+    color: #2ec866;
+}
+
+.content p{
+    position: relative;
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    color:#d4e4f9;
+}
+
+.content ul{
+    position: relative;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 3fr 3fr 3fr;
+    width: 100vw;
+    justify-items: center;
+    margin-top: 2em;
+}
+
+
+
+.content ul li{
+    position: relative;
+    width: 80%;
+    padding: 1em 0.5em;
+    /* background-color: rgb(90, 90, 90); */
+    border: 2px solid #d4e4f9;
+    border-radius: 0.4em;
+    transition: all 0.3s;
+    margin: 1em;
+    text-align: center;
+}
+
+
+.content ul li a{
+    text-decoration: none;
+    font-size: 1em;
+    background-color:transparent;
+    color: white;
+}
+
+.content ul li i{
+    background-color: transparent;
+}
+
+.content ul li:hover{
+    background-color: #d4e4f949;
+}
+
+
+.overlay{
+    position: absolute;
+    z-index: 999;
+    background: #151e2e;
+    width: 100%;
+    height: 100%;
+    animation: reveal 0.5s ease-in forwards;
+    transform-origin:bottom;
+}
+
+@keyframes reveal {
+    from{
+        transform: scaleY(1);
+    }
+    to{
+        transform :scaleY(0);
+    }
+}
+
+

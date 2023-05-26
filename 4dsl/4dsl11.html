@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Department maintains a student information. The file contains roll number, name, division and address. Allow user to add, delete information of student. Display information of particular employee. If record of student does not exist an appropriate message is displayed. If it is, then the system displays the student details. Use sequential file to main the data.
+
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &lt;iostream&gt;
+#include&lt;fstream&gt;
+#include&lt;cstring&gt;
+#include&lt;iomanip&gt;
+using namespace std;
+const int MAX=20;
+class Student
+{
+ int rollno;
+ char name[20],city[20];
+ char div;
+ int year;
+public:
+ Student()
+{
+  strcpy(name,"");
+  strcpy(city,"");
+  rollno=year=div=0;
+}
+ Student(int rollno,char name[MAX],int year,char div,char city[MAX])
+ {
+  strcpy(this-&gt;name,name);
+  strcpy(this-&gt;city,city);
+  this-&gt;rollno=rollno;
+  this-&gt;year=year;
+  this-&gt;div=div;
+ }
+ int getRollNo()
+ {
+  return rollno;
+ }
+ void displayRecord()
+ {
+
+  cout&lt;&lt;endl&lt;&lt;setw(5)&lt;&lt;rollno&lt;&lt;setw(20)&lt;&lt;name&lt;&lt;setw(5)&lt;&lt;year&lt;&lt;setw(5)&lt;&lt;div&lt;&lt;setw(10)&lt;&lt;city;
+ }
+};
+//==========File Operations ===========
+class FileOperations
+{
+ fstream file;
+public:
+FileOperations(char* filename)
+{
+file.open(filename,ios::in|ios::out|ios::ate|ios::binary);
+}
+void insertRecord(int rollno, char name[MAX],int year, char div,char city[MAX])
+{
+  Student s1(rollno,name,year,div,city);
+  file.seekp(0,ios::end);
+  file.write((char *)&s1,sizeof(Student));
+  file.clear();
+}
+void displayAll()
+{
+  Student s1;
+  file.seekg(0,ios::beg);
+ while(file.read((char *)&s1, sizeof(Student)))
+ {
+   s1.displayRecord();
+ }
+  file.clear();
+ }
+ void displayRecord(int rollNo)
+ {
+  Student s1;
+  file.seekg(0,ios::beg);
+  bool flag=false;
+  while(file.read((char*)&s1,sizeof(Student)))
+  {
+   if(s1.getRollNo()==rollNo)
+   {
+    s1.displayRecord();
+    flag=true;
+    break;
+   }
+  }
+  if(flag==false)
+  {
+   cout&lt;&lt;"\nRecord of "&lt;&lt;rollNo&lt;&lt;"is not present.";
+  }
+  file.clear();
+ }
+ void deleteRecord(int rollno)
+ {
+  ofstream outFile("new.dat",ios::binary);
+  file.seekg(0,ios::beg);
+  bool flag=false;
+  Student s1;
+
+  while(file.read((char *)&s1, sizeof(Student)))
+  {
+   if(s1.getRollNo()==rollno)
+   {
+    flag=true;
+    continue;
+   }
+   outFile.write((char *)&s1, sizeof(Student));
+  }
+  if(!flag)
+  {
+   cout&lt;&lt;"\nRecord of "&lt;&lt;rollno&lt;&lt;" is not present.";
+  }
+  file.close();
+  outFile.close();
+  remove("student.dat");
+  rename("new.dat","student.dat");
+  file.open("student.dat",ios::in|ios::out|ios::ate|ios::binary);
+ }
+ ~FileOperations()
+ {
+  file.close();
+  cout&lt;&lt;"\nFile Closed.";
+ }
+};
+int main() {
+ ofstream newFile("student.dat",ios::app|ios::binary);
+  newFile.close();
+  FileOperations file((char*)"student.dat");
+     int rollNo,year,choice=0;
+     char div;
+     char name[MAX],address[MAX];
+     while(choice!=5)
+     {
+         //clrscr();
+         cout&lt;&lt;"\n*****Student Database*****\n";
+         cout&lt;&lt;"1. Add New Record\n";
+         cout&lt;&lt;"2. Display All Records\n";
+         cout&lt;&lt;"3. Display by RollNo\n";
+         cout&lt;&lt;"4. Deleting a Record\n";
+         cout&lt;&lt;"5. Exit\n";
+         cout&lt;&lt;"Choose your choice : ";
+         cin&gt;&gt;choice;
+         switch(choice)
+         {
+             case 1 : //New Record
+               cout&lt;&lt;endl&lt;&lt;"Enter RollNo and name : \n";
+               cin&gt;&gt;rollNo&gt;&gt;name;
+               cout&lt;&lt;"Enter Year and Division : \n";
+               cin&gt;&gt;year&gt;&gt;div;
+               cout&lt;&lt;"Enter address : \n";
+               cin&gt;&gt;address;
+               file.insertRecord(rollNo,name,year,div,address);
+               cout&lt;&lt;"\nRecord Inserted.";
+               break;
+             case 2 :
+              cout&lt;&lt;endl&lt;&lt;setw(5)&lt;&lt;"ROLL"&lt;&lt;setw(20)&lt;&lt;"NAME"&lt;&lt;setw(5)&lt;&lt;"YEAR"&lt;&lt;setw(5)&lt;&lt;"DIV"&lt;&lt;setw(10)&lt;&lt;"CITY";
+               file.displayAll();
+               break;
+             case 3 :
+               cout&lt;&lt;"Enter Roll Number";
+               cin&gt;&gt;rollNo;
+                file.displayRecord(rollNo);
+
+               break;
+             case 4:
+               cout&lt;&lt;"Enter rollNo";
+               cin&gt;&gt;rollNo;
+               file.deleteRecord(rollNo);
+               break;
+            case 5 :break;
+         }
+
+     }
+
+ return 0;
+}
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">view</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/TF2-F2duY6c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+#include<fstream>
+#include<cstring>
+#include<iomanip>
+using namespace std;
+const int MAX=20;
+class Student
+{
+ int rollno;
+ char name[20],city[20];
+ char div;
+ int year;
+public:
+ Student()
+{
+  strcpy(name,"");
+  strcpy(city,"");
+  rollno=year=div=0;
+}
+ Student(int rollno,char name[MAX],int year,char div,char city[MAX])
+ {
+  strcpy(this->name,name);
+  strcpy(this->city,city);
+  this->rollno=rollno;
+  this->year=year;
+  this->div=div;
+ }
+ int getRollNo()
+ {
+  return rollno;
+ }
+ void displayRecord()
+ {
+
+  cout<<endl<<setw(5)<<rollno<<setw(20)<<name<<setw(5)<<year<<setw(5)<<div<<setw(10)<<city;
+ }
+};
+//==========File Operations ===========
+class FileOperations
+{
+ fstream file;
+public:
+FileOperations(char* filename)
+{
+file.open(filename,ios::in|ios::out|ios::ate|ios::binary);
+}
+void insertRecord(int rollno, char name[MAX],int year, char div,char city[MAX])
+{
+  Student s1(rollno,name,year,div,city);
+  file.seekp(0,ios::end);
+  file.write((char *)&s1,sizeof(Student));
+  file.clear();
+}
+void displayAll()
+{
+  Student s1;
+  file.seekg(0,ios::beg);
+ while(file.read((char *)&s1, sizeof(Student)))
+ {
+   s1.displayRecord();
+ }
+  file.clear();
+ }
+ void displayRecord(int rollNo)
+ {
+  Student s1;
+  file.seekg(0,ios::beg);
+  bool flag=false;
+  while(file.read((char*)&s1,sizeof(Student)))
+  {
+   if(s1.getRollNo()==rollNo)
+   {
+    s1.displayRecord();
+    flag=true;
+    break;
+   }
+  }
+  if(flag==false)
+  {
+   cout<<"\nRecord of "<<rollNo<<"is not present.";
+  }
+  file.clear();
+ }
+ void deleteRecord(int rollno)
+ {
+  ofstream outFile("new.dat",ios::binary);
+  file.seekg(0,ios::beg);
+  bool flag=false;
+  Student s1;
+
+  while(file.read((char *)&s1, sizeof(Student)))
+  {
+   if(s1.getRollNo()==rollno)
+   {
+    flag=true;
+    continue;
+   }
+   outFile.write((char *)&s1, sizeof(Student));
+  }
+  if(!flag)
+  {
+   cout<<"\nRecord of "<<rollno<<" is not present.";
+  }
+  file.close();
+  outFile.close();
+  remove("student.dat");
+  rename("new.dat","student.dat");
+  file.open("student.dat",ios::in|ios::out|ios::ate|ios::binary);
+ }
+ ~FileOperations()
+ {
+  file.close();
+  cout<<"\nFile Closed.";
+ }
+};
+int main() {
+ ofstream newFile("student.dat",ios::app|ios::binary);
+  newFile.close();
+  FileOperations file((char*)"student.dat");
+     int rollNo,year,choice=0;
+     char div;
+     char name[MAX],address[MAX];
+     while(choice!=5)
+     {
+         //clrscr();
+         cout<<"\n*****Student Database*****\n";
+         cout<<"1) Add New Record\n";
+         cout<<"2) Display All Records\n";
+         cout<<"3) Display by RollNo\n";
+         cout<<"4) Deleting a Record\n";
+         cout<<"5) Exit\n";
+         cout<<"Choose your choice : ";
+         cin>>choice;
+         switch(choice)
+         {
+             case 1 : //New Record
+               cout<<endl<<"Enter RollNo and name : \n";
+               cin>>rollNo>>name;
+               cout<<"Enter Year and Division : \n";
+               cin>>year>>div;
+               cout<<"Enter address : \n";
+               cin>>address;
+               file.insertRecord(rollNo,name,year,div,address);
+               cout<<"\nRecord Inserted.";
+               break;
+             case 2 :
+              cout<<endl<<setw(5)<<"ROLL"<<setw(20)<<"NAME"<<setw(5)<<"YEAR"<<setw(5)<<"DIV"<<setw(10)<<"CITY";
+               file.displayAll();
+               break;
+             case 3 :
+               cout<<"Enter Roll Number";
+               cin>>rollNo;
+                file.displayRecord(rollNo);
+
+               break;
+             case 4:
+               cout<<"Enter rollNo";
+               cin>>rollNo;
+               file.deleteRecord(rollNo);
+               break;
+            case 5 :break;
+         }
+
+     }
+
+ return 0;
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+  import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+      apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+      authDomain: "samplelogin-9a79b.firebaseapp.com",
+      databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+      projectId: "samplelogin-9a79b",
+      storageBucket: "samplelogin-9a79b.appspot.com",
+      messagingSenderId: "317364916728",
+      appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage(app);
+  
+  document.getElementById('dow').addEventListener('click' , function() {
+      getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 11.pdf"))
+          .then((url) => {
+              window.open(url,'_blank');
+          })
+          .catch((error) => {
+              // Handle any errors
+              console.log("file not found");
+          });
+
+  })
+  
+
+
+
+</script>
+</html>

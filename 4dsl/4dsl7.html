@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>You have a business with several offices; you want to lease phone lines to connect them up with each other; and the phone company charges different amounts of money to connect different pairs of cities. You want a set of lines that connects all your offices with a minimum total cost. Solve the problem by suggesting appropriate data structures.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include&lt;iostream&gt;
+using namespace std;
+class PrimsMST
+{
+    int a[20][20];
+    int b[20][20];
+    string name[20];
+public:
+    PrimsMST()
+    {
+        for (int i = 0; i &lt; 20; i++)
+        {
+            for (int j = 0; j &lt; 20; j++)
+            {
+                a[i][j] = 0;
+                b[i][j] = 0;
+            }
+        }
+    }
+    void read(int, int);
+    void add_edge(int, int, int);
+    void prims(int);
+    void display(int);
+    void kruskals(int);
+};
+void PrimsMST::read(int ver, int e)
+{
+    int u, v, w;
+    string n1, n2;
+    cout &lt;&lt; "Enter Name of Landmarks: ";
+    for (int i = 0; i &lt; ver; i++)
+    {
+        cin &gt;&gt; name[i];
+    }
+    for (int i = 0; i &lt; e; i++)
+    {
+        cout &lt;&lt; "Enter enter source, destination and it's weight: ";
+        cin &gt;&gt; n1 &gt;&gt; n2 &gt;&gt; w;
+        for (int i = 0; i &lt; ver; i++)
+        {
+            if (n1 == name[i])
+            {
+                u = i;
+                break;
+            }
+        }
+        for (int i = 0; i &lt; ver; i++)
+        {
+            if (n2 == name[i])
+            {
+                v = i;
+                break;
+            }
+        }
+        add_edge(u, v, w);
+    }
+
+}
+void PrimsMST::add_edge(int u, int v, int w)
+{
+    a[u][v] = w;
+    a[v][u] = w;
+}
+void PrimsMST::display(int v)
+{
+    for (int i = 0; i &lt; v; i++)
+    {
+        for (int j = 0; j &lt; v; j++)
+        {
+            cout &lt;&lt; a[i][j] &lt;&lt; " ";
+        }
+        cout &lt;&lt; endl;
+    }
+}
+void PrimsMST::prims(int ver)
+{
+    int inf = 9999999; int cost = 0;
+    bool selected[20];
+    for (int i = 0; i &lt; ver; i++)
+    {
+        selected[i] = false;
+    }
+    int no_edge = 0;
+    int x, y;
+    selected[0] = true;
+    while (no_edge &lt; (ver - 1))
+    {
+        int min = inf;
+        x = 0; y = 0;
+        for (int i = 0; i &lt; ver; i++)
+        {
+            if (selected[i])
+            {
+                for (int j = 0; j &lt; ver; j++)
+                {
+                    if (!selected[j] && a[i][j])
+                    {
+                        if (min &gt; a[i][j])
+                        {
+                            min = a[i][j];
+                            x = i;
+                            y = j;
+                        }
+                    }
+                }
+            }
+        }
+        cout &lt;&lt; name[x] &lt;&lt; " - " &lt;&lt; name[y] &lt;&lt; " : " &lt;&lt; a[x][y];
+        b[x][y] = a[x][y];
+        b[y][x] = a[x][y];
+        cost = cost + a[x][y];
+        cout &lt;&lt; endl &lt;&lt; endl;
+        selected[y] = true;
+        no_edge++;
+    }
+    cout &lt;&lt; "MINIMUM SPANNING TREE:- " &lt;&lt; endl;
+    for (int i = 0; i &lt; ver; i++)
+    {
+        for (int j = 0; j &lt; ver; j++)
+        {
+            cout &lt;&lt; b[i][j] &lt;&lt; "\t";
+        }
+        cout &lt;&lt; endl;
+    }
+    cout &lt;&lt; "Minimum cost by Prims Algorithm: " &lt;&lt; cost &lt;&lt; endl;
+}
+void PrimsMST::kruskals(int ver)
+{
+    int count = 0,  father[20];
+    long int min = 99999;
+    for (int i = 0; i &lt; ver; i++)
+    {
+        father[i] = -1;
+    }
+    int wt = 0;
+    int t1, t2, root_temp1, root_temp2,temp1,temp2;
+    int res[20][20];
+    for (int i = 0; i &lt; 20; i++)
+    {
+        for (int j = 0; i &lt; 20; i++)
+        {
+            res[i][j] = 0;
+        }
+    }
+    while (count &lt; ver - 1)
+    {
+        min = 9999;
+        for (int v1 = 0; v1 &lt; ver; v1++)
+        {
+            for (int v2 = 0; v2 &lt; ver; v2++)
+            {
+                if (a[v1][v2] != 0 && a[v1][v2] &lt; min)
+                {
+                    min = a[v1][v2];
+                    t1 = v1;
+                    t2 = v2;
+                }
+            }
+        }
+        temp1 = t1;
+        temp2 = t2;
+        a[t1][t2] = a[t2][t1] = 0;
+        while (t1 &gt;= 0)
+        {
+            root_temp1 = t1;
+            t1 = father[t1];
+        }
+        while (t2 &gt;= 0)
+        {
+            root_temp2 = t2;
+            t2 = father[t2];
+        }
+        if (root_temp1 != root_temp2)
+        {
+            res[temp1][temp2] = res[temp2][temp1] = min;
+            wt = wt + res[temp1][temp2];
+            father[root_temp2] = root_temp1;
+            count++;
+        }
+    }
+    cout &lt;&lt; "Minimum cost by Kruskals Algorithm: " &lt;&lt; wt &lt;&lt; endl;
+}
+int main()
+{
+    PrimsMST p;
+    int ver, e;
+    cout &lt;&lt; "Enter no. of vertices: " &lt;&lt; endl;
+    cin &gt;&gt; ver;
+    cout &lt;&lt; "Enter no. of edges: " &lt;&lt; endl;
+    cin &gt;&gt; e;
+    int ch;
+    while (true)
+    {
+        cout &lt;&lt; "\n----------Menu----------" &lt;&lt; endl;
+        cout &lt;&lt; "1.Read the Graph" &lt;&lt; endl;
+        cout &lt;&lt; "2.Display the graph" &lt;&lt; endl;
+        cout &lt;&lt; "3.Minimum Cost using Prims Algorithm" &lt;&lt; endl;
+        cout &lt;&lt; "4.Minimum Cost using Kruskals Algorithm" &lt;&lt; endl;
+        cout &lt;&lt; "5.Exit " &lt;&lt; endl;
+        cout &lt;&lt; "Enter your choice: ";
+        cin &gt;&gt; ch;
+        switch (ch)
+        {
+        case 1:
+            p.read(ver,e);
+            break;
+        case 2:
+            p.display(ver);
+            break;
+        case 3:
+            p.prims(ver);
+            break;
+        case 4:
+            p.kruskals(ver);
+            break;
+        case 5:
+            cout &lt;&lt; "Code Exited" &lt;&lt; endl;
+            exit('0');
+        default:
+            cout &lt;&lt; "\nEnter correct choice!!" &lt;&lt; endl;
+            break;
+        }
+    }
+    return 0;
+}
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">view</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/vNhvBrc02G4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include<iostream>
+using namespace std;
+class PrimsMST
+{
+	int a[20][20];
+	int b[20][20];
+	string name[20];
+public:
+	PrimsMST()
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			for (int j = 0; j < 20; j++)
+			{
+				a[i][j] = 0;
+				b[i][j] = 0;
+			}
+		}
+	}
+	void read(int, int);
+	void add_edge(int, int, int);
+	void prims(int);
+	void display(int);
+	void kruskals(int);
+};
+void PrimsMST::read(int ver, int e)
+{
+	int u, v, w;
+	string n1, n2;
+	cout << "Enter Name of Landmarks: ";
+	for (int i = 0; i < ver; i++)
+	{
+		cin >> name[i];
+	}
+	for (int i = 0; i < e; i++)
+	{
+		cout << "Enter enter source, destination and it's weight: ";
+		cin >> n1 >> n2 >> w;
+		for (int i = 0; i < ver; i++)
+		{
+			if (n1 == name[i])
+			{
+				u = i;
+				break;
+			}
+		}
+		for (int i = 0; i < ver; i++)
+		{
+			if (n2 == name[i])
+			{
+				v = i;
+				break;
+			}
+		}
+		add_edge(u, v, w);
+	}
+
+}
+void PrimsMST::add_edge(int u, int v, int w)
+{
+	a[u][v] = w;
+	a[v][u] = w;
+}
+void PrimsMST::display(int v)
+{
+	for (int i = 0; i < v; i++)
+	{
+		for (int j = 0; j < v; j++)
+		{
+			cout << a[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+void PrimsMST::prims(int ver)
+{
+	int inf = 9999999; int cost = 0;
+	bool selected[20];
+	for (int i = 0; i < ver; i++)
+	{
+		selected[i] = false;
+	}
+	int no_edge = 0;
+	int x, y;
+	selected[0] = true;
+	while (no_edge < (ver - 1))
+	{
+		int min = inf;
+		x = 0; y = 0;
+		for (int i = 0; i < ver; i++)
+		{
+			if (selected[i])
+			{
+				for (int j = 0; j < ver; j++)
+				{
+					if (!selected[j] && a[i][j])
+					{
+						if (min > a[i][j])
+						{
+							min = a[i][j];
+							x = i;
+							y = j;
+						}
+					}
+				}
+			}
+		}
+		cout << name[x] << " - " << name[y] << " : " << a[x][y];
+		b[x][y] = a[x][y];
+		b[y][x] = a[x][y];
+		cost = cost + a[x][y];
+		cout << endl << endl;
+		selected[y] = true;
+		no_edge++;
+	}
+	cout << "MINIMUM SPANNING TREE:- " << endl;
+	for (int i = 0; i < ver; i++)
+	{
+		for (int j = 0; j < ver; j++)
+		{
+			cout << b[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	cout << "Minimum cost by Prims Algorithm: " << cost << endl;
+}
+void PrimsMST::kruskals(int ver)
+{
+	int count = 0,  father[20];
+	long int min = 99999;
+	for (int i = 0; i < ver; i++)
+	{
+		father[i] = -1;
+	}
+	int wt = 0;
+	int t1, t2, root_temp1, root_temp2,temp1,temp2;
+	int res[20][20];
+	for (int i = 0; i < 20; i++)
+	{
+		for (int j = 0; i < 20; i++)
+		{
+			res[i][j] = 0;
+		}
+	}
+	while (count < ver - 1)
+	{
+		min = 9999;
+		for (int v1 = 0; v1 < ver; v1++)
+		{
+			for (int v2 = 0; v2 < ver; v2++)
+			{
+				if (a[v1][v2] != 0 && a[v1][v2] < min)
+				{
+					min = a[v1][v2];
+					t1 = v1;
+					t2 = v2;
+				}
+			}
+		}
+		temp1 = t1;
+		temp2 = t2;
+		a[t1][t2] = a[t2][t1] = 0;
+		while (t1 >= 0)
+		{
+			root_temp1 = t1;
+			t1 = father[t1];
+		}
+		while (t2 >= 0)
+		{
+			root_temp2 = t2;
+			t2 = father[t2];
+		}
+		if (root_temp1 != root_temp2)
+		{
+			res[temp1][temp2] = res[temp2][temp1] = min;
+			wt = wt + res[temp1][temp2];
+			father[root_temp2] = root_temp1;
+			count++;
+		}
+	}
+	cout << "Minimum cost by Kruskals Algorithm: " << wt << endl;
+}
+int main()
+{
+	PrimsMST p;
+	int ver, e;
+	cout << "Enter no. of vertices: " << endl;
+	cin >> ver;
+	cout << "Enter no. of edges: " << endl;
+	cin >> e;
+	int ch;
+	while (true)
+	{
+		cout << "\n----------Menu----------" << endl;
+		cout << "1.Read the Graph" << endl;
+		cout << "2.Display the graph" << endl;
+		cout << "3.Minimum Cost using Prims Algorithm" << endl;
+		cout << "4.Minimum Cost using Kruskals Algorithm" << endl;
+		cout << "5.Exit " << endl;
+		cout << "Enter your choice: ";
+		cin >> ch;
+		switch (ch)
+		{
+		case 1:
+			p.read(ver,e);
+			break;
+		case 2:
+			p.display(ver);
+			break;
+		case 3:
+			p.prims(ver);
+			break;
+		case 4:
+			p.kruskals(ver);
+			break;
+		case 5:
+			cout << "Code Exited" << endl;
+			exit('0');
+		default:
+			cout << "\nEnter correct choice!!" << endl;
+			break;
+		}
+	}
+	return 0;
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 7.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

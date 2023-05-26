@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Implementation of a direct access file -Insertion and deletion of a record from a direct access file
+
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;iomanip&gt;
+#include &lt;stdlib.h&gt;
+
+using namespace std;
+
+
+struct hardwareData {
+    int id;
+    char name[50];
+    int quantity;
+    float price;
+};
+
+int enterChoice(void);
+void newRecord(fstream&);
+void updateRecord(fstream&);
+void outputRecord(fstream&);
+void deleteRecord(fstream&);
+void clearData(fstream&);
+void outputLine(ostream&, hardwareData);
+
+int main() {
+
+    fstream inOutHardware("hardware.dat", ios::in | ios::out);
+
+    if (!inOutHardware)
+    {
+        cerr &lt;&lt; "Error." &lt;&lt; endl;
+        exit(1);
+    }
+
+int current_choice;
+inOutHardware.clear();
+while (((current_choice = enterChoice()) != 0))
+{
+
+    switch (current_choice)
+    {
+    case 1:
+        newRecord(inOutHardware);
+        break;
+    case 2:
+        updateRecord(inOutHardware);
+        break;
+    case 3:
+        deleteRecord(inOutHardware);
+        break;
+    case 4:
+        outputRecord(inOutHardware);
+        break;
+    case 5:
+        int num;
+        cout &lt;&lt; "Clear? (1 - так / 0 - нi)"         
+        &lt;&lt; endl &lt;&lt; "Your choice - ";
+        cin &gt;&gt; num;
+        if (num == 1) {
+            clearData(inOutHardware);
+            cout &lt;&lt; "succ!" &lt;&lt; endl;
+        }
+        else {
+            cout &lt;&lt; "canceled" &lt;&lt; endl;
+        }
+
+        break;
+    default:
+        cerr &lt;&lt; "err" &lt;&lt; endl;
+        break;
+    }
+
+}
+
+inOutHardware.close();
+system("pause");
+return 0;
+}
+
+void newRecord(fstream &insertInFile)
+{
+    cout &lt;&lt; "Input number (1-100): ";
+
+    hardwareData hardware;
+
+    int id;
+    cin &gt;&gt; id;
+    insertInFile.seekg((id - 1) + sizeof(hardware));
+
+    insertInFile.read((char *)&hardware, sizeof(hardware));
+
+    if (hardware.id == 0)
+    {
+        cout &lt;&lt; "Input data" &lt;&lt; endl;
+        cin &gt;&gt; hardware.name &gt;&gt; hardware.quantity &gt;&gt; hardware.price;
+        hardware.id = id;
+        insertInFile.seekp((id - 1) * sizeof(hardwareData));
+        insertInFile.write((char *)&hardware, sizeof(hardwareData));
+
+    }
+    else
+        cerr &lt;&lt; "№ " &lt;&lt; id
+        &lt;&lt; " already have info" &lt;&lt; endl;
+}
+
+void updateRecord(fstream &updateFile)
+{
+    int id;
+
+    do
+    {
+        cout &lt;&lt; "Input number for update: ";
+        cin &gt;&gt; id;
+    } while (id &lt; 1 || id &gt; 100);
+
+    hardwareData hardware;
+    updateFile.seekg((id - 1) * sizeof(hardware));
+
+    updateFile.read((char *)&hardware, sizeof(hardware));
+
+    if (hardware.id != 0)
+    {
+        outputLine(cout, hardware);
+        cout &lt;&lt; endl &lt;&lt; "Input quan and price : ";
+
+        int quan;
+        float price;
+        cin &gt;&gt; quan;
+        cin &gt;&gt; price;
+        hardware.quantity = quan;
+        hardware.price = price;
+        outputLine(cout, hardware);
+
+        updateFile.seekp((id - 1) * sizeof(hardware));
+        updateFile.write((char *)&hardware, sizeof(hardware));
+    }
+    else
+        cerr &lt;&lt; " № " &lt;&lt; id
+        &lt;&lt; " empty " &lt;&lt; endl;
+}
+
+void deleteRecord(fstream &deleteFromFile)
+{
+    cout &lt;&lt; "Input number for delete (1-100): ";
+
+    int id;
+    cin &gt;&gt; id;
+    deleteFromFile.seekg((id - 1) * sizeof(hardwareData));
+
+    hardwareData hardware;
+    deleteFromFile.read((char *)&hardware, sizeof(hardwareData));
+
+    if (hardware.id != 0)
+    {
+        hardwareData blankhw = { 0, " ", 0,  0 };
+
+        deleteFromFile.seekp((id - 1) * sizeof(hardware));
+        deleteFromFile.write((char*)&blankhw, sizeof(hardware));
+        cout &lt;&lt; "№ " &lt;&lt; id &lt;&lt; " deleted" &lt;&lt; endl;
+
+    }
+    else
+        cout &lt;&lt; "№ " &lt;&lt; id &lt;&lt; " empty" &lt;&lt; endl;
+}
+
+void outputRecord(fstream &printRecord)
+{
+
+    cout &lt;&lt; setiosflags(ios::left) &lt;&lt; setw(6) &lt;&lt; "ID"
+        &lt;&lt; setw(16) &lt;&lt; "NAME" &lt;&lt; setw(11) &lt;&lt; "QUANTITY"
+        &lt;&lt; setiosflags(ios::right) &lt;&lt; setw(10) &lt;&lt; "PRICE" &lt;&lt; endl;
+    printRecord.seekg(0);
+
+    hardwareData hardware;
+    printRecord.read((char*)&hardware, sizeof(hardware));
+
+    while (!printRecord.eof())
+    {
+        if (hardware.id != 0)
+            outputLine(cout, hardware);
+
+        printRecord.read((char*)&hardware, sizeof(hardware));
+    }
+}
+
+void clearData(fstream &record) {
+    hardwareData blankHardware = { 0, "", 0, 0.0 };
+
+    record.seekp(0);
+    for (int i = 1; i &lt;= 100; i++)
+        record.write((char *)&blankHardware, sizeof(blankHardware));
+}
+
+
+int enterChoice(void)
+
+{
+    cout &lt;&lt; "Виберiть опцiю" &lt;&lt; endl
+    &lt;&lt; " 1 - Add " &lt;&lt; endl
+    &lt;&lt; " 2 - update" &lt;&lt; endl
+    &lt;&lt; " 3 - delete" &lt;&lt; endl
+    &lt;&lt; " 4 - output" &lt;&lt; endl
+    &lt;&lt; " 5 - clear" &lt;&lt; endl
+    &lt;&lt; " 0 - exit" &lt;&lt; endl;
+
+    int choice;
+    cin &gt;&gt; choice;
+
+    return choice;
+}
+
+void outputLine(ostream &output, hardwareData c)
+{
+
+    output &lt;&lt; setiosflags(ios::left) &lt;&lt; setw(6) &lt;&lt; c.id
+    &lt;&lt; setw(16) &lt;&lt; c.name &lt;&lt; setw(11) &lt;&lt; c.quantity
+    &lt;&lt; setiosflags(ios::showpoint | ios::right)
+    &lt;&lt; setw(10) &lt;&lt; setprecision(2) &lt;&lt; c.price &lt;&lt; endl;
+}
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">view</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/z52bDqdSZ7c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <stdlib.h>
+
+using namespace std;
+
+
+struct hardwareData {
+    int id;
+    char name[50];
+    int quantity;
+    float price;
+};
+
+int enterChoice(void);
+void newRecord(fstream&);
+void updateRecord(fstream&);
+void outputRecord(fstream&);
+void deleteRecord(fstream&);
+void clearData(fstream&);
+void outputLine(ostream&, hardwareData);
+
+int main() {
+
+    fstream inOutHardware("hardware.dat", ios::in | ios::out);
+
+    if (!inOutHardware)
+    {
+        cerr << "Error." << endl;
+        exit(1);
+    }
+
+int current_choice;
+inOutHardware.clear();
+while (((current_choice = enterChoice()) != 0))
+{
+
+    switch (current_choice)
+    {
+    case 1:
+        newRecord(inOutHardware);
+        break;
+    case 2:
+        updateRecord(inOutHardware);
+        break;
+    case 3:
+        deleteRecord(inOutHardware);
+        break;
+    case 4:
+        outputRecord(inOutHardware);
+        break;
+    case 5:
+        int num;
+        cout << "Clear? (1 - так / 0 - нi)"         
+        << endl << "Your choice - ";
+        cin >> num;
+        if (num == 1) {
+            clearData(inOutHardware);
+            cout << "succ!" << endl;
+        }
+        else {
+            cout << "canceled" << endl;
+        }
+
+        break;
+    default:
+        cerr << "err" << endl;
+        break;
+    }
+
+}
+
+inOutHardware.close();
+system("pause");
+return 0;
+}
+
+void newRecord(fstream &insertInFile)
+{
+    cout << "Input number (1-100): ";
+
+    hardwareData hardware;
+
+    int id;
+    cin >> id;
+    insertInFile.seekg((id - 1) + sizeof(hardware));
+
+    insertInFile.read((char *)&hardware, sizeof(hardware));
+
+    if (hardware.id == 0)
+    {
+        cout << "Input data" << endl;
+        cin >> hardware.name >> hardware.quantity >> hardware.price;
+        hardware.id = id;
+        insertInFile.seekp((id - 1) * sizeof(hardwareData));
+        insertInFile.write((char *)&hardware, sizeof(hardwareData));
+
+    }
+    else
+        cerr << "№ " << id
+        << " already have info" << endl;
+}
+
+void updateRecord(fstream &updateFile)
+{
+    int id;
+
+    do
+    {
+        cout << "Input number for update: ";
+        cin >> id;
+    } while (id < 1 || id > 100);
+
+    hardwareData hardware;
+    updateFile.seekg((id - 1) * sizeof(hardware));
+
+    updateFile.read((char *)&hardware, sizeof(hardware));
+
+    if (hardware.id != 0)
+    {
+        outputLine(cout, hardware);
+        cout << endl << "Input quan and price : ";
+
+        int quan;
+        float price;
+        cin >> quan;
+        cin >> price;
+        hardware.quantity = quan;
+        hardware.price = price;
+        outputLine(cout, hardware);
+
+        updateFile.seekp((id - 1) * sizeof(hardware));
+        updateFile.write((char *)&hardware, sizeof(hardware));
+    }
+    else
+        cerr << " № " << id
+        << " empty " << endl;
+}
+
+void deleteRecord(fstream &deleteFromFile)
+{
+    cout << "Input number for delete (1-100): ";
+
+    int id;
+    cin >> id;
+    deleteFromFile.seekg((id - 1) * sizeof(hardwareData));
+
+    hardwareData hardware;
+    deleteFromFile.read((char *)&hardware, sizeof(hardwareData));
+
+    if (hardware.id != 0)
+    {
+        hardwareData blankhw = { 0, " ", 0,  0 };
+
+        deleteFromFile.seekp((id - 1) * sizeof(hardware));
+        deleteFromFile.write((char*)&blankhw, sizeof(hardware));
+        cout << "№ " << id << " deleted" << endl;
+
+    }
+    else
+        cout << "№ " << id << " empty" << endl;
+}
+
+void outputRecord(fstream &printRecord)
+{
+
+    cout << setiosflags(ios::left) << setw(6) << "ID"
+        << setw(16) << "NAME" << setw(11) << "QUANTITY"
+        << setiosflags(ios::right) << setw(10) << "PRICE" << endl;
+    printRecord.seekg(0);
+
+    hardwareData hardware;
+    printRecord.read((char*)&hardware, sizeof(hardware));
+
+    while (!printRecord.eof())
+    {
+        if (hardware.id != 0)
+            outputLine(cout, hardware);
+
+        printRecord.read((char*)&hardware, sizeof(hardware));
+    }
+}
+
+void clearData(fstream &record) {
+    hardwareData blankHardware = { 0, "", 0, 0.0 };
+
+    record.seekp(0);
+    for (int i = 1; i <= 100; i++)
+        record.write((char *)&blankHardware, sizeof(blankHardware));
+}
+
+
+int enterChoice(void)
+
+{
+    cout << "Виберiть опцiю" << endl
+    << " 1 - Add " << endl
+    << " 2 - update" << endl
+    << " 3 - delete" << endl
+    << " 4 - output" << endl
+    << " 5 - clear" << endl
+    << " 0 - exit" << endl;
+
+    int choice;
+    cin >> choice;
+
+    return choice;
+}
+
+void outputLine(ostream &output, hardwareData c)
+{
+
+    output << setiosflags(ios::left) << setw(6) << c.id
+    << setw(16) << c.name << setw(11) << c.quantity
+    << setiosflags(ios::showpoint | ios::right)
+    << setw(10) << setprecision(2) << c.price << endl;
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 12.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

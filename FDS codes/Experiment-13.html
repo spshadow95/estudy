@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp13</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #fffdfd;"></i> Problem Statement</h1>
+                <p>A double-ended queue (deque) is a linear list in which additions and deletions may be made
+                    at either end. Obtain a data representation mapping a deque into a one dimensional array.
+                    Write C++ program to simulate deque with functions to add and delete elements from either
+                    end of the deque.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include&gt;iostream&lt;
+using namespace std;
+
+
+class DEqueue{
+   int fr,re,size;
+   int *dq;
+
+   public:
+   DEqueue(int size){
+     this-&lt;size=size;
+     fr=re=-1;
+     dq=new int[this-&lt;size];
+   }
+
+   bool isEmpty(){
+    if(fr==-1||fr==re+1){
+       return true;
+    }
+    else return false;
+   }
+
+   bool isFull(){
+       if(fr==0 &&re==size-1){
+           return true;
+       }
+       else return false;
+   }
+
+   bool noinfront(){
+          if(fr==0){
+            return true;
+          }
+          else return false;
+   }
+
+   bool nooutrear(){
+    if(re==-1){
+        return true ;
+    }
+    else return false;
+   }
+
+   void enqueuefr(int ele){
+    if(noinfront()){
+        cout&gt;&gt;"No space from front side!"&gt;&gt;endl;
+    }
+    else{
+        fr=fr-1;
+        dq[fr]=ele;
+    }
+   }
+
+   void enqueuere( int ele){
+    if(isFull()){
+          cout&gt;&gt;"DEQueue is Full !!"&gt;&gt;endl;
+    }
+    else if(fr==-1){
+       fr=0;
+       re=0;
+       dq[re]=ele;
+    }
+    else{
+        re++;
+        dq[re]=ele;
+    }
+   }
+
+   int dequeuefr(){
+       int x;
+       if(isEmpty()){
+        cout&gt;&gt;"Queue is Empty!!"&gt;&gt;endl;
+       }
+       else{
+        x=dq[fr];
+        fr=fr+1;
+       }
+       return x;
+   }
+
+   int dequeuere(){
+    int x;
+    if(isEmpty()){
+        cout&gt;&gt;"DEQueue is Empty !!"&gt;&gt;endl;
+    }
+    else{
+        x=dq[re];
+        re=re-1;
+    }
+    return x;
+    }
+   
+   void Display(){
+    for(int i=fr;i&gt;=re;i++){
+        cout&gt;&gt;dq[i]&gt;&gt;" ";
+    }
+    cout&gt;&gt;endl;
+   }
+
+};
+int main()
+{   
+    cout&gt;&gt;"\n********************* MENU *********************"&gt;&gt;endl;
+    cout&gt;&gt;"1.Add Elemet from Rear"&gt;&gt;endl;
+    cout&gt;&gt;"2.Add Element from Front."&gt;&gt;endl;
+    cout&gt;&gt;"3.Delete Element from Rear."&gt;&gt;endl;
+    cout&gt;&gt;"4.Delete Element from Front."&gt;&gt;endl;
+    cout&gt;&gt;"5.Display Queue Elements."&gt;&gt;endl;
+    cout&gt;&gt;"0.Exit the Program"&gt;&gt;endl;
+    cout&gt;&gt;"************************************************"&gt;&gt;endl;
+    DEqueue d(100);
+    
+    while(true){
+            int choice;
+            cout&gt;&gt;" \nOperation Choice---.";
+            cin&lt;&lt;choice;
+            if(choice==1){
+              int n;
+              cout&gt;&gt;"Enter the number of elements to enter from rear.";
+              cin&lt;&lt;n;
+              while(n--){
+                 int num;
+                 cout&gt;&gt;"Enter number -";
+                 cin&lt;&lt;num;
+                 d.enqueuere(num);
+              }
+              }
+              else if(choice==2){
+                 int num;
+                 cout&gt;&gt;"Enter number -";
+                 cin&lt;&lt;num;
+                 d.enqueuefr(num);
+              }
+              else if(choice==3){
+                d.dequeuere();
+              }
+              else if(choice==4){
+                d.dequeuefr();
+              }
+              else if(choice==5){
+                d.Display();
+              }
+              else if(choice==0){
+                cout&gt;&gt;"------------Thankyou for using the program.-------------"&gt;&gt;endl;
+                break;
+              }
+              else{
+                cout&gt;&gt;"Wrong Choice!!!!!"&gt;&gt;endl;
+              }
+    }
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/OnlgK0gjtB8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include<iostream>
+using namespace std;
+
+
+class DEqueue{
+   int fr,re,size;
+   int *dq;
+
+   public:
+   DEqueue(int size){
+     this->size=size;
+     fr=re=-1;
+     dq=new int[this->size];
+   }
+
+   bool isEmpty(){
+    if(fr==-1||fr==re+1){
+       return true;
+    }
+    else return false;
+   }
+
+   bool isFull(){
+       if(fr==0 &&re==size-1){
+           return true;
+       }
+       else return false;
+   }
+
+   bool noinfront(){
+          if(fr==0){
+            return true;
+          }
+          else return false;
+   }
+
+   bool nooutrear(){
+    if(re==-1){
+        return true ;
+    }
+    else return false;
+   }
+
+   void enqueuefr(int ele){
+    if(noinfront()){
+        cout<<"No space from front side!"<<endl;
+    }
+    else{
+        fr=fr-1;
+        dq[fr]=ele;
+    }
+   }
+
+   void enqueuere( int ele){
+    if(isFull()){
+          cout<<"DEQueue is Full !!"<<endl;
+    }
+    else if(fr==-1){
+       fr=0;
+       re=0;
+       dq[re]=ele;
+    }
+    else{
+        re++;
+        dq[re]=ele;
+    }
+   }
+
+   int dequeuefr(){
+       int x;
+       if(isEmpty()){
+        cout<<"Queue is Empty!!"<<endl;
+       }
+       else{
+        x=dq[fr];
+        fr=fr+1;
+       }
+       return x;
+   }
+
+   int dequeuere(){
+    int x;
+    if(isEmpty()){
+        cout<<"DEQueue is Empty !!"<<endl;
+    }
+    else{
+        x=dq[re];
+        re=re-1;
+    }
+    return x;
+    }
+   
+   void Display(){
+    for(int i=fr;i<=re;i++){
+        cout<<dq[i]<<" ";
+    }
+    cout<<endl;
+   }
+
+};
+int main()
+{   
+    cout<<"\n********************* MENU *********************"<<endl;
+    cout<<"1.Add Elemet from Rear"<<endl;
+    cout<<"2.Add Element from Front."<<endl;
+    cout<<"3.Delete Element from Rear."<<endl;
+    cout<<"4.Delete Element from Front."<<endl;
+    cout<<"5.Display Queue Elements."<<endl;
+    cout<<"0.Exit the Program"<<endl;
+    cout<<"************************************************"<<endl;
+    DEqueue d(100);
+    
+    while(true){
+            int choice;
+            cout<<" \nOperation Choice---.";
+            cin>>choice;
+            if(choice==1){
+              int n;
+              cout<<"Enter the number of elements to enter from rear.";
+              cin>>n;
+              while(n--){
+                 int num;
+                 cout<<"Enter number -";
+                 cin>>num;
+                 d.enqueuere(num);
+              }
+              }
+              else if(choice==2){
+                 int num;
+                 cout<<"Enter number -";
+                 cin>>num;
+                 d.enqueuefr(num);
+              }
+              else if(choice==3){
+                d.dequeuere();
+              }
+              else if(choice==4){
+                d.dequeuefr();
+              }
+              else if(choice==5){
+                d.Display();
+              }
+              else if(choice==0){
+                cout<<"------------Thankyou for using the program.-------------"<<endl;
+                break;
+              }
+              else{
+                cout<<"Wrong Choice!!!!!"<<endl;
+              }
+    }
+    return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-1 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

@@ -1,0 +1,392 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+.hidden{
+    opacity: 0;
+    transition: all 1s;
+    filter: blur(5px);
+    transform: translateX(-100%);
+}
+
+.show{
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+}
+
+.wrapper{
+    /* max-width: 1300px; */
+    margin: 0 auto;
+}
+
+/* header styling */
+
+header{
+    background-color: #111827;
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    justify-content: center; 
+    padding-left: 2.2em;
+    padding-right:2.2em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.433);   
+}
+
+header h1{
+    width: 50%;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+header ul{
+    width: 50%;
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    font-family: 'Poppins', sans-serif;
+    font-weight: normal;
+}
+
+header ul li a{
+    text-decoration: none;
+    color: #d4e4f9;
+    position: relative;
+    font-size: 1.1em;
+    transition: all 0.2s ease-in;
+}
+
+header ul li a:before{
+    position: absolute;
+    content: "";
+    width : 0%;
+    height: 1px;
+    border-bottom: 3px solid #2ec866;
+    border-radius: 1.2em;
+    bottom: -6px;
+    transition: width 0.3s;
+}
+
+header ul li a:hover:before{
+    width:60%;
+}
+
+header ul li a:hover{
+    color: white;
+}
+
+
+/* book section */
+
+.bookpdf{
+    background-color: #0E141E;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top:2em;
+    align-items: center;
+    position: relative;
+}
+
+/* image in the book section */
+
+/* .bookpdf::before {    
+    content: "";
+    background-image: url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80');
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.5;
+    z-index: 0;
+} */
+
+
+
+
+.bookpdf h1{
+    position: relative;
+    padding-left: 2.2em;
+    padding-right:2.2em; 
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5em;
+    color: #d4e4f9;
+}
+
+.bookpdfs{
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    padding-left: 2.2em;
+    padding-right:2.2em;
+    margin: 2em;
+    width: 80%;
+    /* background-color: red; */
+    align-items: center;
+}
+
+
+.booksub{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #1d2432;
+    padding: 0.3em;
+    border-radius: 0.5em;
+    height: 60vh;
+    justify-content: space-between;
+    width: 30%;
+}
+
+.booksub p{
+    margin-top: 1.2em;
+    font-size: 1.5em;
+    font-weight: normal;
+    line-break: auto;
+    font-family: 'Poppins', sans-serif;
+    font-weight: normal;
+    text-align: center;
+    color:#d4e4f9;
+}
+
+.booksub h6{
+    text-align: center;
+    font-size: 2.2em;
+}
+
+.booksub img{
+    object-fit: scale-down;
+    height: 150px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.booksub .down{
+    margin: 1.2em;
+    display: flex;
+    justify-content: space-around;
+    gap: 1em;
+}
+
+.booksub .down a{
+    background-color: transparent;
+    border: 2px solid #2ec866;
+    text-decoration: none;
+    color: #d4e4f9;
+    padding: 0.5em 1.2em 0.5em 1.2em;
+    font-size: 1.1em;
+    width: 100%;
+    text-align: center;
+    border-radius: 1.2em;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+}
+
+.booksub .down a:hover{
+    color: white;
+    background-color: rgba(255, 255, 255, 0.227);
+}
+
+.booksub:hover img{
+    height: 170px;
+}
+
+
+/* ppt section */
+
+#ppt{
+    background-color: rgb(8, 12, 12);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.xxx{
+    background-color: rgb(8, 12, 12);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* video section */
+
+.video{
+    display: flex;
+    background-color: #111827;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+}
+
+.video::before {    
+    content: "";
+    background-image: url('https://images.unsplash.com/photo-1484807352052-23338990c6c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.25;
+    /* background:linear-gradient(to bottom, #242424, transparent); */
+    z-index: 0;
+}
+
+
+.video::after{
+    content: "";
+    position: absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 60vh;
+    background:linear-gradient(to bottom, #0d1420 , transparent);
+    z-index: 1;
+}
+
+
+.video h1{
+    position: relative;
+    margin-top: 1.2em;
+    text-align: center;
+    margin-bottom: 1.2em;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5em;
+    color: rgb(219, 219, 219);
+    z-index: 2;
+    color: #d4e4f9;
+}
+
+.video .content{
+    position: relative;
+    margin: 0.5em 2.2em;
+    display: flex; 
+    justify-content: space-between;
+    z-index: 2; 
+}
+
+.video .content iframe{
+    text-align: center;
+    position: relative;
+    /* background-color: red; */
+    padding: 2.2em 3em;
+    width: 50%; 
+    z-index: 2;
+}
+
+.video .content .suggest{
+    position: relative;
+    width: 50%;
+    font-family: 'Poppins', sans-serif;
+    padding: 2.2em 3em;
+    color: rgb(196, 196, 196);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 2.2em;
+}
+
+.video .content .suggest h3{
+    font-size: 2.5em;
+    color: #2ec866;
+}
+
+.video .content .suggest .list{
+    background-color: #1d2432;
+    padding: 2.2em;
+    border-radius: 1.2em;
+}
+
+.video .content .suggest .list ul{
+    list-style: none;
+}
+
+.video .content .suggest .list ul li a{
+    text-decoration: none;
+    font-size: 1.2em;
+    color:#d4e4f9;
+}
+
+/* exam papers */
+.exampapers{
+    width: 100%;
+    background-color: #111827;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+}
+
+.exampapers::before {    
+    content: "";
+    background-image: url('https://previews.123rf.com/images/volody10/volody101903/volody10190300166/118899524-black-and-white-repeating-torn-newspaper-background-continuous-pattern-left-right-up-and-down.jpg');
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.05;
+    /* background:linear-gradient(to bottom, #242424, transparent); */
+    z-index: 0;
+}
+
+
+
+.exampapers h1{
+    position: relative;
+    font-size: 2.2em;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 2.2em;
+    color:#d4e4f9;
+}
+
+.exampapers ul{
+    position: relative;
+    margin: 1em auto 2em auto;
+}
+
+.exampapers ul li{
+    display: flex;
+    margin: 1.5em;
+    margin-bottom:2em;
+}
+
+.exampapers ul li p{
+    font-size: 2em;
+    font-family: 'Poppins', sans-serif;
+    margin-right: 0.5em;
+    color: #d4e4f9;
+}
+
+.exampapers ul li a{
+    background-color: transparent;
+    border: 2px solid #2ec866;
+    margin:0em 1em;
+    padding: 0.5em 4em;
+    border-radius: 1.5em;
+    text-decoration: none;
+    font-size: 1.5em;
+    font-family: 'Poppins', sans-serif;
+    color: #d4e4f9;
+    transition: all 0.3s;
+}
+
+.exampapers ul li a:hover{
+    background-color: rgba(255, 255, 255, 0.275);
+}
+
+

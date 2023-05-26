@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+	<div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>A Dictionary stores keywords and its meanings. Provide facility for adding new keywords, deleting keywords, updating values of any entry. Provide facility to display whole data sorted in ascending/ Descending order. Also find how many maximum comparisons may require for finding any keyword. Use Height balance tree and find the complexity for finding a keyword.
+
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+
+#include &lt;iostream&gt;
+using namespace std;
+class node
+{
+	public:
+	string word;
+	string meaning;
+	node* left=NULL;
+	node* right=NULL;
+
+	node(string x, string y)
+	{
+		word = x;
+		meaning = y;
+		left = NULL;
+		right = NULL;
+	}
+	friend class Dictionary;
+};
+
+class Dictionary
+{
+public:
+	node* root, *q;	//q is parent here
+	Dictionary()
+	{
+		root = NULL;
+		q=NULL;
+	}
+
+	void insert(node*, string, string);
+	void display_asc(node *);
+	void display_desc(node *);
+	void comparisons(node*, string);
+	void updateWord(node*, string);
+	//void deleteWord(node*, string);
+	//node* min_node(node *);
+};
+
+void Dictionary::insert(node* p, string key, string keyMeaning)
+{
+	if(key &lt; p-&gt;word)
+	{
+		if(p-&gt;left != NULL)
+			insert(p-&gt;left, key, keyMeaning);
+		else
+			p-&gt;left = new node(key, keyMeaning);
+	}
+	else if(key &gt; p-&gt;word)
+	{
+		if(p-&gt;right != NULL)
+			insert(p-&gt;right, key, keyMeaning);
+		else
+			p-&gt;right = new node(key, keyMeaning);
+	}
+}
+
+void Dictionary::display_asc(node *p)		//inorder
+{
+	if(p-&gt;left!=NULL)
+		display_asc(p-&gt;left);
+	cout&lt;&lt;"\n" &lt;&lt; p-&gt;word&lt;&lt;" \t" &lt;&lt; p-&gt;meaning;
+	if(p-&gt;right!=NULL)
+		display_asc(p-&gt;right);
+}
+
+void Dictionary::display_desc(node *p)
+{
+	if(p-&gt;right!=NULL)
+			display_desc(p-&gt;right);
+	cout&lt;&lt;"\n" &lt;&lt; p-&gt;word&lt;&lt;" \t" &lt;&lt; p-&gt;meaning;
+	if(p-&gt;left!=NULL)
+		display_desc(p-&gt;left);
+}
+
+void Dictionary::comparisons(node* p, string key)
+{
+	static int count = 0;
+	while(p!=NULL)
+	{
+		if(key &lt; p-&gt;word)
+		{
+			count++;
+			p = p-&gt;left;
+		}
+
+		else if(key &gt; p-&gt;word)
+		{
+			count++;
+			p = p-&gt;right;
+		}
+
+		else if(key == p-&gt;word)
+		{
+			count++;
+			cout&lt;&lt;"Number of comparisons to find the word: " &lt;&lt; count;
+			return ;
+		}
+	}
+
+	cout&lt;&lt;"\nWord not found!";
+}
+
+node* Dictionary::min_node(node *p)
+{
+	while(p-&gt;left != NULL)
+	{
+		q = p;
+		p = p-&gt;left;
+	}
+	return p;
+}
+
+void Dictionary::deleteWord(node* p, string key)
+{
+	node *s;
+	while(p!=NULL)							//searching for word
+	{
+		if(key &lt; p-&gt;word)
+		{
+			q = p;
+			p = p-&gt;left;
+		}
+
+		else if(key &gt; p-&gt;word)
+		{
+			q=p;
+			p = p-&gt;right;
+		}
+
+		else if(key == p-&gt;word)				//word found
+		{
+			if(p-&gt;left==NULL && p-&gt;right==NULL)	//no child
+			{
+				if(q-&gt;left==p)
+				{
+					delete p;
+					q-&gt;left=NULL;
+					return;
+				}
+
+				if(q-&gt;right==p)
+				{
+					delete p;
+					q-&gt;right=NULL;
+					return;
+				}
+
+			}
+
+			if(p-&gt;right!=NULL && p-&gt;left==NULL)	//right child only
+			{
+				if(q-&gt;right == p)
+				{
+					q-&gt;right = p-&gt;right;
+					delete p;
+					return;
+				}
+
+				else if(q-&gt;left == p)
+				{
+					q-&gt;left = p-&gt;right;
+					delete p;
+					return;
+				}
+
+			}
+
+			else if(p-&gt;left!=NULL && p-&gt;right==NULL)	//left child only
+			{
+				if(q-&gt;right == p)
+				{
+					q-&gt;right = p-&gt;left;
+					delete p;
+					return;
+				}
+
+				else if(q-&gt;left == p)
+				{
+					q-&gt;left=p-&gt;left;
+					delete p;
+					return;
+				}
+
+			}
+
+			else if(p-&gt;left!=NULL && p-&gt;right!=NULL)
+			{
+				s = min_node(p-&gt;right);
+				p-&gt;word = s-&gt;word;
+				p-&gt;meaning = s-&gt;meaning;
+				deleteWord(s, s-&gt;word);
+				return;
+
+			}
+		}
+	}
+	cout&lt;&lt;"\nWord NOT found!";
+}
+
+void Dictionary::updateWord(node* p, string key)
+{
+	while(p!=NULL)
+	{
+		if(key &lt; p-&gt;word)
+			p = p-&gt;left;
+
+		else if(key &gt; p-&gt;word)
+			p = p-&gt;right;
+
+		else if(key == p-&gt;word)
+		{
+			cout&lt;&lt;"\nEnter its new meaning: ";
+			cin&gt;&gt;p-&gt;meaning;
+			return;
+		}
+	}
+	cout&lt;&lt;"\nWord not found!";
+}
+
+
+int main()
+{
+	int choice, n;
+	string newWord, searchWord, newMeaning;
+	Dictionary d1;
+	menu:
+	cout&lt;&lt;"\n\nDICTIONARY: ";
+	cout&lt;&lt;"\n\n1. Insert new words";
+	cout&lt;&lt;"\n2. Display the dictionary in ascending order";
+	cout&lt;&lt;"\n3. Display the dictionary in descending order";
+	cout&lt;&lt;"\n4. Search and update a word";
+	cout&lt;&lt;"\n5. Delete a word";
+	cout&lt;&lt;"\n6. Comparisons";
+	cout&lt;&lt;"\n\nEnter your choice: ";
+	cin&gt;&gt;choice;
+	switch(choice)
+	{
+	case 1:
+		cout&lt;&lt;"\nEnter the number of words to insert: ";
+		cin &gt;&gt; n;
+		for(int i=0 ; i&lt;n ; i++)
+		{
+			cout&lt;&lt;"\nEnter the word to be inserted: ";
+			cin &gt;&gt; newWord;
+			cout&lt;&lt;"\nEnter its meaning: ";
+			cin &gt;&gt; newMeaning;
+			if(d1.root == NULL)
+				d1. root = new node(newWord, newMeaning);
+			else
+				d1.insert(d1.root, newWord, newMeaning);
+		}
+		break;
+
+	case 2:
+		d1.display_asc(d1.root);
+		break;
+
+	case 3:
+		d1.display_desc(d1.root);
+		break;
+
+	case 4:
+		cout&lt;&lt;"\nEnter the word to search: ";
+		cin &gt;&gt; searchWord;
+		d1.updateWord(d1.root, searchWord);
+		break;
+
+	case 5:
+		cout&lt;&lt;"\nEnter the word to delete: ";
+		cin&gt;&gt;searchWord;
+		d1.deleteWord(d1.root, searchWord);
+		break;
+		
+	case 6:
+		cout&lt;&lt;"\nEnter the word to find comparisons: ";
+		cin &gt;&gt; searchWord;
+		d1.comparisons(d1.root, searchWord);
+
+	default:
+		cout&lt;&lt;"\nInvalid input!";
+	}
+	if(choice!=7)
+		goto menu;
+	return 0;
+
+
+
+}#include &lt;iostream&gt;
+using namespace std;
+class node
+{
+	public:
+	string word;
+	string meaning;
+	node* left=NULL;
+	node* right=NULL;
+
+	node(string x, string y)
+	{
+		word = x;
+		meaning = y;
+		left = NULL;
+		right = NULL;
+	}
+	friend class Dictionary;
+};
+
+class Dictionary
+{
+public:
+	node* root, *q;	//q is parent here
+	Dictionary()
+	{
+		root = NULL;
+		q=NULL;
+	}
+
+	void insert(node*, string, string);
+	void display_asc(node *);
+	void display_desc(node *);
+	void comparisons(node*, string);
+	void updateWord(node*, string);
+	//void deleteWord(node*, string);
+	//node* min_node(node *);
+};
+
+void Dictionary::insert(node* p, string key, string keyMeaning)
+{
+	if(key &lt; p-&gt;word)
+	{
+		if(p-&gt;left != NULL)
+			insert(p-&gt;left, key, keyMeaning);
+		else
+			p-&gt;left = new node(key, keyMeaning);
+	}
+	else if(key &gt; p-&gt;word)
+	{
+		if(p-&gt;right != NULL)
+			insert(p-&gt;right, key, keyMeaning);
+		else
+			p-&gt;right = new node(key, keyMeaning);
+	}
+}
+
+void Dictionary::display_asc(node *p)		//inorder
+{
+	if(p-&gt;left!=NULL)
+		display_asc(p-&gt;left);
+	cout&lt;&lt;"\n" &lt;&lt; p-&gt;word&lt;&lt;" \t" &lt;&lt; p-&gt;meaning;
+	if(p-&gt;right!=NULL)
+		display_asc(p-&gt;right);
+}
+
+void Dictionary::display_desc(node *p)
+{
+	if(p-&gt;right!=NULL)
+			display_desc(p-&gt;right);
+	cout&lt;&lt;"\n" &lt;&lt; p-&gt;word&lt;&lt;" \t" &lt;&lt; p-&gt;meaning;
+	if(p-&gt;left!=NULL)
+		display_desc(p-&gt;left);
+}
+
+void Dictionary::comparisons(node* p, string key)
+{
+	static int count = 0;
+	while(p!=NULL)
+	{
+		if(key &lt; p-&gt;word)
+		{
+			count++;
+			p = p-&gt;left;
+		}
+
+		else if(key &gt; p-&gt;word)
+		{
+			count++;
+			p = p-&gt;right;
+		}
+
+		else if(key == p-&gt;word)
+		{
+			count++;
+			cout&lt;&lt;"Number of comparisons to find the word: " &lt;&lt; count;
+			return ;
+		}
+	}
+
+	cout&lt;&lt;"\nWord not found!";
+}
+
+node* Dictionary::min_node(node *p)
+{
+	while(p-&gt;left != NULL)
+	{
+		q = p;
+		p = p-&gt;left;
+	}
+	return p;
+}
+
+void Dictionary::deleteWord(node* p, string key)
+{
+	node *s;
+	while(p!=NULL)							//searching for word
+	{
+		if(key &lt; p-&gt;word)
+		{
+			q = p;
+			p = p-&gt;left;
+		}
+
+		else if(key &gt; p-&gt;word)
+		{
+			q=p;
+			p = p-&gt;right;
+		}
+
+		else if(key == p-&gt;word)				//word found
+		{
+			if(p-&gt;left==NULL && p-&gt;right==NULL)	//no child
+			{
+				if(q-&gt;left==p)
+				{
+					delete p;
+					q-&gt;left=NULL;
+					return;
+				}
+
+				if(q-&gt;right==p)
+				{
+					delete p;
+					q-&gt;right=NULL;
+					return;
+				}
+
+			}
+
+			if(p-&gt;right!=NULL && p-&gt;left==NULL)	//right child only
+			{
+				if(q-&gt;right == p)
+				{
+					q-&gt;right = p-&gt;right;
+					delete p;
+					return;
+				}
+
+				else if(q-&gt;left == p)
+				{
+					q-&gt;left = p-&gt;right;
+					delete p;
+					return;
+				}
+
+			}
+
+			else if(p-&gt;left!=NULL && p-&gt;right==NULL)	//left child only
+			{
+				if(q-&gt;right == p)
+				{
+					q-&gt;right = p-&gt;left;
+					delete p;
+					return;
+				}
+
+				else if(q-&gt;left == p)
+				{
+					q-&gt;left=p-&gt;left;
+					delete p;
+					return;
+				}
+
+			}
+
+			else if(p-&gt;left!=NULL && p-&gt;right!=NULL)
+			{
+				s = min_node(p-&gt;right);
+				p-&gt;word = s-&gt;word;
+				p-&gt;meaning = s-&gt;meaning;
+				deleteWord(s, s-&gt;word);
+				return;
+
+			}
+		}
+	}
+	cout&lt;&lt;"\nWord NOT found!";
+}
+
+void Dictionary::updateWord(node* p, string key)
+{
+	while(p!=NULL)
+	{
+		if(key &lt; p-&gt;word)
+			p = p-&gt;left;
+
+		else if(key &gt; p-&gt;word)
+			p = p-&gt;right;
+
+		else if(key == p-&gt;word)
+		{
+			cout&lt;&lt;"\nEnter its new meaning: ";
+			cin&gt;&gt;p-&gt;meaning;
+			return;
+		}
+	}
+	cout&lt;&lt;"\nWord not found!";
+}
+
+
+int main()
+{
+	int choice, n;
+	string newWord, searchWord, newMeaning;
+	Dictionary d1;
+	menu:
+	cout&lt;&lt;"\n\nDICTIONARY: ";
+	cout&lt;&lt;"\n\n1. Insert new words";
+	cout&lt;&lt;"\n2. Display the dictionary in ascending order";
+	cout&lt;&lt;"\n3. Display the dictionary in descending order";
+	cout&lt;&lt;"\n4. Search and update a word";
+	cout&lt;&lt;"\n5. Delete a word";
+	cout&lt;&lt;"\n6. Comparisons";
+	cout&lt;&lt;"\n\nEnter your choice: ";
+	cin&gt;&gt;choice;
+	switch(choice)
+	{
+	case 1:
+		cout&lt;&lt;"\nEnter the number of words to insert: ";
+		cin &gt;&gt; n;
+		for(int i=0 ; i&lt;n ; i++)
+		{
+			cout&lt;&lt;"\nEnter the word to be inserted: ";
+			cin &gt;&gt; newWord;
+			cout&lt;&lt;"\nEnter its meaning: ";
+			cin &gt;&gt; newMeaning;
+			if(d1.root == NULL)
+				d1. root = new node(newWord, newMeaning);
+			else
+				d1.insert(d1.root, newWord, newMeaning);
+		}
+		break;
+
+	case 2:
+		d1.display_asc(d1.root);
+		break;
+
+	case 3:
+		d1.display_desc(d1.root);
+		break;
+
+	case 4:
+		cout&lt;&lt;"\nEnter the word to search: ";
+		cin &gt;&gt; searchWord;
+		d1.updateWord(d1.root, searchWord);
+		break;
+
+	case 5:
+		cout&lt;&lt;"\nEnter the word to delete: ";
+		cin&gt;&gt;searchWord;
+		d1.deleteWord(d1.root, searchWord);
+		break;
+		
+	case 6:
+		cout&lt;&lt;"\nEnter the word to find comparisons: ";
+		cin &gt;&gt; searchWord;
+		d1.comparisons(d1.root, searchWord);
+
+	default:
+		cout&lt;&lt;"\nInvalid input!";
+	}
+	if(choice!=7)
+		goto menu;
+	return 0;
+
+
+
+}
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">view</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/Lh5TT33ROM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+using namespace std;
+class node
+{
+	public:
+	string word;
+	string meaning;
+	node* left=NULL;
+	node* right=NULL;
+
+	node(string x, string y)
+	{
+		word = x;
+		meaning = y;
+		left = NULL;
+		right = NULL;
+	}
+	friend class Dictionary;
+};
+
+class Dictionary
+{
+public:
+	node* root, *q;	//q is parent here
+	Dictionary()
+	{
+		root = NULL;
+		q=NULL;
+	}
+
+	void insert(node*, string, string);
+	void display_asc(node *);
+	void display_desc(node *);
+	void comparisons(node*, string);
+	void updateWord(node*, string);
+	//void deleteWord(node*, string);
+	//node* min_node(node *);
+};
+
+void Dictionary::insert(node* p, string key, string keyMeaning)
+{
+	if(key < p->word)
+	{
+		if(p->left != NULL)
+			insert(p->left, key, keyMeaning);
+		else
+			p->left = new node(key, keyMeaning);
+	}
+	else if(key > p->word)
+	{
+		if(p->right != NULL)
+			insert(p->right, key, keyMeaning);
+		else
+			p->right = new node(key, keyMeaning);
+	}
+}
+
+void Dictionary::display_asc(node *p)		//inorder
+{
+	if(p->left!=NULL)
+		display_asc(p->left);
+	cout<<"\n" << p->word<<" \t" << p->meaning;
+	if(p->right!=NULL)
+		display_asc(p->right);
+}
+
+void Dictionary::display_desc(node *p)
+{
+	if(p->right!=NULL)
+			display_desc(p->right);
+	cout<<"\n" << p->word<<" \t" << p->meaning;
+	if(p->left!=NULL)
+		display_desc(p->left);
+}
+
+void Dictionary::comparisons(node* p, string key)
+{
+	static int count = 0;
+	while(p!=NULL)
+	{
+		if(key < p->word)
+		{
+			count++;
+			p = p->left;
+		}
+
+		else if(key > p->word)
+		{
+			count++;
+			p = p->right;
+		}
+
+		else if(key == p->word)
+		{
+			count++;
+			cout<<"Number of comparisons to find the word: " << count;
+			return ;
+		}
+	}
+
+	cout<<"\nWord not found!";
+}
+
+node* Dictionary::min_node(node *p)
+{
+	while(p->left != NULL)
+	{
+		q = p;
+		p = p->left;
+	}
+	return p;
+}
+
+void Dictionary::deleteWord(node* p, string key)
+{
+	node *s;
+	while(p!=NULL)							//searching for word
+	{
+		if(key < p->word)
+		{
+			q = p;
+			p = p->left;
+		}
+
+		else if(key > p->word)
+		{
+			q=p;
+			p = p->right;
+		}
+
+		else if(key == p->word)				//word found
+		{
+			if(p->left==NULL && p->right==NULL)	//no child
+			{
+				if(q->left==p)
+				{
+					delete p;
+					q->left=NULL;
+					return;
+				}
+
+				if(q->right==p)
+				{
+					delete p;
+					q->right=NULL;
+					return;
+				}
+
+			}
+
+			if(p->right!=NULL && p->left==NULL)	//right child only
+			{
+				if(q->right == p)
+				{
+					q->right = p->right;
+					delete p;
+					return;
+				}
+
+				else if(q->left == p)
+				{
+					q->left = p->right;
+					delete p;
+					return;
+				}
+
+			}
+
+			else if(p->left!=NULL && p->right==NULL)	//left child only
+			{
+				if(q->right == p)
+				{
+					q->right = p->left;
+					delete p;
+					return;
+				}
+
+				else if(q->left == p)
+				{
+					q->left=p->left;
+					delete p;
+					return;
+				}
+
+			}
+
+			else if(p->left!=NULL && p->right!=NULL)
+			{
+				s = min_node(p->right);
+				p->word = s->word;
+				p->meaning = s->meaning;
+				deleteWord(s, s->word);
+				return;
+
+			}
+		}
+	}
+	cout<<"\nWord NOT found!";
+}
+
+void Dictionary::updateWord(node* p, string key)
+{
+	while(p!=NULL)
+	{
+		if(key < p->word)
+			p = p->left;
+
+		else if(key > p->word)
+			p = p->right;
+
+		else if(key == p->word)
+		{
+			cout<<"\nEnter its new meaning: ";
+			cin>>p->meaning;
+			return;
+		}
+	}
+	cout<<"\nWord not found!";
+}
+
+
+int main()
+{
+	int choice, n;
+	string newWord, searchWord, newMeaning;
+	Dictionary d1;
+	menu:
+	cout<<"\n\nDICTIONARY: ";
+	cout<<"\n\n1. Insert new words";
+	cout<<"\n2. Display the dictionary in ascending order";
+	cout<<"\n3. Display the dictionary in descending order";
+	cout<<"\n4. Search and update a word";
+	cout<<"\n5. Delete a word";
+	cout<<"\n6. Comparisons";
+	cout<<"\n\nEnter your choice: ";
+	cin>>choice;
+	switch(choice)
+	{
+	case 1:
+		cout<<"\nEnter the number of words to insert: ";
+		cin >> n;
+		for(int i=0 ; i<n ; i++)
+		{
+			cout<<"\nEnter the word to be inserted: ";
+			cin >> newWord;
+			cout<<"\nEnter its meaning: ";
+			cin >> newMeaning;
+			if(d1.root == NULL)
+				d1. root = new node(newWord, newMeaning);
+			else
+				d1.insert(d1.root, newWord, newMeaning);
+		}
+		break;
+
+	case 2:
+		d1.display_asc(d1.root);
+		break;
+
+	case 3:
+		d1.display_desc(d1.root);
+		break;
+
+	case 4:
+		cout<<"\nEnter the word to search: ";
+		cin >> searchWord;
+		d1.updateWord(d1.root, searchWord);
+		break;
+
+	case 5:
+		cout<<"\nEnter the word to delete: ";
+		cin>>searchWord;
+		d1.deleteWord(d1.root, searchWord);
+		break;
+		
+	case 6:
+		cout<<"\nEnter the word to find comparisons: ";
+		cin >> searchWord;
+		d1.comparisons(d1.root, searchWord);
+
+	default:
+		cout<<"\nInvalid input!";
+	}
+	if(choice!=7)
+		goto menu;
+	return 0;
+
+
+
+}
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 9.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

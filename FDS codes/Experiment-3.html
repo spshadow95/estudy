@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp3</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #fffdfd;"></i> Problem Statement</h1>
+                <p>Write a python program to compute following computation on matrix:
+                    a) Addition of two matrices b) Subtraction of two matrices
+                    c) Multiplication of two matrices d) Transpose of a matrix
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-py">
+    class Matrix:
+    def takerow(self):
+        R = int(input("\nEnter the no of row "))
+        return R
+
+    def takecolumn(self):
+        C = int(input("\nEnter no of column"))
+        return C
+
+    def matmake(self, R, C):
+        self.R = R
+        self.C = C
+        print("Enter the elements of the Matrix ")
+        mat = []
+        for j in range(self.R):
+            a = []
+            for i in range(self.C):
+                a.append(int(input()))
+            mat.append(a)
+
+        return mat
+
+    def printmat(self, mat, R, C):
+        self.R = R
+        self.C = C
+        self.mat = mat
+
+        for i in range(0, self.R):
+            for j in range(0, self.C):
+                print(self.mat[i][j], end=" ")
+            print()
+
+    def Addmatrix(self, mat1, mat2, R, C):
+        self.R = R
+        self.C = C
+        self.mat1 = mat1
+        self.mat2 = mat2
+        matres = []
+        for i in range(self.R):
+            b = []
+            for j in range(self.C):
+                x = self.mat1[i][j] + self.mat2[i][j]
+                b.append(x)
+            matres.append(b)
+
+        return matres
+
+    def Subtractmatrix(self, mat1, mat2, R, C):
+        self.R = R
+        self.C = C
+        self.mat1 = mat1
+        self.mat2 = mat2
+        matres = []
+        for i in range(self.R):
+            b = []
+            for j in range(self.C):
+                x = self.mat1[i][j] - self.mat2[i][j]
+                b.append(x)
+            matres.append(b)
+
+        return matres
+
+    def Multimartix(self, mat1, mat2, m, n, k):
+        self.m = m
+        self.n = n
+        self.k = k
+        self.mat1 = mat1
+        self.mat2 = mat2
+        matres = []
+
+        for i in range(self.m):
+            b = []
+            for j in range(self.k):
+                multi = 0
+                for l in range(self.n):
+                    multi = multi + self.mat1[i][l] * self.mat2[l][j]
+                b.append(multi)
+            matres.append(b)
+
+        return matres
+
+    def Transposematrix(self, mat, R, C):
+        self.R = R
+        self.C = C
+        self.mat = mat
+
+        tempmat = []
+        for j in range(self.C):
+            a = []
+            for i in range(self.R):
+                a.append(int(0))
+            tempmat.append(a)
+
+        for i in range(self.C):
+            for j in range(self.R):
+              tempmat[i][j] = mat[j][i]
+        return tempmat
+
+
+                = Matrix()
+                t("Enter Data for Matrix One \n")
+                 obj.takerow()
+                 obj.takecolumn()
+                 = obj.matmake(r1, c1)
+                t("This is the Matrix 1:\n")
+                printmat(mat1, r1, c1)
+
+                t("Enter Data for Matrix Two\n")
+                 obj.takerow()
+                 obj.takecolumn()
+                 = obj.matmake(r2, c2)
+                t("This is the Matrix 2:\n")
+                printmat(mat2, r2, c2)
+
+                t("-------------***Choose Operation form Below**--------------")
+                t("1.Addition")
+                t("2.Subtraction")
+                t("3.Multiplication")
+                t("4.Transpose of The matrix")
+                t("0.Exit")
+                e (True):
+    choice = int(input("Enter a Choice\n"))
+    if (choice == 1):
+        if (r1 == r2 and c1 == c2):
+            AddResult = obj.Addmatrix(mat1, mat2, r1, c1)
+            print("The Result of the Addition of the Matrices is :")
+            obj.printmat(AddResult, r1, c1)
+        else:
+            print("The Addition Of The given Matrices cannot be possible.")
+
+    elif (choice == 2):
+        if (r1 == r2 and c1 == c2):
+            SubResult = obj.Subtractmatrix(mat1, mat2, r1, c1)
+            print("The Result of the Subtration  of the Matrices is :")
+            obj.printmat(SubResult, r1, c1)
+        else:
+            print("The Subtraction Of The given Matrices cannot be possible.")
+
+    elif (choice == 3):
+        if (c1 == r2):
+            multimat = obj.Multimartix(mat1, mat2, r1, c1, c2)
+            print("The Multiplication of the Given matices give the following matrix:")
+            obj.printmat(multimat, r1, c2)
+
+
+        else:
+            print("Matrix Multiplication of the given matices cannot be possible.")
+
+    elif (choice == 4):
+        abc=int(input("Enter which matrix wanted to be transposed 1 or 2\n"))
+        if(abc==1):
+            tempmatri=obj.Transposematrix(mat1,r1,c1)
+            obj.printmat(tempmatri,c1,r1)
+        elif(abc==2):
+            tempmatri2 = obj.Transposematrix(mat2, r2, c2)
+            obj.printmat(tempmatri2, c2,r2)
+        else:
+            print("Enter corect choice")
+    elif (choice > 4):
+        print("Choice Out of Range Choose Corectly ")
+
+    elif (choice == 0):
+        print("---------** Thank-you for using the program **---------")
+        exit()
+                    
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/1CdolnvxLs0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>            </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `class Matrix:
+    def takerow(self):
+        R = int(input("\nEnter the no of row "))
+        return R
+
+    def takecolumn(self):
+        C = int(input("\nEnter no of column"))
+        return C
+
+    def matmake(self, R, C):
+        self.R = R
+        self.C = C
+        print("Enter the elements of the Matrix ")
+        mat = []
+        for j in range(self.R):
+            a = []
+            for i in range(self.C):
+                a.append(int(input()))
+            mat.append(a)
+
+        return mat
+
+    def printmat(self, mat, R, C):
+        self.R = R
+        self.C = C
+        self.mat = mat
+
+        for i in range(0, self.R):
+            for j in range(0, self.C):
+                print(self.mat[i][j], end=" ")
+            print()
+
+    def Addmatrix(self, mat1, mat2, R, C):
+        self.R = R
+        self.C = C
+        self.mat1 = mat1
+        self.mat2 = mat2
+        matres = []
+        for i in range(self.R):
+            b = []
+            for j in range(self.C):
+                x = self.mat1[i][j] + self.mat2[i][j]
+                b.append(x)
+            matres.append(b)
+
+        return matres
+
+    def Subtractmatrix(self, mat1, mat2, R, C):
+        self.R = R
+        self.C = C
+        self.mat1 = mat1
+        self.mat2 = mat2
+        matres = []
+        for i in range(self.R):
+            b = []
+            for j in range(self.C):
+                x = self.mat1[i][j] - self.mat2[i][j]
+                b.append(x)
+            matres.append(b)
+
+        return matres
+
+    def Multimartix(self, mat1, mat2, m, n, k):
+        self.m = m
+        self.n = n
+        self.k = k
+        self.mat1 = mat1
+        self.mat2 = mat2
+        matres = []
+
+        for i in range(self.m):
+            b = []
+            for j in range(self.k):
+                multi = 0
+                for l in range(self.n):
+                    multi = multi + self.mat1[i][l] * self.mat2[l][j]
+                b.append(multi)
+            matres.append(b)
+
+        return matres
+
+    def Transposematrix(self, mat, R, C):
+        self.R = R
+        self.C = C
+        self.mat = mat
+
+        tempmat = []
+        for j in range(self.C):
+            a = []
+            for i in range(self.R):
+                a.append(int(0))
+            tempmat.append(a)
+
+        for i in range(self.C):
+            for j in range(self.R):
+              tempmat[i][j] = mat[j][i]
+        return tempmat
+
+
+obj = Matrix()
+print("Enter Data for Matrix One \n")
+r1 = obj.takerow()
+c1 = obj.takecolumn()
+mat1 = obj.matmake(r1, c1)
+print("This is the Matrix 1:\n")
+obj.printmat(mat1, r1, c1)
+
+print("Enter Data for Matrix Two\n")
+r2 = obj.takerow()
+c2 = obj.takecolumn()
+mat2 = obj.matmake(r2, c2)
+print("This is the Matrix 2:\n")
+obj.printmat(mat2, r2, c2)
+
+print("-------------***Choose Operation form Below**--------------")
+print("1.Addition")
+print("2.Subtraction")
+print("3.Multiplication")
+print("4.Transpose of The matrix")
+print("0.Exit")
+while (True):
+    choice = int(input("Enter a Choice\n"))
+    if (choice == 1):
+        if (r1 == r2 and c1 == c2):
+            AddResult = obj.Addmatrix(mat1, mat2, r1, c1)
+            print("The Result of the Addition of the Matrices is :")
+            obj.printmat(AddResult, r1, c1)
+        else:
+            print("The Addition Of The given Matrices cannot be possible.")
+
+    elif (choice == 2):
+        if (r1 == r2 and c1 == c2):
+            SubResult = obj.Subtractmatrix(mat1, mat2, r1, c1)
+            print("The Result of the Subtration  of the Matrices is :")
+            obj.printmat(SubResult, r1, c1)
+        else:
+            print("The Subtraction Of The given Matrices cannot be possible.")
+
+    elif (choice == 3):
+        if (c1 == r2):
+            multimat = obj.Multimartix(mat1, mat2, r1, c1, c2)
+            print("The Multiplication of the Given matices give the following matrix:")
+            obj.printmat(multimat, r1, c2)
+
+
+        else:
+            print("Matrix Multiplication of the given matices cannot be possible.")
+
+    elif (choice == 4):
+        abc=int(input("Enter which matrix wanted to be transposed 1 or 2\n"))
+        if(abc==1):
+            tempmatri=obj.Transposematrix(mat1,r1,c1)
+            obj.printmat(tempmatri,c1,r1)
+        elif(abc==2):
+            tempmatri2 = obj.Transposematrix(mat2, r2, c2)
+            obj.printmat(tempmatri2, c2,r2)
+        else:
+            print("Enter corect choice")
+    elif (choice > 4):
+        print("Choice Out of Range Choose Corectly ")
+
+    elif (choice == 0):
+        print("---------** Thank-you for using the program **---------")
+        exit()
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-3 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

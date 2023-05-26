@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSL-Exp4</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #fffdfd;"></i> Problem Statement</h1>
+                <p>a) Write a python program to store roll numbers of student in array who attended training
+                    program in random order. Write function for searching whether particular student attended
+                    training program or not, using Linear search and Sentinel search.
+                    b) Write a python program to store roll numbers of student array who attended training
+                    program in sorted order. Write function for searching whether particular
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-py">
+    class linbinSearch:
+
+    def Takearr(self, n):
+        self.n = n
+        arr = []
+        print("Enter Roll No of Students Attended Training Program in any Order:\n")
+        for i in range(n):
+            roll = int(input())
+            arr.append(roll)
+
+        return arr;
+
+    def Printarr(self, arr):
+        self.arr = arr
+        print(arr)
+
+    def linsearch(self, arr, m, key):
+        self.arr = arr
+        self.m = m
+        self.key = key
+        temp = 0
+        for i in range(m):
+            if (arr[i] == key):
+                print("Roll no ", key, " has attended the Training Program at",i+1,"position..")
+                temp = temp + 1
+                break
+            else:
+                pass
+
+        if (temp == 0):
+            print("Roll no ", key, "Has NOT attended any training Program.")
+
+    def sortarr(self,arr,m):
+        self.arr = arr
+        self.m = m
+        for i in range(m):
+            for j in range(i + 1, m):
+                if (arr[i] &gt; arr[j]):
+                    arr[i], arr[j] = arr[j], arr[i]
+                else:
+                    pass
+        return arr
+
+    def binSearch(self, arr, m, key):
+        self.arr = arr
+        self.m = m
+        self.key = key
+        sortedarr=self.sortarr(arr,m)
+        
+        temp1=0
+        s=0
+        e=m-1
+        while(s&lt;;=e):
+            mid=int((s+e)/2)
+            if (sortedarr[mid]==key):
+                print("Roll no ", key, " has attended the Training Program at",mid+1,"position in sorted arrangement.")
+                temp1=temp1+1
+                break
+
+            elif(sortedarr[mid]&lt;;key):
+                s=mid+1
+            else:
+                e=mid-1
+
+        if(temp1==0):
+            print("Roll no ", key, "Has NOT attended any training Program.")
+    
+    def SectinelSearch(self,arr,m,key):
+        self.arr = arr
+        self.m = m
+        self.key = key
+    
+        last=arr[m-1]
+        arr[m-1]=key
+        
+        s=0
+        while(arr[s]!=key):
+            s+=1
+        
+        arr[m-1]=last  
+        if(s&lt;m-1):
+            print("Roll no ", key, " has attended the Training Program at",s+1,"position.")
+        elif(arr[m-1]==key):
+            print("Roll no ", key, " has attended the Training Program at",m,"position.")
+        else:
+            print("Roll no ", key, "Has NOT attended any training Program .")  
+    
+    def fibbonum(self,k):
+        self.k=k;
+        a=1
+        b=1
+        c=1
+        if(k==0 or k==1):
+            return 0
+        else:
+            while(c&lt;k):
+                
+                c=a+b
+                a=b
+                b=c
+        return a        
+     
+    def FibonacciSearch(self,n,arr,key):
+
+        self.key=key
+        sortedarr=self.sortarr(arr,self.n)
+        self.sortedarr=sortedarr     
+           
+        self.Printarr(sortedarr)
+        first=0
+        last=n-1
+        loc=0
+        flag=0
+        
+        while(flag!=1 and first&lt;=last):
+            index=self.fibbonum(n)
+            if(key==sortedarr[index +first]):
+                flag=1
+                loc=index+first
+                break
+            
+            elif(key&gt; sortedarr[index+first]):
+                first=first+index+1
+        
+            else:
+                last=first+index -1
+            
+            
+            n=last-first+1    
+        if(flag==1):
+            print("Roll no ", key, " has attended the Training Program at",loc+1,"position.") 
+        
+        else:
+            print("Roll no ", key, "Has NOT attended any training Program .")      
+            
+    
+
+
+
+    ents = int(input("\nEnter the no of total Students Attended the training program "))
+    in = linbinSearch()
+     = linbin.Takearr(students)
+    in.Printarr(aray)
+    t()
+
+    t("\n--------------------**Choose the search to be performed :**--------------------------------")
+    t("1.Linear Search.")
+    t("2.Binary Search.")
+    t("3.Sentinel Search.")
+    t("4.Fibbonacci Search ")
+    t("0.Exit")
+    e (True):
+    choice = int(input("\nEnter a Choice"))
+    if (choice == 1):
+        key = int(input("Enter Roll no You wanted to search."))
+        linbin.linsearch(aray, students, key)
+
+
+    elif (choice == 2):
+        keydash = int(input("Enter Roll no You wanted to search."))                      
+        linbin.binSearch(aray, students, keydash)
+
+    elif (choice==3):
+        keynew=int(input("Enter Roll no You wanted to search."))
+        linbin.SectinelSearch(aray, students, keynew)
+
+    elif (choice==4):
+        keyt=int(input("Enter Roll no You wanted to search."))
+        linbin.FibonacciSearch(students,aray,keyt)
+    elif(choice==0):
+        print("-------------------------**Thank-You For Using the Program**------------------------")
+        exit()
+        
+    else:
+        print("Entered Wrong Choice, please try again !!!!! .")    
+
+                    
+                    
+                              
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/YJeoQBevNVo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="references">
+
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `class linbinSearch:
+
+def Takearr(self, n):
+    self.n = n
+    arr = []
+    print("Enter Roll No of Students Attended Training Program in any Order:\n")
+    for i in range(n):
+        roll = int(input())
+        arr.append(roll)
+
+    return arr;
+
+def Printarr(self, arr):
+    self.arr = arr
+    print(arr)
+
+def linsearch(self, arr, m, key):
+    self.arr = arr
+    self.m = m
+    self.key = key
+    temp = 0
+    for i in range(m):
+        if (arr[i] == key):
+            print("Roll no ", key, " has attended the Training Program at",i+1,"position..")
+            temp = temp + 1
+            break
+        else:
+            pass
+
+    if (temp == 0):
+        print("Roll no ", key, "Has NOT attended any training Program.")
+
+def sortarr(self,arr,m):
+    self.arr = arr
+    self.m = m
+    for i in range(m):
+        for j in range(i + 1, m):
+            if (arr[i] > arr[j]):
+                arr[i], arr[j] = arr[j], arr[i]
+            else:
+                pass
+    return arr
+
+def binSearch(self, arr, m, key):
+    self.arr = arr
+    self.m = m
+    self.key = key
+    sortedarr=self.sortarr(arr,m)
+    
+    temp1=0
+    s=0
+    e=m-1
+    while(s<=e):
+        mid=int((s+e)/2)
+        if (sortedarr[mid]==key):
+            print("Roll no ", key, " has attended the Training Program at",mid+1,"position in sorted arrangement.")
+            temp1=temp1+1
+            break
+
+        elif(sortedarr[mid]<key):
+            s=mid+1
+        else:
+            e=mid-1
+
+    if(temp1==0):
+        print("Roll no ", key, "Has NOT attended any training Program.")
+
+def SectinelSearch(self,arr,m,key):
+    self.arr = arr
+    self.m = m
+    self.key = key
+
+    last=arr[m-1]
+    arr[m-1]=key
+    
+    s=0
+    while(arr[s]!=key):
+        s+=1
+    
+    arr[m-1]=last  
+    if(s<m-1):
+        print("Roll no ", key, " has attended the Training Program at",s+1,"position.")
+    elif(arr[m-1]==key):
+        print("Roll no ", key, " has attended the Training Program at",m,"position.")
+    else:
+        print("Roll no ", key, "Has NOT attended any training Program .")  
+
+def fibbonum(self,k):
+    self.k=k;
+    a=1
+    b=1
+    c=1
+    if(k==0 or k==1):
+        return 0
+    else:
+        while(c<k):
+            
+            c=a+b
+            a=b
+            b=c
+    return a        
+ 
+def FibonacciSearch(self,n,arr,key):
+
+    self.key=key
+    sortedarr=self.sortarr(arr,self.n)
+    self.sortedarr=sortedarr     
+       
+    self.Printarr(sortedarr)
+    first=0
+    last=n-1
+    loc=0
+    flag=0
+    
+    while(flag!=1 and first<=last):
+        index=self.fibbonum(n)
+        if(key==sortedarr[index +first]):
+            flag=1
+            loc=index+first
+            break
+        
+        elif(key> sortedarr[index+first]):
+            first=first+index+1
+    
+        else:
+            last=first+index -1
+        
+        
+        n=last-first+1    
+    if(flag==1):
+        print("Roll no ", key, " has attended the Training Program at",loc+1,"position.") 
+    
+    else:
+        print("Roll no ", key, "Has NOT attended any training Program .")      
+        
+
+
+
+
+students = int(input("\nEnter the no of total Students Attended the training program "))
+linbin = linbinSearch()
+aray = linbin.Takearr(students)
+linbin.Printarr(aray)
+print()
+
+print("\n--------------------**Choose the search to be performed :**--------------------------------")
+print("1.Linear Search.")
+print("2.Binary Search.")
+print("3.Sentinel Search.")
+print("4.Fibbonacci Search ")
+print("0.Exit")
+while (True):
+choice = int(input("\nEnter a Choice"))
+if (choice == 1):
+    key = int(input("Enter Roll no You wanted to search."))
+    linbin.linsearch(aray, students, key)
+
+
+elif (choice == 2):
+    keydash = int(input("Enter Roll no You wanted to search."))                      
+    linbin.binSearch(aray, students, keydash)
+
+elif (choice==3):
+    keynew=int(input("Enter Roll no You wanted to search."))
+    linbin.SectinelSearch(aray, students, keynew)
+
+elif (choice==4):
+    keyt=int(input("Enter Roll no You wanted to search."))
+    linbin.FibonacciSearch(students,aray,keyt)
+elif(choice==0):
+    print("-------------------------**Thank-You For Using the Program**------------------------")
+    exit()
+    
+else:
+    print("Entered Wrong Choice, please try again !!!!! .")    
+
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/2022-23 Sem-I DSL Lab Manual-4 (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

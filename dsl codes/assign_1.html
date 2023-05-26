@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Implement a class Complex which represents the Complex
+                    Number data type. Implement the following 
+                     1. Constructor (including a default constructor which creates the complex
+                    number 0+0i). 
+                     2. Overload operator + to add two complex
+                    numbers. 
+                     3. Overload operator * to multiply two complex
+                    numbers. 
+                     4. Overload operators << and >> to print and read
+                    Complex Numbers.
+                    
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+class complex{
+private :
+    float real, imag;
+
+public:
+    //default constructor
+    complex(){
+        real = 0;
+        imag = 0;
+    }
+
+    //overload + operator
+    complex operator + (complex z){
+        z.real += real;
+        z.imag += imag;
+        return z;
+    }
+
+    //overload * operator
+    complex operator * (complex z){
+        // (a+ib) * (c+id) = (ac - bd) + (ad + cb)i
+        complex ans;
+        ans.real = (this-&gt;real * z.real) - (this-&gt;imag * z.imag);
+        ans.imag = (this-&gt;real * z.imag) + (this-&gt;imag * z.real);
+        return ans;
+    }
+
+    //overload &lt;&lt; operator
+    friend ostream & operator &lt;&lt; (ostream &os, const complex &z);
+
+    //overload &gt;&gt; operator
+    friend istream & operator &gt;&gt; (istream &is, complex &z);
+};
+
+//overload &lt;&lt; operator
+ostream & operator &lt;&lt; (ostream &os, const complex &z){
+    os &lt;&lt; "(" &lt;&lt;  z.real &lt;&lt; ")" &lt;&lt;  "+i" &lt;&lt; "(" &lt;&lt;  z.imag &lt;&lt; ")";
+    return os;
+}
+
+//overload &gt;&gt; operator
+istream & operator &gt;&gt; (istream &is, complex &z){
+    is &gt;&gt; z.real &gt;&gt; z.imag;
+    return is;
+}
+
+int main()
+{
+    int option;
+    char cont;
+    complex z1, z2;
+
+    cout &lt;&lt; "Welcome to Complex Calculator!";
+    while(true){
+        cout &lt;&lt;	"\nOptions Menu : "
+            &lt;&lt; "\n1 - Addition"
+            &lt;&lt; "\n2 - Multiplication"
+            &lt;&lt; "\n\nEnter your choice :";
+        cin &gt;&gt; option;
+
+        switch(option){
+            case 1: //addition
+
+                cout &lt;&lt; "\nEnter real and imaginary part of complex number z1 :\n";
+                cin &gt;&gt; z1;
+                cout &lt;&lt; "\nEnter real and imaginary part of complex number z2 :\n";
+                cin &gt;&gt; z2;
+                cout &lt;&lt; "Addition of complex numbers = ";
+                cout &lt;&lt; z1+z2;
+                break;
+
+            case 2: //multiplication
+
+                cout &lt;&lt; "\nEnter real and imaginary part of complex number z1 :\n";
+                cin &gt;&gt; z1;
+                cout &lt;&lt; "\nEnter real and imaginary part of complex number z2 :\n";
+                cin &gt;&gt; z2;
+                cout &lt;&lt; "Product of complex numbers = ";
+                cout &lt;&lt; z1*z2;
+                break;
+
+            default:
+                cout &lt;&lt; "\nInvalid choice!" &lt;&lt; endl;
+                break;
+        }
+
+        cout &lt;&lt; "\nDo you wish to continue? (y/n)\n";
+        cin &gt;&gt; cont;
+        if (cont == 'n' || cont == 'N'){
+            break;
+        }
+    }
+
+    cout &lt;&lt; "Exited Complex Calculator . . ." &lt;&lt; endl;
+
+    return 0;
+}
+                    
+                    </code>               
+                </pre&gt;
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/8FVq5f1Csns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+using namespace std;
+
+class complex{
+private :
+	float real, imag;
+
+public:
+	//default constructor
+	complex(){
+		real = 0;
+		imag = 0;
+	}
+
+	//overload + operator
+	complex operator + (complex z){
+		z.real += real;
+		z.imag += imag;
+		return z;
+	}
+
+	//overload * operator
+	complex operator * (complex z){
+		// (a+ib) * (c+id) = (ac - bd) + (ad + cb)i
+		complex ans;
+		ans.real = (this->real * z.real) - (this->imag * z.imag);
+		ans.imag = (this->real * z.imag) + (this->imag * z.real);
+		return ans;
+	}
+
+	//overload << operator
+	friend ostream & operator << (ostream &os, const complex &z);
+
+	//overload >> operator
+	friend istream & operator >> (istream &is, complex &z);
+};
+
+//overload << operator
+ostream & operator << (ostream &os, const complex &z){
+	os << "(" <<  z.real << ")" <<  "+i" << "(" <<  z.imag << ")";
+	return os;
+}
+
+//overload >> operator
+istream & operator >> (istream &is, complex &z){
+	is >> z.real >> z.imag;
+	return is;
+}
+
+int main()
+{
+	int option;
+	char cont;
+	complex z1, z2;
+
+	cout << "Welcome to Complex Calculator!";
+	while(true){
+		cout <<	"\nOptions Menu : "
+			 << "\n1 - Addition"
+			 << "\n2 - Multiplication"
+			 << "\n\nEnter your choice :";
+		cin >> option;
+
+		switch(option){
+			case 1: //addition
+
+				cout << "\nEnter real and imaginary part of complex number z1 :\n";
+				cin >> z1;
+				cout << "\nEnter real and imaginary part of complex number z2 :\n";
+				cin >> z2;
+				cout << "Addition of complex numbers = ";
+				cout << z1+z2;
+				break;
+
+			case 2: //multiplication
+
+				cout << "\nEnter real and imaginary part of complex number z1 :\n";
+				cin >> z1;
+				cout << "\nEnter real and imaginary part of complex number z2 :\n";
+				cin >> z2;
+				cout << "Product of complex numbers = ";
+				cout << z1*z2;
+				break;
+
+			default:
+				cout << "\nInvalid choice!" << endl;
+				break;
+		}
+
+		cout << "\nDo you wish to continue? (y/n)\n";
+		cin >> cont;
+		if (cont == 'n' || cont == 'N'){
+			break;
+		}
+	}
+
+	cout << "Exited Complex Calculator . . ." << endl;
+
+	return 0;
+}`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/OOP_LAB MANUAL 2022-23 OOP (1).pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>

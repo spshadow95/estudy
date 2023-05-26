@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <div class="problem">
+                <h1><i class="fa-solid fa-code" style="color: #2ec866;"></i> Problem statement</h1>
+                <p>Create an inordered threaded binary search tree. Perform inorder, preorder traversals without recursion and deletion of a node. Analyze time and space complexity of the algorithm.
+                    </p>
+            </div>
+
+            <div class="codeblock">
+                <pre>
+                    <code id="codehere" class="language-cpp">
+include &lt;iostream&gt;
+using namespace std;
+
+
+class node{
+public:
+    int data;
+    node *left,*right;
+    bool lth,rth;
+
+
+    node(){
+        data=0;
+        left=NULL;
+        right=NULL;
+        lth=true;
+        rth=true;
+    }
+
+    node(int data){
+        this-&gt;data=data;
+        left=NULL;
+        right=NULL;
+        lth=true;
+        rth=true;
+
+    }
+};
+
+class Tbst{
+public:
+    node*root;
+
+    Tbst(){
+        root=NULL;
+    }
+
+    void Insertnode(int key){
+        node *cur,*par;
+        par=NULL;
+        cur=root;
+
+            while(cur){             //seraching the node
+                par=cur;
+
+                if(cur-&gt;data==key){
+                    cout&lt;&lt;"Node Already Exist."&lt;&lt;endl;    //Duplicate case handeled .
+                    return ;
+                }
+                else if(key&lt;cur-&gt;data){
+                    if(cur-&gt;lth==0){
+                        cur=cur-&gt;left;
+                    }
+                    else break;
+
+                }
+
+                else{
+                    if(cur-&gt;rth==0){
+                        cur=cur-&gt;right;
+                    }
+                    else break;
+                }
+
+            }
+
+            //now we found out the place for insertion of the new node;
+
+             node *temp=new node(key);
+
+             //case 2 left child:
+             if(par==NULL){
+                 root=temp;
+             }
+             else if(key&lt;par-&gt;data){
+                 temp-&gt;left=par-&gt;left;
+                 temp-&gt;right=par;
+
+                 par-&gt;left=temp;
+                 par-&gt;lth=false;
+
+             }
+             else if(key&gt;par-&gt;data){
+                 temp-&gt;right=par-&gt;right;
+                 temp-&gt;left=par;
+
+                 par-&gt;rth=false;
+                 par-&gt;right=temp;
+             }
+
+    }
+
+    void Create(){
+        int n;
+        cout&lt;&lt;"Enter the no of nodes to insert in the tree."&lt;&lt;endl;
+        cin&gt;&gt;n;
+
+        while(n--){
+            int val;
+            cout&lt;&lt;"Enter the node Value. ";
+            cin&gt;&gt;val;
+            Insertnode(val);
+        }
+    }
+
+     node *inSuccessor(node *ptr)
+        {
+            if (ptr-&gt;rth == 1)
+            {
+                return ptr-&gt;right;
+            }
+            else
+            {
+                ptr = ptr-&gt;right;
+                while (ptr-&gt;lth == 0)
+                {
+                    ptr = ptr-&gt;left;
+                }
+                return ptr;
+            }
+        }
+        node *inPredecessor(node *ptr)
+        {
+            if (ptr-&gt;lth == 1)
+            {
+                return ptr-&gt;left;
+            }
+            ptr = ptr-&gt;left;
+
+            while (ptr-&gt;rth == 0)
+            {
+                ptr = ptr-&gt;right;
+            }
+
+            return ptr;
+        }
+
+
+    void Inorder(node *r){
+        if(!r){
+            return ;
+        }
+        node *temp = r;
+
+        while (temp-&gt;lth== 0)
+        {
+            temp = temp-&gt;left;
+        }
+        while (temp != NULL)
+        {	cout &lt;&lt; temp-&gt;data &lt;&lt; " ";
+            temp = inSuccessor(temp);
+        }
+    }
+
+    void PreOrder(node *r){
+
+        if(!r){
+            return ;
+        }
+         while (r != NULL)
+                    {
+                        cout &lt;&lt; r-&gt;data &lt;&lt; " ";
+                        if (r-&gt;lth == 0)
+                        {
+                            r = r-&gt;left;
+                        }
+                        else if (r-&gt;rth == 0)
+                        {
+                            r = r-&gt;right;
+                        }
+                        else
+                        {
+                            while (r != NULL && r-&gt;rth == 1)
+                            {
+                                r = inSuccessor(r);
+                            }
+                            if (r != NULL)
+                            {
+                                r = r-&gt;right;
+                            }
+                        }
+                    }
+
+
+    }
+    node* zeroChild(node *ro, node *par,
+                    node *cur)
+        {
+            if (par == NULL)
+                ro = NULL;
+
+            else if (cur == par-&gt;left)
+            {
+                par-&gt;lth = 1;
+                par-&gt;left = cur-&gt;left;
+            }
+            else
+            {
+                par-&gt;rth = 1;
+                par-&gt;right = cur-&gt;right;
+            }
+            delete(cur);
+            return ro;
+        }
+
+        node *oneChild(node *ro, node *par,
+                    node *ptr)
+        {
+            node *child;
+
+            if (ptr-&gt;lth == 0)
+                child = ptr-&gt;left;
+            else
+                child = ptr-&gt;right;
+
+            if (par == NULL)
+                ro = child;
+            else if (ptr == par-&gt;left)
+                par-&gt;left = child;
+            else
+                par-&gt;right = child;
+
+            node *s = inSuccessor(ptr);
+            node *p = inPredecessor(ptr);
+
+            if (ptr-&gt;lth == 0)
+                p-&gt;right = s;
+
+            else
+            {
+                if (ptr-&gt;rth == 0)
+                    s-&gt;left = p;
+            }
+
+            delete(ptr);
+            return ro;
+        }
+
+        node *twoChild(node *ro, node *par,
+                    node *ptr)
+        {
+
+            node *parentsucc = ptr;
+            node *succ = ptr-&gt;right;
+            while (succ-&gt;lth == 0)
+            {
+                parentsucc = succ;
+                succ = succ-&gt;left;
+            }
+
+            ptr-&gt;data = succ-&gt;data;
+
+            if (succ-&gt;lth== 1 && succ-&gt;rth == 1)
+                ro = zeroChild(ro, parentsucc, succ);
+            else
+                ro = oneChild(ro, parentsucc, succ);
+
+            return ro;
+        }
+
+        node *deleteElement(node *ro, int val)
+        {
+            node *par = NULL, *ptr = ro;
+            int flag = 0;
+            while (ptr != NULL)
+            {
+                if (val == ptr-&gt;data)
+                {
+                    flag = 1;
+                    break;
+                }
+                par = ptr;
+                if (val &lt; ptr-&gt;data)
+                {
+                    if (ptr-&gt;lth == 0)
+                        ptr = ptr-&gt;left;
+                    else
+                        break;
+                }
+                else
+                {
+                    if (ptr-&gt;rth == 0)
+                        ptr = ptr-&gt;right;
+                    else
+                        break;
+                }
+            }
+
+            if (flag == 0){
+                cout&lt;&lt;"The key to be deleted is not present in the tree!"&lt;&lt;endl;
+            }
+            else if (ptr-&gt;lth == 0 && ptr-&gt;rth == 0)
+                ro = twoChild(ro, par, ptr);
+            else if (ptr-&gt;lth == 0)
+                ro = oneChild(ro, par, ptr);
+            else if (ptr-&gt;rth == 0)
+                ro = oneChild(ro, par, ptr);
+            else
+                ro = zeroChild(ro, par, ptr);
+
+            return ro;
+        }
+
+
+
+};
+int main() {
+    Tbst t1;
+    t1.Create();
+    int choice;
+    while(true){
+
+
+    cout &lt;&lt; "\n--------Program MENU----------" &lt;&lt; endl;
+    cout &lt;&lt; "1.Insert a New Node In the Tree." &lt;&lt; endl;
+    cout &lt;&lt; "2.INOrder Traversal." &lt;&lt; endl;
+    cout &lt;&lt; "3.PREOrder Traversal." &lt;&lt; endl;
+    cout &lt;&lt; "4.Delete a node From the Tree." &lt;&lt; endl;
+    cout &lt;&lt; "\n------------------------------" &lt;&lt; endl;
+
+
+        cout&lt;&lt;"Enter The Choice from the Menu."&lt;&lt;endl;
+        cin&gt;&gt;choice;
+
+
+
+        if(choice==1){
+            int key;cout&lt;&lt;"ENter The New Node Value";cin&gt;&gt;key;
+            t1.Insertnode(key);
+        }
+        else if(choice==2){
+            cout&lt;&lt;"The Inorder Traversal:-  ";
+            t1.Inorder(t1.root);
+        }
+        else if(choice==3){
+            cout&lt;&lt;"The PREorder Traversal:-  ";
+            t1.PreOrder(t1.root);
+        }
+        else if(choice==4){
+            int key;cout&lt;&lt;"ENter The New Node Value";cin&gt;&gt;key;
+            t1.deleteElement(t1.root, key);
+            cout&lt;&lt;"After Change inorder:--- ";
+            t1.Inorder(t1.root);
+        }
+        else if(choice==0){
+           cout&lt;&lt;"-------------Thankyou for using Program.-------------";
+            break;
+                }
+        else{
+            cout&lt;&lt;"Choice out of Range.....try again...."&lt;&lt;endl;
+        }
+    }
+
+
+
+    return 0;
+}
+                    
+                    </code>               
+                </pre>
+                <button id="copy-btn"><i class="fa-regular fa-copy fa-lg"></i> copy</button>
+            </div>
+
+            <div class="lab-manual">
+                <h2>Lab Manual</h2>
+                <a id="dow">View</a>
+            </div>
+
+            <div class="references">
+                <h2>Reference video</h2>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/ffgg_zmbaxw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>
+        var a = `#include <iostream>
+using namespace std;
+
+
+class node{
+public:
+	int data;
+	node *left,*right;
+	bool lth,rth;
+
+
+	node(){
+		data=0;
+		left=NULL;
+		right=NULL;
+		lth=true;
+		rth=true;
+	}
+
+	node(int data){
+		this->data=data;
+		left=NULL;
+		right=NULL;
+		lth=true;
+		rth=true;
+
+	}
+};
+
+class Tbst{
+public:
+	node*root;
+
+	Tbst(){
+		root=NULL;
+	}
+
+	void Insertnode(int key){
+		node *cur,*par;
+		par=NULL;
+		cur=root;
+
+			while(cur){             //seraching the node
+				par=cur;
+
+                if(cur->data==key){
+                	cout<<"Node Already Exist."<<endl;    //Duplicate case handeled .
+                	return ;
+                }
+                else if(key<cur->data){
+                	if(cur->lth==0){
+                        cur=cur->left;
+                	}
+                	else break;
+
+                }
+
+                else{
+                	if(cur->rth==0){
+                		cur=cur->right;
+                	}
+                	else break;
+                }
+
+			}
+
+			//now we found out the place for insertion of the new node;
+
+			 node *temp=new node(key);
+
+			 //case 2 left child:
+			 if(par==NULL){
+				 root=temp;
+			 }
+			 else if(key<par->data){
+				 temp->left=par->left;
+				 temp->right=par;
+
+				 par->left=temp;
+				 par->lth=false;
+
+			 }
+			 else if(key>par->data){
+				 temp->right=par->right;
+				 temp->left=par;
+
+				 par->rth=false;
+				 par->right=temp;
+			 }
+
+	}
+
+	void Create(){
+		int n;
+		cout<<"Enter the no of nodes to insert in the tree."<<endl;
+		cin>>n;
+
+		while(n--){
+			int val;
+			cout<<"Enter the node Value. ";
+			cin>>val;
+			Insertnode(val);
+		}
+	}
+
+	 node *inSuccessor(node *ptr)
+	    {
+	        if (ptr->rth == 1)
+	        {
+	            return ptr->right;
+	        }
+	        else
+	        {
+	            ptr = ptr->right;
+	            while (ptr->lth == 0)
+	            {
+	                ptr = ptr->left;
+	            }
+	            return ptr;
+	        }
+	    }
+	    node *inPredecessor(node *ptr)
+	    {
+	        if (ptr->lth == 1)
+	        {
+	            return ptr->left;
+	        }
+	        ptr = ptr->left;
+
+	        while (ptr->rth == 0)
+	        {
+	            ptr = ptr->right;
+	        }
+
+	        return ptr;
+	    }
+
+
+	void Inorder(node *r){
+		if(!r){
+			return ;
+		}
+		node *temp = r;
+
+		while (temp->lth== 0)
+		{
+			temp = temp->left;
+		}
+		while (temp != NULL)
+		{	cout << temp->data << " ";
+			temp = inSuccessor(temp);
+		}
+	}
+
+	void PreOrder(node *r){
+
+		if(!r){
+			return ;
+		}
+		 while (r != NULL)
+		            {
+		                cout << r->data << " ";
+		                if (r->lth == 0)
+		                {
+		                    r = r->left;
+		                }
+		                else if (r->rth == 0)
+		                {
+		                    r = r->right;
+		                }
+		                else
+		                {
+		                    while (r != NULL && r->rth == 1)
+		                    {
+		                        r = inSuccessor(r);
+		                    }
+		                    if (r != NULL)
+		                    {
+		                        r = r->right;
+		                    }
+		                }
+		            }
+
+
+	}
+	node* zeroChild(node *ro, node *par,
+	                node *cur)
+	    {
+	        if (par == NULL)
+	            ro = NULL;
+
+	        else if (cur == par->left)
+	        {
+	            par->lth = 1;
+	            par->left = cur->left;
+	        }
+	        else
+	        {
+	            par->rth = 1;
+	            par->right = cur->right;
+	        }
+	        delete(cur);
+	        return ro;
+	    }
+
+	    node *oneChild(node *ro, node *par,
+	                node *ptr)
+	    {
+	        node *child;
+
+	        if (ptr->lth == 0)
+	            child = ptr->left;
+	        else
+	            child = ptr->right;
+
+	        if (par == NULL)
+	            ro = child;
+	        else if (ptr == par->left)
+	            par->left = child;
+	        else
+	            par->right = child;
+
+	        node *s = inSuccessor(ptr);
+	        node *p = inPredecessor(ptr);
+
+	        if (ptr->lth == 0)
+	            p->right = s;
+
+	        else
+	        {
+	            if (ptr->rth == 0)
+	                s->left = p;
+	        }
+
+	        delete(ptr);
+	        return ro;
+	    }
+
+	    node *twoChild(node *ro, node *par,
+	                node *ptr)
+	    {
+
+	        node *parentsucc = ptr;
+	        node *succ = ptr->right;
+	        while (succ->lth == 0)
+	        {
+	            parentsucc = succ;
+	            succ = succ->left;
+	        }
+
+	        ptr->data = succ->data;
+
+	        if (succ->lth== 1 && succ->rth == 1)
+	            ro = zeroChild(ro, parentsucc, succ);
+	        else
+	            ro = oneChild(ro, parentsucc, succ);
+
+	        return ro;
+	    }
+
+	    node *deleteElement(node *ro, int val)
+	    {
+	        node *par = NULL, *ptr = ro;
+	        int flag = 0;
+	        while (ptr != NULL)
+	        {
+	            if (val == ptr->data)
+	            {
+	                flag = 1;
+	                break;
+	            }
+	            par = ptr;
+	            if (val < ptr->data)
+	            {
+	                if (ptr->lth == 0)
+	                    ptr = ptr->left;
+	                else
+	                    break;
+	            }
+	            else
+	            {
+	                if (ptr->rth == 0)
+	                    ptr = ptr->right;
+	                else
+	                    break;
+	            }
+	        }
+
+	        if (flag == 0){
+	            cout<<"The key to be deleted is not present in the tree!"<<endl;
+	        }
+	        else if (ptr->lth == 0 && ptr->rth == 0)
+	            ro = twoChild(ro, par, ptr);
+	        else if (ptr->lth == 0)
+	            ro = oneChild(ro, par, ptr);
+	        else if (ptr->rth == 0)
+	            ro = oneChild(ro, par, ptr);
+	        else
+	            ro = zeroChild(ro, par, ptr);
+
+	        return ro;
+	    }
+
+
+
+};
+int main() {
+    Tbst t1;
+    t1.Create();
+    int choice;
+    while(true){
+
+
+    cout << "\n--------Program MENU----------" << endl;
+    cout << "1.Insert a New Node In the Tree." << endl;
+    cout << "2.INOrder Traversal." << endl;
+    cout << "3.PREOrder Traversal." << endl;
+    cout << "4.Delete a node From the Tree." << endl;
+    cout << "\n------------------------------" << endl;
+
+
+    	cout<<"Enter The Choice from the Menu."<<endl;
+    	cin>>choice;
+
+
+
+        if(choice==1){
+    		int key;cout<<"ENter The New Node Value";cin>>key;
+    		t1.Insertnode(key);
+    	}
+    	else if(choice==2){
+    		cout<<"The Inorder Traversal:-  ";
+            t1.Inorder(t1.root);
+    	}
+    	else if(choice==3){
+    		cout<<"The PREorder Traversal:-  ";
+    		t1.PreOrder(t1.root);
+    	}
+    	else if(choice==4){
+    		int key;cout<<"ENter The New Node Value";cin>>key;
+            t1.deleteElement(t1.root, key);
+            cout<<"After Change inorder:--- ";
+            t1.Inorder(t1.root);
+    	}
+    	else if(choice==0){
+           cout<<"-------------Thankyou for using Program.-------------";
+            break;
+            	}
+    	else{
+    		cout<<"Choice out of Range.....try again...."<<endl;
+    	}
+    }
+
+
+
+    return 0;
+}
+
+`
+        document.addEventListener("DOMContentLoaded",()=>{
+            const codehere = document.getElementById('codehere');
+            const copy = document.getElementById('copy-btn');
+            const copyTextHandler = ()=>{
+                const text = codehere.innerHTML;
+                var ele = document.createElement('textarea');
+                document.body.appendChild(ele);
+                ele.value = a;
+                ele.select();
+                document.execCommand('copy');
+                document.body.removeChild(ele);
+                copy.innerHTML = `copied`;
+                copy.style.backgroundColor = white;
+            };
+            copy.addEventListener('click',copyTextHandler)
+        });
+        hljs.highlightAll();
+    </script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-storage.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoXHbOA8kkKjhH3XILkzuAEKIsaWNSj04",
+        authDomain: "samplelogin-9a79b.firebaseapp.com",
+        databaseURL: "https://samplelogin-9a79b-default-rtdb.firebaseio.com",
+        projectId: "samplelogin-9a79b",
+        storageBucket: "samplelogin-9a79b.appspot.com",
+        messagingSenderId: "317364916728",
+        appId: "1:317364916728:web:41d2c0283cbd11e9a8c60d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    
+    document.getElementById('dow').addEventListener('click' , function() {
+        getDownloadURL(ref(storage,"LabManuals/DSAL Manual Assignment 3.pdf"))
+            .then((url) => {
+                window.open(url,'_blank');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.log("file not found");
+            });
+
+    })
+    
+
+
+
+</script>
+</html>
